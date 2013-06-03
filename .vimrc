@@ -1,8 +1,3 @@
-syntax on
-set nocursorcolumn
-set nocursorline
-syntax sync minlines=256
-
 " Vundle
 set nocompatible
 filetype off
@@ -14,14 +9,29 @@ filetype plugin indent on
 " Bundles
 Bundle 'SuperTab'
 Bundle 'tpope/vim-haml'
+Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-rake'
 Bundle 'tpope/vim-endwise'
 Bundle 'Raimondi/delimitMate'
 Bundle 'vim-scripts/xoria256.vim'
+Bundle 'scrooloose/nerdtree'
+
 
 " make backspace work as expected
 set backspace=eol,start,indent
+
+if !empty($MY_RUBY_HOME)
+   let g:ruby_path = join(split(glob($MY_RUBY_HOME.'/lib/ruby/*.*')."\n".glob($MY_RUBY_HOME.'/lib/rubysite_ruby/*'),"\n"),',')
+ endif
+
+" syntax
+syntax on
+set foldmethod=manual
+set nocursorcolumn
+set nocursorline
+syntax sync minlines=256
+
 
 " Tabs
 set tabstop=2
