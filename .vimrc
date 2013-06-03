@@ -1,12 +1,45 @@
 syntax on
+set nocursorcolumn
+set nocursorline
+syntax sync minlines=256
+
+" Vundle
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+filetype plugin indent on
+"Bundle 'gmarik/Vundle'
+
+" Bundles
+Bundle 'SuperTab'
+Bundle 'tpope/vim-haml'
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-rake'
+Bundle 'tpope/vim-endwise'
+Bundle 'Raimondi/delimitMate'
+Bundle 'vim-scripts/xoria256.vim'
+
+" make backspace work as expected
 set backspace=eol,start,indent
+
+" Tabs
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
-set noexpandtab
-set nu
+set expandtab
 set autoindent
+
+" Set line numbers on
+set nu
+
+" space centers current line
 nmap <space> zz
+
+" Colors
+set t_Co=256
+colorscheme xoria256
+
 " Tell vim to remember certain things when we exit
 "  '10  :  marks will be remembered for up to 10 previously edited files
 "  "100 :  will save up to 100 lines for each register
@@ -25,3 +58,4 @@ augroup resCur
   autocmd!
   autocmd BufWinEnter * call ResCur()
 augroup END
+
