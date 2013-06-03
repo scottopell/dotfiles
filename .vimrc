@@ -25,6 +25,11 @@ if !empty($MY_RUBY_HOME)
    let g:ruby_path = join(split(glob($MY_RUBY_HOME.'/lib/ruby/*.*')."\n".glob($MY_RUBY_HOME.'/lib/rubysite_ruby/*'),"\n"),',')
  endif
 
+" debugging
+let ruby_no_expensive=1
+set ttyfast
+set lazyredraw
+
 " syntax
 syntax on
 set foldmethod=manual
