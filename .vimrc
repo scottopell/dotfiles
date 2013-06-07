@@ -3,8 +3,7 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
-filetype plugin indent on
-"Bundle 'gmarik/Vundle'
+Bundle 'gmarik/vundle'
 
 " Bundles
 Bundle 'SuperTab'
@@ -17,6 +16,7 @@ Bundle 'Raimondi/delimitMate'
 Bundle 'vim-scripts/xoria256.vim'
 Bundle 'scrooloose/nerdtree'
 
+filetype plugin indent on
 
 " make backspace work as expected
 set backspace=eol,start,indent
@@ -25,10 +25,6 @@ if !empty($MY_RUBY_HOME)
    let g:ruby_path = join(split(glob($MY_RUBY_HOME.'/lib/ruby/*.*')."\n".glob($MY_RUBY_HOME.'/lib/rubysite_ruby/*'),"\n"),',')
  endif
 
-" debugging
-let ruby_no_expensive=1
-set ttyfast
-set lazyredraw
 
 " syntax
 syntax on
@@ -36,6 +32,8 @@ set foldmethod=manual
 set nocursorcolumn
 set nocursorline
 syntax sync minlines=256
+" force old regex engine, new one doesn't like ruby
+set re=1
 
 
 " Tabs
@@ -62,15 +60,15 @@ colorscheme xoria256
 "  %    :  saves and restores the buffer list
 "  n... :  where to save the viminfo files
 set viminfo='10,\"100,:20,%,n~/.viminfo
-function! ResCur()
-	if line("'\"") <= line("$")
-    normal! g`"
-    return 1
+ function! ResCur()
+ 	if line("'\"") <= line("$")
+     normal! g`"
+     return 1
   endif
-endfunction
+ endfunction
 
-augroup resCur
-  autocmd!
-  autocmd BufWinEnter * call ResCur()
-augroup END
+ augroup resCur
+   autocmd!
+   autocmd BufWinEnter * call ResCur()
+ augroup END
 
