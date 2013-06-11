@@ -15,6 +15,7 @@ Bundle 'tpope/vim-endwise'
 Bundle 'Raimondi/delimitMate'
 Bundle 'vim-scripts/xoria256.vim'
 Bundle 'scrooloose/nerdtree'
+Bundle 'nathanaelkane/vim-indent-guides'
 
 filetype plugin indent on
 
@@ -52,6 +53,12 @@ nmap <space> zz
 " Colors
 set t_Co=256
 colorscheme xoria256
+
+" Indent Guide
+au VimEnter * :IndentGuidesEnable
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=236
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=238
 
 " Tell vim to remember certain things when we exit
 "  '10  :  marks will be remembered for up to 10 previously edited files
