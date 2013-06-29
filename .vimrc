@@ -39,7 +39,7 @@ set nocursorcolumn
 set nocursorline
 syntax sync minlines=256
 
-" force old regex engine, new one doesn't like ruby
+" force old regex engine, new one doesn't like ruby 
 if version >=703 && has("patch 1000")
   set re=1
 endif
