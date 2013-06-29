@@ -136,3 +136,13 @@ up(){
 }
 
 alias cd-='cd "$OLDPWD"'
+
+alias tmux='tmux -2'
+
+alias vi='vim'
+#git aliases
+alias ga='git add'
+alias gst='git status'
+#rails aliases
+alias rc='rails console'
+alias rs='rails server'
