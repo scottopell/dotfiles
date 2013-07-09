@@ -146,3 +146,5 @@ alias gst='git status'
 #rails aliases
 alias rc='rails console'
 alias rs='rails server'
+
+export EDITOR="vim"

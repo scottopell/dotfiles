@@ -6,7 +6,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " Bundles
-Bundle 'SuperTab'
+"  Syntax
 Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-markdown'
 Bundle 'vim-ruby/vim-ruby'
@@ -14,13 +14,17 @@ Bundle 'tpope/vim-rails'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'tpope/vim-rake'
 Bundle 'tpope/vim-endwise'
-Bundle 'Raimondi/delimitMate'
-Bundle 'vim-scripts/xoria256.vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'tsaleh/vim-matchit'
+"  Syntax Checker
 Bundle 'scrooloose/syntastic'
-Bundle 'scrooloose/nerdtree'
+"  Theme
+Bundle 'vim-scripts/xoria256.vim'
+"  code complete 
+"Bundle 'SuperTab'
+Bundle 'Valloric/YouCompleteMe'
+"  Visual indent guides
+Bundle 'nathanaelkane/vim-indent-guides'
+"  Provides extra % matching (xml etc)
+Bundle 'tsaleh/vim-matchit'
 
 filetype plugin indent on
 
@@ -41,17 +45,11 @@ syntax sync minlines=256
 
 " force old regex engine, new one doesn't like ruby 
 if version >=703 && has("patch 1000")
-  set re=1
+  "set re=1
 endif
 
 " adds _ to the list of word separaters
 "set iskeyword-=_
-
-
-"NERDTree setup
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-autocmd vimenter * if !argc() | NERDTree | endif
-map <C-n> :NERDTreeToggle<CR>
 
 
 " Tabs
