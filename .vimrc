@@ -19,12 +19,14 @@ Bundle 'scrooloose/syntastic'
 "  Theme
 Bundle 'vim-scripts/xoria256.vim'
 "  code complete 
-"Bundle 'SuperTab'
 Bundle 'Valloric/YouCompleteMe'
 "  Visual indent guides
 Bundle 'nathanaelkane/vim-indent-guides'
 "  Provides extra % matching (xml etc)
 Bundle 'tsaleh/vim-matchit'
+"  Select an indentation level
+Bundle 'michaeljsmith/vim-indent-object'
+
 
 filetype plugin indent on
 

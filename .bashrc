@@ -143,8 +143,14 @@ alias vi='vim'
 #git aliases
 alias ga='git add'
 alias gst='git status'
+alias gd='git diff'
 #rails aliases
 alias rc='rails console'
 alias rs='rails server'
 
+alias sagi='sudo apt-get install'
+alias sag='sudo apt-get'
+alias tas='tmux attach-session -t'
+
 export EDITOR="vim"
+
