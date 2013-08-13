@@ -66,6 +66,11 @@ set autoindent
 " Set line numbers on
 set nu
 
+" correct :W to :w #typo
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+" correct :Q to :q #typo
+cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
+
 " space centers current line
 nmap <space> zz
 
