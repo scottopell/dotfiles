@@ -19,7 +19,9 @@ Bundle 'scrooloose/syntastic'
 "  Theme
 Bundle 'vim-scripts/xoria256.vim'
 "  code complete 
-Bundle 'Valloric/YouCompleteMe'
+if version >=703 && has("patch 538")
+  Bundle 'Valloric/YouCompleteMe'
+endif
 "  Visual indent guides
 Bundle 'nathanaelkane/vim-indent-guides'
 "  Provides extra % matching (xml etc)
