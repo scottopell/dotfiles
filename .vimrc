@@ -26,6 +26,8 @@ Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'tsaleh/vim-matchit'
 "  Select an indentation level
 Bundle 'michaeljsmith/vim-indent-object'
+"  Toggle Line Comments
+Bundle 'scrooloose/nerdcommenter'
 
 
 filetype plugin indent on
