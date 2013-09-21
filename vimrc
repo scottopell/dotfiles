@@ -30,6 +30,8 @@ Bundle 'tsaleh/vim-matchit'
 Bundle 'michaeljsmith/vim-indent-object'
 "  Toggle Line Comments
 Bundle 'scrooloose/nerdcommenter'
+"  File Finder
+Bundle 'kien/ctrlp.vim'
 
 
 filetype plugin indent on
