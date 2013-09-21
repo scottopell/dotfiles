@@ -32,6 +32,10 @@ Bundle 'michaeljsmith/vim-indent-object'
 Bundle 'scrooloose/nerdcommenter'
 "  File Finder
 Bundle 'kien/ctrlp.vim'
+"  Toggles Comments
+Bundle 'tomtom/tcomment_vim'
+"  matlab
+Bundle 'sgeb/vim-matlab'
 
 
 filetype plugin indent on
@@ -40,8 +44,8 @@ filetype plugin indent on
 set backspace=eol,start,indent
 
 if !empty($MY_RUBY_HOME)
-   let g:ruby_path = join(split(glob($MY_RUBY_HOME.'/lib/ruby/*.*')."\n".glob($MY_RUBY_HOME.'/lib/rubysite_ruby/*'),"\n"),',')
- endif
+  let g:ruby_path = join(split(glob($MY_RUBY_HOME.'/lib/ruby/*.*')."\n".glob($MY_RUBY_HOME.'/lib/rubysite_ruby/*'),"\n"),',')
+endif
 
 
 " syntax
@@ -69,6 +73,22 @@ set autoindent
 
 " Set line numbers on
 set nu
+
+" reload files when they change on disk
+set autoread
+
+" search as you type
+set incsearch
+
+"  vim splits
+" easier mappings for switching panes
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+" better default behavior for where new splits go
+set splitbelow
+set splitright
 
 " correct :W to :w #typo
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
