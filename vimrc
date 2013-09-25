@@ -34,9 +34,10 @@ Bundle 'scrooloose/nerdcommenter'
 Bundle 'kien/ctrlp.vim'
 "  Toggles Comments
 Bundle 'tomtom/tcomment_vim'
-"  matlab
+"  Matlab
 Bundle 'sgeb/vim-matlab'
-
+"  Git Wrapper
+Bundle 'tpope/vim-fugitive'
 
 filetype plugin indent on
 
