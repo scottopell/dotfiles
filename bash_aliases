@@ -7,6 +7,11 @@ alias tmux='tmux -2'
 #  shorter version of ridiculously long command
 alias tas='tmux attach-session -t'
 
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
 alias vi='vim'
 
 # git aliases
