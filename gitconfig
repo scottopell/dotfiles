@@ -1,0 +1,10 @@
+[core]
+  editor = vim
+  excludesfile = ~/.gitignore
+[user]
+  name = Scott Opell
+	email = me@scottopell.com
+[instaweb]
+  local = true
+  httpd = webrick
+  port = 1234
