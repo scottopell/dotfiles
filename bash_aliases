@@ -6,6 +6,7 @@ alias cd-='cd "$OLDPWD"'
 alias tmux='tmux -2'
 #  shorter version of ridiculously long command
 alias tas='tmux attach-session -t'
+alias tls='tmux ls'
 
 # some more ls aliases
 alias ll='ls -alF'
