@@ -1,0 +1,13 @@
+# for vim swap files
+.*.sw[a-z]
+
+# Never track other version control files
+.svn
+.hg
+
+# If I ever get a mac...
+.DS_Store
+
+# compiled files
+*.class
+*.o
