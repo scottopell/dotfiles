@@ -1,6 +1,6 @@
 [core]
   editor = vim
-  excludesfile = ~/.gitignore
+  excludesfile = ~/.gitignore_global
 [user]
   name = Scott Opell
 	email = me@scottopell.com
@@ -8,3 +8,5 @@
   local = true
   httpd = webrick
   port = 1234
+[push]
+	default = upstream
