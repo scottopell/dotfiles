@@ -9,7 +9,7 @@ alias tas='tmux attach-session -t'
 alias tls='tmux ls'
 
 # some more ls aliases
-alias ll='ls -alF'
+alias ll='ls -AlF'
 alias la='ls -A'
 alias l='ls -CF'
 
