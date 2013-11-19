@@ -38,6 +38,8 @@ Bundle 'tomtom/tcomment_vim'
 Bundle 'sgeb/vim-matlab'
 "  Git Wrapper
 Bundle 'tpope/vim-fugitive'
+"  Ruby Documentation in vim
+Bundle 'danchoi/ri.vim'
 
 filetype plugin indent on
 
@@ -56,6 +58,13 @@ set nocursorcolumn
 set nocursorline
 syntax sync minlines=256
 
+" don't highlight all instances when searching
+" CS computers set this by default...annoying
+set nohls
+
+" search as you type
+set incsearch
+
 " adds _ to the list of word separaters
 "set iskeyword-=_
 
@@ -70,11 +79,14 @@ set autoindent
 " Set line numbers on
 set nu
 
-" reload files when they change on disk
-set autoread
+" the more I think on this the less I like it, leave commented out for now
+" If you use this, ~/.vim/undodir needs to be created manually(!!!)
+" Persistent undo
+"set undofile
+" Keep these in the .vim dir, otherwise 
+" there will be undofiles created everywhere
+"set undodir=~/.vim/undodir
 
-" search as you type
-set incsearch
 
 "  vim splits
 " easier mappings for switching panes
@@ -94,8 +106,8 @@ cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q')
 " space centers current line
 nmap <space> zz
 
-" maps ch to <esc>
-imap jc <esc>
+" maps jj to <esc> in insert mode
+imap jj <esc>
 
 " Colors
 set t_Co=256
