@@ -40,6 +40,8 @@ Bundle 'sgeb/vim-matlab'
 Bundle 'tpope/vim-fugitive'
 "  Ruby Documentation in vim
 Bundle 'danchoi/ri.vim'
+"  Navigate vim and tmux splits interchangeably
+Bundle 'christoomey/vim-tmux-navigator'
 
 filetype plugin indent on
 
