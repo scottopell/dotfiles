@@ -3,7 +3,7 @@
   excludesfile = ~/.gitignore_global
 [user]
   name = Scott Opell
-	email = me@scottopell.com
+  email = me@scottopell.com
 [instaweb]
   local = true
   httpd = webrick
