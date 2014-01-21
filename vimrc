@@ -13,12 +13,13 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-rails'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'tpope/vim-rake'
+"  Auto-adds ruby 'end' with def
 Bundle 'tpope/vim-endwise'
 "  Syntax Checker
 Bundle 'scrooloose/syntastic'
 "  Theme
 Bundle 'vim-scripts/xoria256.vim'
-"  code complete 
+"  Code Completion
 if version >=703 && has("patch 538")
   Bundle 'Valloric/YouCompleteMe'
 endif
@@ -34,14 +35,16 @@ Bundle 'scrooloose/nerdcommenter'
 Bundle 'kien/ctrlp.vim'
 "  Toggles Comments
 Bundle 'tomtom/tcomment_vim'
-"  Matlab
-Bundle 'sgeb/vim-matlab'
 "  Git Wrapper
 Bundle 'tpope/vim-fugitive'
 "  Ruby Documentation in vim
 Bundle 'danchoi/ri.vim'
 "  Navigate vim and tmux splits interchangeably
 Bundle 'christoomey/vim-tmux-navigator'
+"  git gutter
+Bundle 'airblade/vim-gitgutter'
+"  Auto-adds delimeters in many languages
+Bundle 'Raimondi/delimitMate'
 
 filetype plugin indent on
 
