@@ -51,10 +51,6 @@ filetype plugin indent on
 " make backspace work as expected
 set backspace=eol,start,indent
 
-if !empty($MY_RUBY_HOME)
-  let g:ruby_path = join(split(glob($MY_RUBY_HOME.'/lib/ruby/*.*')."\n".glob($MY_RUBY_HOME.'/lib/rubysite_ruby/*'),"\n"),',')
-endif
-
 
 " syntax
 syntax on
@@ -112,7 +108,7 @@ cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q')
 nmap <space> zz
 
 " maps jj to <esc> in insert mode
-imap jj <esc>
+imap hh <esc>
 
 " Colors
 set t_Co=256
