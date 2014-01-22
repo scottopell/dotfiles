@@ -51,6 +51,8 @@ filetype plugin indent on
 " make backspace work as expected
 set backspace=eol,start,indent
 
+" ListChars
+set list lcs=trail:·,tab:»·
 
 " syntax
 syntax on
