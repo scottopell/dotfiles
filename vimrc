@@ -14,6 +14,7 @@ Bundle 'tpope/vim-rails'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'tpope/vim-rake'
 Bundle 'tpope/vim-endwise'
+Bundle 'jcfaria/Vim-R-plugin'
 "  Syntax Checker
 Bundle 'scrooloose/syntastic'
 "  Theme
