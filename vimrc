@@ -107,10 +107,12 @@ cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W')
 " correct :Q to :q #typo
 cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
 
+cnoreabbrev qq qall
+
 " space centers current line
 nmap <space> zz
 
-" maps jj to <esc> in insert mode
+" maps hh to <esc> in insert mode
 imap hh <esc>
 
 " Colors

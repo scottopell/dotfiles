@@ -18,7 +18,7 @@ alias vi='vim'
 # git aliases
 alias ga='git add'
 alias gst='git status'
-alias gd='git diff'
+alias gd='git d'
 alias gcm='git commit -m '
 
 # rails aliases
