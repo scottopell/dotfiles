@@ -154,4 +154,8 @@ extract () {
 
 export EDITOR="vim"
 function gi() { curl http://www.gitignore.io/api/$@ ;}
-export PATH=~/bin:$PATH
+
+# lore is SPARC based, so my bins probably won't work
+if [ `hostname` != "lore.cs.purdue.edu" ]; then
+  export PATH=~/bin:$PATH
+fi
