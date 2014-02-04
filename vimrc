@@ -116,9 +116,6 @@ set colorcolumn=80
 " space centers current line
 nmap <space> zz
 
-" maps hh to <esc> in insert mode
-imap hh <esc>
-
 " Colors
 set t_Co=256
 colorscheme xoria256
