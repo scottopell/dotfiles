@@ -29,7 +29,7 @@ Bundle 'nathanaelkane/vim-indent-guides'
 "  Provides extra % matching (xml etc)
 Bundle 'tsaleh/vim-matchit'
 "  Select an indentation level
-Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'scottopell/vim-indent-object'
 "  Toggle Line Comments
 Bundle 'scrooloose/nerdcommenter'
 "  File Finder
@@ -107,7 +107,11 @@ cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W')
 " correct :Q to :q #typo
 cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
 
+" usefull in diffs with difftool(vimdiff) potentially many files to edit
 cnoreabbrev qq qall
+
+" respect the 80 (eighty) column convention
+set colorcolumn=80
 
 " space centers current line
 nmap <space> zz
