@@ -5,7 +5,7 @@ require "thor"
 class Dot < Thor
   package_name "dot_setup"
   # map "-i" => :install
-  
+
   no_commands do
     def get_valid_files
       home = "#{ENV["HOME"]}"
@@ -15,7 +15,7 @@ class Dot < Thor
         files = Dir.entries(path)
         ignored_file_extensions = [ "md", "rb", "swp" ]
         ignored_entries = [ ".", "..", ".git" ]
-        files.delete_if do |f| 
+        files.delete_if do |f|
           # select files that match, then check for elements
           file_ignore = ignored_entries.detect { |fi| f == fi }
           extension_ignore = ignored_file_extensions.detect do |fe| 
@@ -32,11 +32,11 @@ class Dot < Thor
       end
     end
   end
-  
+
   desc "install", "Install dotfiles for the current user"
   def install
     home = "#{ENV["HOME"]}"
-    Dir.chdir(home) do 
+    Dir.chdir(home) do
       files = get_valid_files
       files.each do |f|
         file_name = File.basename f
