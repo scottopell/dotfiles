@@ -47,11 +47,15 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 
 if [ -f ~/.shell_aliases ]; then
-    . ~/.shell_aliases
+  source ~/.shell_aliases
 fi
 
 if [ -f ~/.shell_functions ]; then
-    . ~/.shell_functions
+  source ~/.shell_functions
 fi
 
-export PATH=$PATH:/home/scott/.rvm/gems/ruby-2.0.0-p0/bin:/home/scott/.rvm/gems/ruby-2.0.0-p0@global/bin:/home/scott/.rvm/rubies/ruby-2.0.0-p0/bin:/home/scott/.rvm/bin:/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/lib/jvm/jdk1.7.0/bin:/usr/lib/jvm/jdk1.7.0/bin:/home/scott/.rvm/bin:/home/scott/MatLab/bin:/home/scott/.rvm/bin:/home/scott/.rvm/bin
+if [ -f ~/.profile ]; then
+  source ~/.profile
+fi
+
+export PATH=$PATH:/home/scott/.rvm/gems/ruby-2.0.0-p0/bin:/home/scott/.rvm/gems/ruby-2.0.0-p0@global/bin:/home/scott/.rvm/rubies/ruby-2.0.0-p0/bin:/home/scott/.rvm/bin:/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/lib/jvm/jdk1.7.0/bin
