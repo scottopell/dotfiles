@@ -121,3 +121,6 @@ export EDITOR="vim"
 if [ `hostname` != "lore.cs.purdue.edu" ]; then
   export PATH=~/bin:$PATH
 fi
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
