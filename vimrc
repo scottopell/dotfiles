@@ -1,51 +1,47 @@
 " Vundle
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-Bundle 'gmarik/vundle'
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/vundle'
 
 " Bundles
 "  Syntax
-Bundle 'tpope/vim-haml'
-Bundle 'tpope/vim-markdown'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'tpope/vim-rails'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'tpope/vim-rake'
+Plugin 'tpope/vim-haml'
+Plugin 'tpope/vim-markdown'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-rails'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'tpope/vim-rake'
 "  Auto-adds ruby 'end' with def
-Bundle 'tpope/vim-endwise'
-Bundle 'jcfaria/Vim-R-plugin'
+Plugin 'tpope/vim-endwise'
 "  Syntax Checker
-Bundle 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
 "  Theme
-Bundle 'vim-scripts/xoria256.vim'
+Plugin 'vim-scripts/xoria256.vim'
 "  Code Completion
 if version >=703 && has("patch 538")
-  Bundle 'Valloric/YouCompleteMe'
+  Plugin 'Valloric/YouCompleteMe'
 endif
 "  Visual indent guides
-Bundle 'nathanaelkane/vim-indent-guides'
+Plugin 'nathanaelkane/vim-indent-guides'
 "  Provides extra % matching (xml etc)
-Bundle 'tsaleh/vim-matchit'
+Plugin 'tmhedberg/matchit'
 "  Select an indentation level
-Bundle 'scottopell/vim-indent-object'
-"  Toggle Line Comments
-Bundle 'scrooloose/nerdcommenter'
+Plugin 'scottopell/vim-indent-object'
 "  File Finder
-Bundle 'kien/ctrlp.vim'
-"  Toggles Comments
-Bundle 'tomtom/tcomment_vim'
+Plugin 'kien/ctrlp.vim'
 "  Git Wrapper
-Bundle 'tpope/vim-fugitive'
-"  Ruby Documentation in vim
-Bundle 'danchoi/ri.vim'
+Plugin 'tpope/vim-fugitive'
 "  Navigate vim and tmux splits interchangeably
-Bundle 'christoomey/vim-tmux-navigator'
+Plugin 'christoomey/vim-tmux-navigator'
 "  git gutter
-Bundle 'airblade/vim-gitgutter'
+Plugin 'airblade/vim-gitgutter'
 "  Auto-adds delimeters in many languages
-Bundle 'Raimondi/delimitMate'
+Plugin 'Raimondi/delimitMate'
+
+call vundle#end()
 
 filetype plugin indent on
 
