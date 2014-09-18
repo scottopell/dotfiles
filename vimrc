@@ -40,10 +40,17 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'airblade/vim-gitgutter'
 "  Auto-adds delimeters in many languages
 Plugin 'Raimondi/delimitMate'
+"  Allows for easy alignment/formatting of code to line up vertically
+Plugin 'godlygeek/tabular'
+"  Expands vim's css highlighting with css3 features
+Plugin 'hail2u/vim-css3-syntax'
 
 call vundle#end()
 
 filetype plugin indent on
+
+" Set leader key to comma
+let mapleader=','
 
 " make backspace work as expected
 set backspace=eol,start,indent
@@ -135,6 +142,14 @@ function! ResCur()
     return 1
   endif
 endfunction
+
+"  Mappings for Tabularize.
+if exists(":Tabularize")
+  nmap <Leader>a= :Tabularize /=<CR>
+  vmap <Leader>a= :Tabularize /=<CR>
+  nmap <Leader>a: :Tabularize /:\zs<CR>
+  vmap <Leader>a: :Tabularize /:\zs<CR>
+endif
 
 augroup resCur
   autocmd!
