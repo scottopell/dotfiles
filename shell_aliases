@@ -29,3 +29,5 @@ alias rs='rails server'
 alias sagi='sudo apt-get install'
 alias sag='sudo apt-get'
 
+# ssh alias to enable ssh compression
+alias ssx='ssh -C -X -c blowfish'
