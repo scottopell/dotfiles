@@ -44,6 +44,10 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'godlygeek/tabular'
 "  Expands vim's css highlighting with css3 features
 Plugin 'hail2u/vim-css3-syntax'
+"  Commenter
+Plugin 'scrooloose/nerdcommenter'
+"  Tab nav bar editor
+Plugin 'mkitt/tabline.vim'
 
 call vundle#end()
 
@@ -137,7 +141,7 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=238
 "  n... :  where to save the viminfo files
 set viminfo='10,\"100,:20,%,n~/.viminfo
 function! ResCur()
- 	if line("'\"") <= line("$")
+  if line("'\"") <= line("$")
     normal! g`"
     return 1
   endif
