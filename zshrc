@@ -1,9 +1,9 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-ZSH_THEME="robbyrussell"
+ZSH_THEME="danstheme"
 
-plugins=(git)
+plugins=(git zsh-syntax-highlighting osx)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -23,7 +23,8 @@ fi
 
 export EDITOR="vim"
 
-export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
+export PATH="/usr/local/bin:/bin:/usr/sbin:/sbin:/usr/bin"
 
 export PATH="/usr/local/share/npm/bin:$PATH"
-export PATH="~/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/pebble-dev/PebbleSDK-current/bin:$PATH"
