@@ -48,6 +48,10 @@ Plugin 'hail2u/vim-css3-syntax'
 Plugin 'scrooloose/nerdcommenter'
 "  Tab nav bar editor
 Plugin 'mkitt/tabline.vim'
+"  Syntax for typescript
+Plugin 'leafgarland/typescript-vim'
+"  Rust!
+Plugin 'rust-lang/rust.vim'
 
 call vundle#end()
 
@@ -68,6 +72,23 @@ set foldmethod=manual
 set nocursorcolumn
 set nocursorline
 syntax sync minlines=256
+
+
+" Mouse mode (scroll, visual select, etc)
+set mouse=a " a for all
+" Send more characters for redraws
+set ttyfast
+" better speed with mouse selection within tmux
+set ttymouse=xterm2
+
+"let g:syntastic_check_on_open = 1
+let g:syntastic_javascript_checkers = ['eslint']
+
+"let g:syntastic_enable_signs=1
+"let g:syntastic_error_symbol='✗'
+"let g:syntastic_warning_symbol='⚠'
+
+"let g:syntastic_enable_balloons = 1
 
 " don't highlight all instances when searching
 " CS computers set this by default...annoying
@@ -160,3 +181,6 @@ augroup resCur
   autocmd BufWinEnter * call ResCur()
 augroup END
 
+"  Higlights the current line
+"http://stackoverflow.com/questions/8750792/vim-highlight-the-whole-current-line
+set cursorline

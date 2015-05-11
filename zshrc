@@ -28,3 +28,8 @@ export PATH="/usr/local/bin:/bin:/usr/sbin:/sbin:/usr/bin"
 export PATH="/usr/local/share/npm/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/pebble-dev/PebbleSDK-current/bin:$PATH"
+export PATH="$HOME/Library/Haskell/bin:$PATH"
+export PATH=~/pebble-dev/PebbleSDK-3.0-dp1/bin:$PATH
+
+PERL_MB_OPT="--install_base \"/Users/scott/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/scott/perl5"; export PERL_MM_OPT;

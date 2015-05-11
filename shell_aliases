@@ -24,6 +24,7 @@ alias gcm='git commit -m '
 # rails aliases
 alias rc='rails console'
 alias rs='rails server'
+alias thinssl='thin start --ssl -p 3000'
 
 # apt-get aliases
 alias sagi='sudo apt-get install'
@@ -31,3 +32,7 @@ alias sag='sudo apt-get'
 
 # ssh alias to enable ssh compression
 alias ssx='ssh -C -X -c blowfish'
+
+# parallelize tar compression
+#alias tar='tar --use-compress-program=pbzip2'
+alias compr='tar -czf'
