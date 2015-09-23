@@ -33,3 +33,6 @@ export PATH=~/pebble-dev/PebbleSDK-3.0-dp1/bin:$PATH
 
 PERL_MB_OPT="--install_base \"/Users/scott/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/scott/perl5"; export PERL_MM_OPT;
+
+export NVM_DIR=~/.nvm
+source $(brew --prefix nvm)/nvm.sh
