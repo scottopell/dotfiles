@@ -31,7 +31,7 @@ Plugin 'tmhedberg/matchit'
 "  Select an indentation level
 Plugin 'scottopell/vim-indent-object'
 "  File Finder
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 "  Git Wrapper
 Plugin 'tpope/vim-fugitive'
 "  Navigate vim and tmux splits interchangeably
@@ -100,6 +100,8 @@ set incsearch
 " adds _ to the list of word separaters
 "set iskeyword-=_
 
+" ignore all files for ctrlp in gitignore (and git dir)
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " Tabs
 set tabstop=2
@@ -170,10 +172,10 @@ endfunction
 
 "  Mappings for Tabularize.
 if exists(":Tabularize")
-  nmap <Leader>a= :Tabularize /=<CR>
-  vmap <Leader>a= :Tabularize /=<CR>
-  nmap <Leader>a: :Tabularize /:\zs<CR>
-  vmap <Leader>a: :Tabularize /:\zs<CR>
+  nnoremap <Leader>a= :Tabularize /=<CR>
+  vnoremap <Leader>a= :Tabularize /=<CR>
+  nnoremap <Leader>a: :Tabularize /:\zs<CR>
+  vnoremap <Leader>a: :Tabularize /:\zs<CR>
 endif
 
 augroup resCur
@@ -184,3 +186,12 @@ augroup END
 "  Higlights the current line
 "http://stackoverflow.com/questions/8750792/vim-highlight-the-whole-current-line
 set cursorline
+
+"  Custom Mappings
+" uppercases the last word
+inoremap <leader>u <esc>vbUwa
+nnoremap <leader>u viwUw
+" open vimrc in vert split
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+" source vimrc
+nnoremap <leader>sv :source $MYVIMRC<cr>
