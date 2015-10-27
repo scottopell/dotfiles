@@ -96,9 +96,10 @@ class Dot
   end
 
   def vim
-    `git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim`
+    `curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
     puts "Installing plugins in the background, could take a few minutes"
-    `vim +PluginInstall +qall`
+    `vim +PlugInstall +qall`
   end
 
   def zsh

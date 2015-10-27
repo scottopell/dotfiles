@@ -2,58 +2,60 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'gmarik/vundle'
+call plug#begin('~/.vim/plugged')
 
 " Bundles
 "  Syntax
-Plugin 'tpope/vim-haml'
-Plugin 'tpope/vim-markdown'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'tpope/vim-rails'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'tpope/vim-rake'
+Plug 'tpope/vim-haml'
+Plug 'tpope/vim-markdown'
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
+Plug 'kchmck/vim-coffee-script'
+Plug 'tpope/vim-rake'
 "  Auto-adds ruby 'end' with def
-Plugin 'tpope/vim-endwise'
+Plug 'tpope/vim-endwise'
 "  Syntax Checker
-Plugin 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 "  Theme
-Plugin 'vim-scripts/xoria256.vim'
+Plug 'vim-scripts/xoria256.vim'
 "  Code Completion
 if version >=703 && has("patch 538")
-  Plugin 'Valloric/YouCompleteMe'
+  Plug 'Valloric/YouCompleteMe', { 'do': './install.py  --clang-completer' }
 endif
 "  Visual indent guides
-Plugin 'nathanaelkane/vim-indent-guides'
+Plug 'nathanaelkane/vim-indent-guides'
 "  Provides extra % matching (xml etc)
-Plugin 'tmhedberg/matchit'
+Plug 'tmhedberg/matchit'
 "  Select an indentation level
-Plugin 'scottopell/vim-indent-object'
+Plug 'scottopell/vim-indent-object'
 "  File Finder
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 "  Git Wrapper
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 "  Navigate vim and tmux splits interchangeably
-Plugin 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'
 "  git gutter
-Plugin 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
 "  Auto-adds delimeters in many languages
-Plugin 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 "  Allows for easy alignment/formatting of code to line up vertically
-Plugin 'godlygeek/tabular'
+Plug 'godlygeek/tabular'
 "  Expands vim's css highlighting with css3 features
-Plugin 'hail2u/vim-css3-syntax'
+Plug 'hail2u/vim-css3-syntax'
 "  Commenter
-Plugin 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdcommenter'
 "  Tab nav bar editor
-Plugin 'mkitt/tabline.vim'
+Plug 'mkitt/tabline.vim'
 "  Syntax for typescript
-Plugin 'leafgarland/typescript-vim'
+Plug 'leafgarland/typescript-vim'
 "  Rust!
-Plugin 'rust-lang/rust.vim'
+Plug 'rust-lang/rust.vim'
 
-call vundle#end()
+" Dev
+Plug '~/code/mojo-vim'
+Plug '~/code/FOA/vim-statemachine'
+
+call plug#end()
 
 filetype plugin indent on
 
@@ -84,9 +86,9 @@ set ttymouse=xterm2
 "let g:syntastic_check_on_open = 1
 let g:syntastic_javascript_checkers = ['eslint']
 
-"let g:syntastic_enable_signs=1
-"let g:syntastic_error_symbol='✗'
-"let g:syntastic_warning_symbol='⚠'
+let g:syntastic_enable_signs=1
+let g:syntastic_error_symbol='✗'
+let g:syntastic_warning_symbol='⚠'
 
 "let g:syntastic_enable_balloons = 1
 
@@ -150,6 +152,9 @@ nmap <space> zz
 set t_Co=256
 colorscheme xoria256
 
+" Automatically wrap at 80 characters for Markdown
+autocmd BufRead,BufNewFile *.md,*.markdown setlocal textwidth=80
+
 " Indent Guide
 au VimEnter * :IndentGuidesEnable
 let g:indent_guides_auto_colors = 0
@@ -189,8 +194,8 @@ set cursorline
 
 "  Custom Mappings
 " uppercases the last word
-inoremap <leader>u <esc>vbUwa
-nnoremap <leader>u viwUw
+"inoremap <leader>u <esc>vbUwa
+"nnoremap <leader>u viwUw
 " open vimrc in vert split
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 " source vimrc
