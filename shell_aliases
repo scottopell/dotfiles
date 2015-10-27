@@ -31,7 +31,7 @@ alias sagi='sudo apt-get install'
 alias sag='sudo apt-get'
 
 # ssh alias to enable ssh compression
-alias ssx='ssh -C -X -c blowfish'
+alias ssx='ssh -C -X -c blowfish-cbc,arcfour'
 
 # parallelize tar compression
 #alias tar='tar --use-compress-program=pbzip2'
