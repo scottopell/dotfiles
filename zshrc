@@ -36,3 +36,9 @@ PERL_MM_OPT="INSTALL_BASE=/Users/scott/perl5"; export PERL_MM_OPT;
 
 export NVM_DIR=~/.nvm
 source $(brew --prefix nvm)/nvm.sh
+
+export ANDROID_HOME=/usr/local/opt/android-sdk
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+[ -f ~/.shell_path ] && source ~/.shell_path
