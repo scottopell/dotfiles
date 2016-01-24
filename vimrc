@@ -179,6 +179,18 @@ if exists(":Tabularize")
   vnoremap <Leader>a: :Tabularize /:\zs<CR>
 endif
 
+func! WordProcessorMode()
+    setlocal formatoptions=t1
+    setlocal textwidth=80
+    map j gj
+    map k gk
+    setlocal smartindent
+    setlocal spell spelllang=en_us
+    set complete+=kspell
+    setlocal noexpandtab
+endfu
+com! WP call WordProcessorMode()
+
 augroup resCur
   autocmd!
   autocmd BufWinEnter * call ResCur()
