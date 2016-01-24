@@ -17,6 +17,3 @@
 .idea/
 *.iws
 *.ipr
-
-#  Compiled Java ( class files )
-*.class
