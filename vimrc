@@ -51,10 +51,6 @@ Plug 'leafgarland/typescript-vim'
 "  Rust!
 Plug 'rust-lang/rust.vim'
 
-" Dev
-Plug '~/code/mojo-vim'
-Plug '~/code/FOA/vim-statemachine'
-
 call plug#end()
 
 filetype plugin indent on
