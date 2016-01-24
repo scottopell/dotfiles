@@ -39,7 +39,7 @@ extract () {
   fi
 }
 
-function gi() { curl http://www.gitignore.io/api/$@ ;}
+function gi() { curl https://www.gitignore.io/api/$@ ;}
 
 function print_lines(){
   # $1 should be file, $2 and $3 are start and end
