@@ -6,7 +6,6 @@ alias cd-='cd "$OLDPWD"'
 alias tmux='tmux -2'
 #  shorter version of ridiculously long command
 alias tas='tmux attach-session -t'
-alias tls='tmux ls'
 
 # some more ls aliases
 alias ll='ls -AlF'
@@ -16,10 +15,8 @@ alias l='ls -CF'
 alias vi='vim'
 
 # git aliases
-alias ga='git add'
 alias gst='git status'
 alias gd='git d'
-alias gcm='git commit -m '
 
 # rails aliases
 alias rc='rails console'
