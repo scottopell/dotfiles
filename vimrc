@@ -88,6 +88,8 @@ set ttymouse=xterm2
 
 "let g:syntastic_check_on_open = 1
 let g:syntastic_javascript_checkers = ['eslint']
+"let g:syntastic_ruby_checkers = ['rubylint', 'mri']
+
 
 let g:syntastic_enable_signs=1
 let g:syntastic_error_symbol='✗'
