@@ -32,4 +32,7 @@ alias ssx='ssh -C -X -c blowfish-cbc,arcfour'
 
 # parallelize tar compression
 #alias tar='tar --use-compress-program=pbzip2'
-alias compr='tar -czf'
+alias pcompr='tar -czf'
+
+# this automatically copies a gist url
+alias gist='gist -c'
