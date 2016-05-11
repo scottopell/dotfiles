@@ -69,7 +69,7 @@ let mapleader=','
 set backspace=eol,start,indent
 
 " ListChars
-set list lcs=trail:·,tab:»·
+set list listchars=trail:·,tab:»·
 
 " syntax
 syntax on
