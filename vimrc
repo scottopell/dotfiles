@@ -8,12 +8,12 @@ call plug#begin('~/.vim/plugged')
 "  Syntax
 Plug 'tpope/vim-haml'
 Plug 'tpope/vim-markdown'
-Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-rails'
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'kchmck/vim-coffee-script'
-Plug 'tpope/vim-rake'
+Plug 'tpope/vim-rake', { 'for': 'ruby' }
 "  Auto-adds ruby 'end' with def
-Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-endwise', { 'for': 'ruby' }
 "  Syntax Checker
 Plug 'scrooloose/syntastic'
 "  Theme
@@ -21,6 +21,7 @@ Plug 'vim-scripts/xoria256.vim'
 "  Code Completion
 if version >=703 && has("patch 538")
   Plug 'Valloric/YouCompleteMe', { 'do': './install.py  --clang-completer' }
+  Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 endif
 "  Visual indent guides
 Plug 'nathanaelkane/vim-indent-guides'
@@ -41,7 +42,7 @@ Plug 'Raimondi/delimitMate'
 "  Allows for easy alignment/formatting of code to line up vertically
 Plug 'godlygeek/tabular'
 "  Expands vim's css highlighting with css3 features
-Plug 'hail2u/vim-css3-syntax'
+Plug 'hail2u/vim-css3-syntax',  { 'for': 'css' }
 "  Commenter
 Plug 'scrooloose/nerdcommenter'
 "  Tab nav bar editor
