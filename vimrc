@@ -120,6 +120,9 @@ set autoindent
 " Set line numbers on
 set nu
 
+" Set better encryption
+set cryptmethod=blowfish2
+
 " the more I think on this the less I like it, leave commented out for now
 " If you use this, ~/.vim/undodir needs to be created manually(!!!)
 " Persistent undo
