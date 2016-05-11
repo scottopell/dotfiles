@@ -23,8 +23,6 @@ fi
 
 export EDITOR="vim"
 
-export PATH="/usr/local/bin:/bin:/usr/sbin:/sbin:/usr/bin"
-
 export PATH="/usr/local/share/npm/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/pebble-dev/PebbleSDK-current/bin:$PATH"
