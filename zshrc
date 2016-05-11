@@ -40,3 +40,5 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [ -f ~/.shell_path ] && source ~/.shell_path
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
