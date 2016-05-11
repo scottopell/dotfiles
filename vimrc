@@ -51,6 +51,12 @@ Plug 'mkitt/tabline.vim'
 Plug 'leafgarland/typescript-vim'
 "  Rust!
 Plug 'rust-lang/rust.vim'
+"  Elixir!
+Plug 'elixir-lang/vim-elixir'
+"  ES6, mostly for ` strings
+Plug 'isRuslan/vim-es6'
+"  GO
+Plug 'fatih/vim-go'
 
 call plug#end()
 
