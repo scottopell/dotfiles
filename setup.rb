@@ -134,7 +134,7 @@ class Dot
       path = Dir.pwd
       files = Dir.entries(path)
       ignored_file_extensions = [ "md", "rb", "swp" ]
-      ignored_entries = [ ".", "..", ".git" ]
+      ignored_entries = [ ".", "..", ".git", ".DS_Store" ]
       files.delete_if do |f|
         # select files that match, then check for elements
         file_ignore = ignored_entries.detect { |fi| f == fi }
