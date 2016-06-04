@@ -34,7 +34,7 @@ class DotParse
       end
 
       opts.on("-b", "--brew",
-              "Installs brew and bundles default apps") do |zsh|
+              "Installs brew and bundles default apps") do |brew|
         options.brew = brew;
       end
 
