@@ -1,11 +1,10 @@
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
 
-ZSH_THEME="danstheme"
-
-plugins=(git zsh-syntax-highlighting osx)
-
-source $ZSH/oh-my-zsh.sh
+autoload -Uz promptinit
+promptinit
+prompt minimal
 
 # User configuration
 
