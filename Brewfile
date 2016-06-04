@@ -143,7 +143,6 @@ brew 'homebrew/versions/isl011'
 brew 'homebrew/versions/cloog018'
 brew 'homebrew/versions/mpfr2'
 brew 'homebrew/versions/libmpc08'
-brew 'homebrew/versions/gcc48', args: ['with-java']
 brew 'homebrew/versions/postgresql94'
 brew 'homebrew/x11/swi-prolog'
 cask 'eclipse-java'
