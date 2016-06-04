@@ -211,6 +211,7 @@ augroup END
 "  Higlights the current line
 "http://stackoverflow.com/questions/8750792/vim-highlight-the-whole-current-line
 set cursorline
+au FileType ruby set nocursorline
 
 "  Custom Mappings
 " uppercases the last word
