@@ -1,7 +1,7 @@
 [core]
   editor = vim
   excludesfile = ~/.gitignore_global
-	quotepath = false
+  quotepath = false
 [user]
   name = Scott Opell
   email = me@scottopell.com
@@ -18,9 +18,9 @@
   co = "checkout"
   # first-commit = ! git log --decorate=short | tail -n 5 | head -n 1 | grep "\b[A-Fa-f0-9]+"
 [push]
-	default = upstream
+  default = upstream
 [diff]
-	tool = vimdiff
+  tool = vimdiff
   compactionHeuristic = true
 [difftool]
-	prompt = false
+  prompt = false
