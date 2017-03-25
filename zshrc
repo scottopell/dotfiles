@@ -1,6 +1,10 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
+if [ ! -f $ZSH/themes/danstheme.zsh-theme ]; then
+  wget -O $ZSH/themes/danstheme.zsh-theme https://raw.githubusercontent.com/danrschlosser/dotfiles/master/danstheme.zsh-theme
+fi
+
 ZSH_THEME="danstheme"
 
 plugins=(git zsh-syntax-highlighting osx)
