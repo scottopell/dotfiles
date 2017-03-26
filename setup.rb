@@ -13,7 +13,7 @@ class DotParse
     options.verbose = false
 
     opt_parser = OptionParser.new do |opts|
-      opts.banner = "Usage: setup.rb [--install|--clean|--zsh|--vim|--force]"
+      opts.banner = "Usage: setup.rb [--install|--clean|--zsh|--vim|--brew|--force]"
 
       opts.separator ""
       opts.separator "Specific options:"
@@ -31,6 +31,11 @@ class DotParse
       opts.on("-f", "--force",
               "overwrites all files with symlinks. Dangerous.") do |force|
         options.force = force
+      end
+
+      opts.on("-b", "--brew",
+              "Installs brew and bundles default apps") do |brew|
+        options.brew = brew;
       end
 
       opts.on("-z", "--zsh",
@@ -80,7 +85,7 @@ class Dot
 
   def clean
     home = "#{ENV["HOME"]}"
-    Dir.chdir(home) do 
+    Dir.chdir(home) do
       files = get_valid_files
       files.each do |f|
         file_name = File.basename f
@@ -88,7 +93,7 @@ class Dot
         if File.symlink? target
           `rm #{target}`
           puts "Deleting symlink for #{target}"
-        else 
+        else
           puts "#{file_name} isn't a symlink, ignoring"
         end
       end
@@ -96,13 +101,28 @@ class Dot
   end
 
   def vim
-    `git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim`
+    `curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
     puts "Installing plugins in the background, could take a few minutes"
-    `vim +PluginInstall +qall`
+    `vim +PlugInstall +qall`
   end
 
   def zsh
     `curl -L http://install.ohmyz.sh | sh`
+  end
+
+  def brew_and_bundle
+    brew
+    bundle
+  end
+
+  def brew
+    `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+  end
+
+  def bundle
+    `brew 'tap homebrew/bundle'`
+    `brew bundle`
   end
 
   private
@@ -114,11 +134,11 @@ class Dot
       path = Dir.pwd
       files = Dir.entries(path)
       ignored_file_extensions = [ "md", "rb", "swp" ]
-      ignored_entries = [ ".", "..", ".git" ]
+      ignored_entries = [ ".", "..", ".git", ".DS_Store" ]
       files.delete_if do |f|
         # select files that match, then check for elements
         file_ignore = ignored_entries.detect { |fi| f == fi }
-        extension_ignore = ignored_file_extensions.detect do |fe| 
+        extension_ignore = ignored_file_extensions.detect do |fe|
           pat = /(.*)\.#{fe}/
           f.match(pat)
         end
@@ -144,6 +164,8 @@ elsif options.clean
   dot.clean
 elsif options.vim
   dot.vim
+elsif options.brew
+  dot.brew_and_bundle
 elsif options.zsh
   dot.zsh
 end

@@ -2,54 +2,63 @@
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'gmarik/vundle'
+call plug#begin('~/.vim/plugged')
 
 " Bundles
 "  Syntax
-Plugin 'tpope/vim-haml'
-Plugin 'tpope/vim-markdown'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'tpope/vim-rails'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'tpope/vim-rake'
+Plug 'tpope/vim-haml'
+Plug 'tpope/vim-markdown'
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'kchmck/vim-coffee-script'
+Plug 'tpope/vim-rake', { 'for': 'ruby' }
 "  Auto-adds ruby 'end' with def
-Plugin 'tpope/vim-endwise'
+Plug 'tpope/vim-endwise', { 'for': 'ruby' }
 "  Syntax Checker
-Plugin 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 "  Theme
-Plugin 'vim-scripts/xoria256.vim'
+Plug 'vim-scripts/xoria256.vim'
 "  Code Completion
 if version >=703 && has("patch 538")
-  Plugin 'Valloric/YouCompleteMe'
+  Plug 'Valloric/YouCompleteMe', { 'do': './install.py  --clang-completer' }
+  Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 endif
 "  Visual indent guides
-Plugin 'nathanaelkane/vim-indent-guides'
+Plug 'nathanaelkane/vim-indent-guides'
 "  Provides extra % matching (xml etc)
-Plugin 'tmhedberg/matchit'
+Plug 'tmhedberg/matchit'
 "  Select an indentation level
-Plugin 'scottopell/vim-indent-object'
+Plug 'scottopell/vim-indent-object'
 "  File Finder
-Plugin 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 "  Git Wrapper
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 "  Navigate vim and tmux splits interchangeably
-Plugin 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'
 "  git gutter
-Plugin 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
 "  Auto-adds delimeters in many languages
-Plugin 'Raimondi/delimitMate'
+Plug 'Raimondi/delimitMate'
 "  Allows for easy alignment/formatting of code to line up vertically
-Plugin 'godlygeek/tabular'
+Plug 'godlygeek/tabular'
 "  Expands vim's css highlighting with css3 features
-Plugin 'hail2u/vim-css3-syntax'
+Plug 'hail2u/vim-css3-syntax',  { 'for': 'css' }
 "  Commenter
-Plugin 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdcommenter'
 "  Tab nav bar editor
-Plugin 'mkitt/tabline.vim'
+Plug 'mkitt/tabline.vim'
+"  Syntax for typescript
+Plug 'leafgarland/typescript-vim'
+"  Rust!
+Plug 'rust-lang/rust.vim'
+"  Elixir!
+Plug 'elixir-lang/vim-elixir'
+"  ES6, mostly for ` strings
+Plug 'isRuslan/vim-es6'
+"  GO
+Plug 'fatih/vim-go'
 
-call vundle#end()
+call plug#end()
 
 filetype plugin indent on
 
@@ -60,7 +69,7 @@ let mapleader=','
 set backspace=eol,start,indent
 
 " ListChars
-set list lcs=trail:·,tab:»·
+set list listchars=trail:·,tab:»·
 
 " syntax
 syntax on
@@ -68,6 +77,25 @@ set foldmethod=manual
 set nocursorcolumn
 set nocursorline
 syntax sync minlines=256
+
+
+" Mouse mode (scroll, visual select, etc)
+set mouse=a " a for all
+" Send more characters for redraws
+set ttyfast
+" better speed with mouse selection within tmux
+set ttymouse=xterm2
+
+"let g:syntastic_check_on_open = 1
+let g:syntastic_javascript_checkers = ['eslint']
+"let g:syntastic_ruby_checkers = ['rubylint', 'mri']
+
+
+let g:syntastic_enable_signs=1
+let g:syntastic_error_symbol='✗'
+let g:syntastic_warning_symbol='⚠'
+
+"let g:syntastic_enable_balloons = 1
 
 " don't highlight all instances when searching
 " CS computers set this by default...annoying
@@ -79,6 +107,8 @@ set incsearch
 " adds _ to the list of word separaters
 "set iskeyword-=_
 
+" ignore all files for ctrlp in gitignore (and git dir)
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " Tabs
 set tabstop=2
@@ -89,6 +119,9 @@ set autoindent
 
 " Set line numbers on
 set nu
+
+" Set better encryption
+set cryptmethod=blowfish2
 
 " the more I think on this the less I like it, leave commented out for now
 " If you use this, ~/.vim/undodir needs to be created manually(!!!)
@@ -127,6 +160,9 @@ nmap <space> zz
 set t_Co=256
 colorscheme xoria256
 
+" Automatically wrap at 80 characters for Markdown
+autocmd BufRead,BufNewFile *.md,*.markdown setlocal textwidth=80
+
 " Indent Guide
 au VimEnter * :IndentGuidesEnable
 let g:indent_guides_auto_colors = 0
@@ -149,14 +185,39 @@ endfunction
 
 "  Mappings for Tabularize.
 if exists(":Tabularize")
-  nmap <Leader>a= :Tabularize /=<CR>
-  vmap <Leader>a= :Tabularize /=<CR>
-  nmap <Leader>a: :Tabularize /:\zs<CR>
-  vmap <Leader>a: :Tabularize /:\zs<CR>
+  nnoremap <Leader>a= :Tabularize /=<CR>
+  vnoremap <Leader>a= :Tabularize /=<CR>
+  nnoremap <Leader>a: :Tabularize /:\zs<CR>
+  vnoremap <Leader>a: :Tabularize /:\zs<CR>
 endif
+
+func! WordProcessorMode()
+    setlocal formatoptions=t1
+    setlocal textwidth=80
+    map j gj
+    map k gk
+    setlocal smartindent
+    setlocal spell spelllang=en_us
+    set complete+=kspell
+    setlocal noexpandtab
+endfu
+com! WP call WordProcessorMode()
 
 augroup resCur
   autocmd!
   autocmd BufWinEnter * call ResCur()
 augroup END
 
+"  Higlights the current line
+"http://stackoverflow.com/questions/8750792/vim-highlight-the-whole-current-line
+set cursorline
+au FileType ruby set nocursorline
+
+"  Custom Mappings
+" uppercases the last word
+"inoremap <leader>u <esc>vbUwa
+"nnoremap <leader>u viwUw
+" open vimrc in vert split
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+" source vimrc
+nnoremap <leader>sv :source $MYVIMRC<cr>

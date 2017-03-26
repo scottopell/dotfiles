@@ -1,15 +1,10 @@
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
-
-if [ ! -f $ZSH/themes/danstheme.zsh-theme ]; then
-  wget -O $ZSH/themes/danstheme.zsh-theme https://raw.githubusercontent.com/danrschlosser/dotfiles/master/danstheme.zsh-theme
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-ZSH_THEME="danstheme"
-
-plugins=(git zsh-syntax-highlighting osx)
-
-source $ZSH/oh-my-zsh.sh
+autoload -Uz promptinit
+promptinit
+prompt minimal
 
 # User configuration
 
@@ -27,8 +22,23 @@ fi
 
 export EDITOR="vim"
 
-export PATH="/usr/local/bin:/bin:/usr/sbin:/sbin:/usr/bin"
-
+export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/share/npm/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/pebble-dev/PebbleSDK-current/bin:$PATH"
+export PATH="$HOME/Library/Haskell/bin:$PATH"
+export PATH=~/pebble-dev/PebbleSDK-3.0-dp1/bin:$PATH
+
+PERL_MB_OPT="--install_base \"/Users/scott/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/scott/perl5"; export PERL_MM_OPT;
+
+export NVM_DIR=~/.nvm
+source $(brew --prefix nvm)/nvm.sh
+
+export ANDROID_HOME=/usr/local/opt/android-sdk
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+[ -f ~/.shell_path ] && source ~/.shell_path
+
+eval "$(rbenv init -)"

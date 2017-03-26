@@ -22,9 +22,10 @@ extract () {
   if [ -f $1 ] ; then
       case $1 in
           *.tar.bz2)   tar xvjf $1    ;;
+          *.tar.xz)    tar xf   $1    ;;
           *.tar.gz)    tar xvzf $1    ;;
           *.bz2)       bunzip2 $1     ;;
-          *.rar)       unrar x $1       ;;
+          *.rar)       unrar x $1     ;;
           *.gz)        gunzip $1      ;;
           *.tar)       tar xvf $1     ;;
           *.tbz2)      tar xvjf $1    ;;
@@ -39,4 +40,31 @@ extract () {
   fi
 }
 
-function gi() { curl http://www.gitignore.io/api/$@ ;}
+function gi() { curl https://www.gitignore.io/api/$@ ;}
+
+function print_lines(){
+  # $1 should be file, $2 and $3 are start and end
+  sed -n "$2,$3p" "$1"
+}
+
+# Run `dig` and display the most useful info
+function digga() {
+  dig +nocmd "$1" any +multiline +noall +answer;
+}
+
+# Get a character’s Unicode code point
+function codepoint() {
+  perl -e "use utf8; print sprintf('U+%04X', ord(\"$@\"))";
+  # print a newline unless we’re piping the output to another program
+  if [ -t 1 ]; then
+    echo ""; # newline
+  fi;
+}
+
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+function tre() {
+  tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+}
