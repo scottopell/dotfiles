@@ -39,7 +39,7 @@ class DotParse
       end
 
       opts.on("-z", "--zsh",
-              "installs oh my zsh") do |zsh|
+              "installs zsh framework") do |zsh|
         options.zsh = zsh
       end
 
@@ -108,7 +108,20 @@ class Dot
   end
 
   def zsh
-    `curl -L http://install.ohmyz.sh | sh`
+    # TODO probably should re-implement this in ruby.
+    # and also make it smarter, right now it seems to just prepend its
+    # own stuff to whatever you already have.
+    # So if you run this after linking in dotfiles, then you should
+    # probably delete one of the zim loading snippets
+    #
+    `git clone --recursive https://github.com/Eriner/zim.git \
+               ${ZDOTDIR:-${HOME}}/.zim;\
+    setopt EXTENDED_GLOB\
+    for template_file ( ${ZDOTDIR:-${HOME}}/.zim/templates/* ); do\
+      user_file="${ZDOTDIR:-${HOME}}/.${template_file:t}"\
+      touch ${user_file}\
+      ( print -rn "$(<${template_file})$(<${user_file})" >! ${user_file} ) 2>/dev/null\
+    done`
   end
 
   def brew_and_bundle
@@ -121,8 +134,10 @@ class Dot
   end
 
   def bundle
+    # TODO figure out if this extra tap is necessary.
+    #  I thought I read somewhere bundle is builtin to brew now
     `brew 'tap homebrew/bundle'`
-    `brew bundle`
+    `brew bundle --file=$HOME/dotfiles/Brewfile`
   end
 
   private
