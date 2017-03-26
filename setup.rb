@@ -1,6 +1,18 @@
 #!/usr/bin/env ruby
 require 'optparse'
 require 'ostruct'
+require 'fileutils'
+
+module Tty extend self
+  def blue; bold 34; end
+  def green; bold 32; end
+  def white; bold 39; end
+  def red; underline 31; end
+  def reset; escape 0; end
+  def bold n; escape "1;#{n}" end
+  def underline n; escape "4;#{n}" end
+  def escape n; "\033[#{n}m" if STDOUT.tty? end
+end
 
 class DotParse
 
@@ -114,14 +126,47 @@ class Dot
     # So if you run this after linking in dotfiles, then you should
     # probably delete one of the zim loading snippets
     #
+    puts "Installing zim"
+
+    puts "Cloning zim into home"
     `git clone --recursive https://github.com/Eriner/zim.git \
-               ${ZDOTDIR:-${HOME}}/.zim;\
-    setopt EXTENDED_GLOB\
-    for template_file ( ${ZDOTDIR:-${HOME}}/.zim/templates/* ); do\
-      user_file="${ZDOTDIR:-${HOME}}/.${template_file:t}"\
-      touch ${user_file}\
-      ( print -rn "$(<${template_file})$(<${user_file})" >! ${user_file} ) 2>/dev/null\
-    done`
+               ${ZDOTDIR:-${HOME}}/.zim;`
+    puts "\n"
+
+    Dir.chdir(File.join(ENV["HOME"], '.zim', 'templates')) do
+      path = Dir.pwd
+      template_file_names = Dir.entries(path)
+      template_file_names.each do |template_name|
+        next if ['.', '..'].include? template_name
+
+        destination_path = File.join(ENV["HOME"], ".#{template_name}")
+        template_path = File.join(path, template_name)
+        if !File.exist?(destination_path)
+          puts "Copying template file #{Tty.green}'#{template_name}'#{Tty.reset} to #{Tty.green} #{destination_path} #{Tty.reset}"
+          FileUtils.cp(template_path, destination_path)
+        else
+          template_lines = File.readlines(template_path)
+          destination_contents = File.readlines(destination_path).join('\n')
+
+          percent_included = check_inclusion(destination_contents,
+                                             template_lines)
+
+          if (template_lines.join('\n') == destination_contents)
+            puts "Your version of file #{Tty.blue} #{template_name} #{Tty.reset} is identical to the template (#{template_path}), not modifying #{destination_path}."
+          elsif (percent_included < 0.85)
+            puts "#{Tty.red}[ACTION REQUIRED]#{Tty.reset} Your version of file #{Tty.blue} #{template_name} #{Tty.reset} doesn't seem to include the template version, manually copy the template (#{template_path}) into your version (#{destination_path})."
+            puts "example command to prepend the template into your copy:"
+            puts "\tcat #{template_path} #{destination_path} > tmp && mv tmp #{destination_path}"
+          else
+            puts "Your version of file #{Tty.blue} #{template_name} #{Tty.reset} seems to already contain the template (#{template_path}), not modifying #{destination_path}."
+          end
+        end
+        puts "\n"
+      end
+    end
+
+    puts "#{Tty.red}[ACTION REQUIRED]#{Tty.reset} As first time setup, open a new terminal and run:"
+    puts "\tsource ${ZDOTDIR:-${HOME}}/.zlogin"
   end
 
   def brew_and_bundle
@@ -149,7 +194,7 @@ class Dot
       path = Dir.pwd
       files = Dir.entries(path)
       ignored_file_extensions = [ "md", "rb", "swp" ]
-      ignored_entries = [ ".", "..", ".git", ".DS_Store", "Brewfile" ]
+      ignored_entries = [ ".", "..", ".git", ".DS_Store", "Brewfile", "iterm2_config" ]
       files.delete_if do |f|
         # select files that match, then check for elements
         file_ignore = ignored_entries.detect { |fi| f == fi }
@@ -165,6 +210,16 @@ class Dot
       end
       files
     end
+  end
+
+  def check_inclusion string_blob, lines
+    lines_included = 0
+    lines.each do |line|
+      if (string_blob.include? line)
+        lines_included += 1
+      end
+    end
+    return lines_included.to_f / lines.length
   end
 end
 
