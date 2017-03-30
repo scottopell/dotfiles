@@ -43,3 +43,9 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 [ -f ~/.shell_path ] && source ~/.shell_path
 
 [ $(command -v rbenv) ] && eval "$(rbenv init -)"
+
+# Had issues in tmux until I added this.
+# ctrl+a and ctrl+e would insert chars instead of going to beginning/end
+# apparently under certain circumstances
+# emacs mode needs to be explicitly set?
+bindkey -e
