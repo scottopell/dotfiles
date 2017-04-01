@@ -49,3 +49,6 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 # apparently under certain circumstances
 # emacs mode needs to be explicitly set?
 bindkey -e
+
+# Allows >> to create a new file (not dangerous so no reason not to)
+setopt APPEND_CREATE
