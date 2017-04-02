@@ -52,3 +52,8 @@ bindkey -e
 
 # Allows >> to create a new file (not dangerous so no reason not to)
 setopt APPEND_CREATE
+
+# Docker autocomplete, instructions here:
+# https://docs.docker.com/compose/completion/#zsh
+# https://docs.docker.com/machine/completion/#zsh
+[ -d ~/.zsh/completion ] && fpath=(~/.zsh/completion $fpath)
