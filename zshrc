@@ -2,6 +2,13 @@
 # User configuration sourced by interactive shells
 #
 
+# Important, must be set to emacs mode before sourcing zim config
+# Otherwise, zsh seems to default to the "safe" keymap, which is pretty much
+# useless
+# TODO investigate more here and figure out why I'm defaulting to "safe"
+# docs seem to suggest that the default should be emacs, or vim.
+bindkey -e
+
 # Source zim
 if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then
   source ${ZDOTDIR:-${HOME}}/.zim/init.zsh
@@ -43,12 +50,6 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 [ -f ~/.shell_path ] && source ~/.shell_path
 
 [ $(command -v rbenv) ] && eval "$(rbenv init -)"
-
-# Had issues in tmux until I added this.
-# ctrl+a and ctrl+e would insert chars instead of going to beginning/end
-# apparently under certain circumstances
-# emacs mode needs to be explicitly set?
-bindkey -e
 
 # Allows >> to create a new file (not dangerous so no reason not to)
 setopt APPEND_CREATE
