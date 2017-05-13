@@ -93,7 +93,6 @@ nnoremap <C-H> <C-W><C-H>
 " better default behavior for where new splits go
 set splitbelow
 set splitright
-
 " correct :W to :w #typo
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
 " correct :Q to :q #typo
@@ -121,6 +120,32 @@ if v:version > 704 || v:version == 704 && has("patch401")
   set cryptmethod=blowfish2
 endif
 
+" ------ Indentation
+"  These settings should make hitting tab insert N spaces, and behave
+"  consistently across different indentation operations.
+
+" Details for all these options
+" https://web.archive.org/web/*/http://tedlogan.com/techblog3.html
+function! SetTabWidth(width)
+  " How many chars to render a tab character as
+  let &tabstop=a:width
+
+  " This one is subtle/confusing. Read about it at the above link
+  let &softtabstop=a:width
+
+  " How many columns to use when indenting with >> << operations
+  let &shiftwidth=a:width
+
+  " Hitting tab will insert N spaces
+  let &expandtab = 1
+endfunction
+
+
+"  My default tabs are 2 spaces.
+call SetTabWidth(2)
+
+" To add language specific overrides, use autocommands
+au FileType cpp,c call SetTabWidth(4)
 
 " ------ Personal Preferences
 "  These are things that I use that are purely personal preference
@@ -143,12 +168,6 @@ syntax sync minlines=256
 " don't highlight all instances when searching
 " This is useful occasionally, but I just turn it on manually in those cases.
 set nohls
-
-" These set up 2 space tabs.
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-set expandtab
 
 " respect the 80 (eighty) column convention
 set colorcolumn=80

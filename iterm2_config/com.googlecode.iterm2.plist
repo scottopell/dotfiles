@@ -477,11 +477,21 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>372 349 606 456 0 0 1440 877 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>214 252 796 473 0 0 1440 877 </string>
+	<string>304 171 1016 502 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 17 1439 860 0 0 1440 877 </string>
+	<string>0 4 1435 873 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>244 186 585 452 0 0 1440 877 </string>
+	<string>760 26 665 452 0 0 1440 877 </string>
+	<key>NSWindow Frame iTerm Window 2</key>
+	<string>742 62 665 452 0 0 1440 877 </string>
+	<key>NSWindow Frame iTerm Window 3</key>
+	<string>63 282 665 452 0 0 1440 877 </string>
+	<key>NSWindow Frame iTerm Window 4</key>
+	<string>100 345 665 452 0 0 1440 877 </string>
+	<key>NSWindow Frame iTerm Window 5</key>
+	<string>323 341 665 452 0 0 1440 877 </string>
+	<key>NSWindow Frame iTerm Window 6</key>
+	<string>365 295 665 452 0 0 1440 877 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -1052,7 +1062,7 @@
 			<key>Normal Font</key>
 			<string>SourceCodePro-Light 13</string>
 			<key>Option Key Sends</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>Prompt Before Closing 2</key>
 			<false/>
 			<key>Right Option Key Sends</key>
@@ -1119,6 +1129,12 @@
 	<true/>
 	<key>NoSyncInstallationId</key>
 	<string>FD6A9DFB-1C39-4AA3-A480-B422246A3861</string>
+	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
+	<true/>
+	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
+	<integer>0</integer>
+	<key>NoSyncPermissionToShowTip</key>
+	<false/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>512165891.72232902</real>
 	<key>PointerActions</key>
@@ -1167,7 +1183,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-03-26T00:23:26Z</date>
+	<date>2017-04-24T22:55:49Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>WordCharacters</key>
