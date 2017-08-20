@@ -33,9 +33,7 @@ export EDITOR="vim"
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/share/npm/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
-export PATH="$HOME/pebble-dev/PebbleSDK-current/bin:$PATH"
 export PATH="$HOME/Library/Haskell/bin:$PATH"
-export PATH=~/pebble-dev/PebbleSDK-3.0-dp1/bin:$PATH
 
 PERL_MB_OPT="--install_base \"/Users/scott/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/scott/perl5"; export PERL_MM_OPT;
@@ -58,3 +56,8 @@ setopt APPEND_CREATE
 # https://docs.docker.com/compose/completion/#zsh
 # https://docs.docker.com/machine/completion/#zsh
 [ -d ~/.zsh/completion ] && fpath=(~/.zsh/completion $fpath)
+
+
+# Respect .ignore/.gitignore etc, but DO search hidden files
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
