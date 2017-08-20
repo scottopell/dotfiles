@@ -30,7 +30,13 @@ Plug 'tmhedberg/matchit'
 "  Select an indentation level
 Plug 'scottopell/vim-indent-object'
 "  File Finder
-Plug 'ctrlpvim/ctrlp.vim'
+"  If osx, then I have fzf installed via brew, so link to that location
+if has('macunix')
+  Plug '/usr/local/opt/fzf'
+endif
+" And then install vim mappings
+Plug 'junegunn/fzf.vim'
+
 "  Git Wrapper
 Plug 'tpope/vim-fugitive'
 "  Navigate vim and tmux splits interchangeably
@@ -57,6 +63,13 @@ Plug 'elixir-lang/vim-elixir'
 Plug 'isRuslan/vim-es6'
 "  GO
 Plug 'fatih/vim-go'
+"  JSON formatting
+Plug 'tpope/vim-jdaddy'
+
+"  Improved javascript'
+Plug 'pangloss/vim-javascript'
+"   And JSX
+Plug 'mxw/vim-jsx'
 
 call plug#end()
 
@@ -205,6 +218,13 @@ let g:indent_guides_auto_colors = 0
 " These values are specific to my color scheme, xoria256
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=236
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=238
+
+" Relies on JDaddy, this will pretty-print the json currently under the cursor
+nnoremap <Leader>f gqaj
+
+" fzf.vim
+nnoremap <C-P> :Files<CR>
+
 
 " ------------ More advanced functions
 "  These are things that I found online in various places that are more
