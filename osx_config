@@ -19,7 +19,7 @@ defaults write com.apple.menuextra.battery ShowPercent -string "YES"
 defaults write com.apple.dock tilesize -int 32
 
 # Auto-hide the dock
-defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide -bool false
 
 # Remove all the apps from the dock
 defaults write com.apple.dock persistent-apps -array ""
@@ -89,10 +89,6 @@ sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo Hos
 # Increase sound quality for Bluetooth headphones/headsets
 defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
 
-# Use scroll gesture with the Ctrl (^) modifier key to zoom
-defaults write com.apple.universalaccess closeViewScrollWheelToggle -bool true
-defaults write com.apple.universalaccess HIDScrollZoomModifierMask -int 262144
-
 # Finder: disable window animations and Get Info animations
 defaults write com.apple.finder DisableAllAnimations -bool true
 
@@ -123,3 +119,11 @@ sudo chflags nohidden /Volumes
 
 # Show displays in menu bar
 defaults write com.apple.airplay showInMenuBarIfPresent -bool false
+
+# Disable the "Are you sure you want to open this application" dialog
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+
+# Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
+defaults write com.apple.screencapture type -string "png"
+
+
