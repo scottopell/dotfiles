@@ -4,38 +4,6 @@ alias cd-='cd "$OLDPWD"'
 # tmux aliases
 #  forces 256 color mode
 alias tmux='tmux -2'
-#  shorter version of ridiculously long command
-alias tas='tmux attach-session -t'
-
-# some more ls aliases
-alias ll='ls -AlFh'
-alias la='ls -A'
-alias l='ls -CF'
-
-alias vi='vim'
-
-# git aliases
-alias gst='git status'
-alias gd='git d'
-
-# rails aliases
-alias rc='rails console'
-alias rs='rails server'
-alias thinssl='thin start --ssl -p 3000'
-
-# apt-get aliases
-alias sagi='sudo apt-get install'
-alias sag='sudo apt-get'
-
-# ssh alias to enable ssh compression
-alias ssx='ssh -C -X -c blowfish-cbc,arcfour'
-
-# parallelize tar compression
-#alias tar='tar --use-compress-program=pbzip2'
-alias pcompr='tar -czf'
-
-# this automatically copies a gist url
-alias gist='gist -c'
 
 # Useful for piping into vim and then closing without needing to save
 alias v='vim -R -'
