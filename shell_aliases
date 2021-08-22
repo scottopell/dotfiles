@@ -6,4 +6,4 @@ alias cd-='cd "$OLDPWD"'
 alias tmux='tmux -2'
 
 # Useful for piping into vim and then closing without needing to save
-alias v='vim -R -'
+alias v='nvim -R -'
