@@ -18,6 +18,8 @@
   co = "checkout"
   # first-commit = ! git log --decorate=short | tail -n 5 | head -n 1 | grep "\b[A-Fa-f0-9]+"
   br = for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(refname:short)'
+  # amend-to from: https://stackoverflow.com/a/48999882
+  amend-to = "!f() { SHA=`git rev-parse \"$1\"`; git stash -k && git commit --fixup \"$SHA\" && GIT_SEQUENCE_EDITOR=true git rebase --interactive --autosquash \"$SHA^\" && git stash pop; }; f"
 [push]
   default = upstream
 [diff]
