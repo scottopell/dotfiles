@@ -20,7 +20,7 @@ if [ -f ~/.profile ]; then
   source ~/.profile
 fi
 
-export EDITOR="vim"
+export EDITOR="nvim"
 
 # Allows >> to create a new file (not dangerous so no reason not to)
 setopt APPEND_CREATE
