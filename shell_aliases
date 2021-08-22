@@ -36,3 +36,6 @@ alias pcompr='tar -czf'
 
 # this automatically copies a gist url
 alias gist='gist -c'
+
+# Useful for piping into vim and then closing without needing to save
+alias v='vim -R -'
