@@ -2,20 +2,6 @@
 # User configuration sourced by interactive shells
 #
 
-# Important, must be set to emacs mode before sourcing zim config
-# Otherwise, zsh seems to default to the "safe" keymap, which is pretty much
-# useless
-# TODO investigate more here and figure out why I'm defaulting to "safe"
-# docs seem to suggest that the default should be emacs, or vim.
-bindkey -e
-
-# Source zim
-if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then
-  source ${ZDOTDIR:-${HOME}}/.zim/init.zsh
-fi
-
-# User configuration
-
 if [ -f ~/.shell_aliases ]; then
   source ~/.shell_aliases
 fi
@@ -24,40 +10,54 @@ if [ -f ~/.shell_functions ]; then
   source ~/.shell_functions
 fi
 
+# All env vars and PATHs related to local software
+# gets put into this file
+if [ -f ~/.mach_specific_paths_n_stuff ]; then
+  source ~/.mach_specific_paths_n_stuff
+fi
+
 if [ -f ~/.profile ]; then
   source ~/.profile
 fi
 
 export EDITOR="vim"
 
-export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/local/share/npm/bin:$PATH"
-export PATH="$HOME/bin:$PATH"
-export PATH="$HOME/Library/Haskell/bin:$PATH"
-
-PERL_MB_OPT="--install_base \"/Users/scott/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/Users/scott/perl5"; export PERL_MM_OPT;
-
-[ -d ~/.nvm ] && export NVM_DIR=~/.nvm
-[ -d ~/.nvm ] && [ $(command -v brew) ] && source $(brew --prefix nvm)/nvm.sh
-
-export ANDROID_HOME=/usr/local/opt/android-sdk
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-[ -f ~/.shell_path ] && source ~/.shell_path
-
-[ $(command -v rbenv) ] && eval "$(rbenv init -)"
-
 # Allows >> to create a new file (not dangerous so no reason not to)
 setopt APPEND_CREATE
 
-# Docker autocomplete, instructions here:
-# https://docs.docker.com/compose/completion/#zsh
-# https://docs.docker.com/machine/completion/#zsh
-[ -d ~/.zsh/completion ] && fpath=(~/.zsh/completion $fpath)
+# Allows use of # character in interactive commands as a comment
+# Useful if you have a command you want to save in history, but not execute
+# right away
+setopt interactivecomments
 
+# > The file to save the history in when an interactive shell exits.
+export HISTFILE=~/.zsh_history
 
-# Respect .ignore/.gitignore etc, but DO search hidden files
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# > The maximum number of history events to save in the history file.
+export SAVEHIST=999999
+
+# > The maximum number of events stored in the internal history list.
+# number of history entries loaded into memory from history file
+export HISTSIZE=$SAVEHIST
+
+# Remove "superfluous" blanks from each command line from history file
+setopt HIST_REDUCE_BLANKS
+
+# My ZSH instances should:
+# 1 Write history sooner rather than later
+# 2 Not overwrite other instances history (aka, want shared history)
+# 3 commands from instance A should not be visible from instance B until B "reloads" history
+# 4 instance should be able to easily "reload" commands
+
+# This option appends history eagerly, satisfying (1), (2) and (3)
+setopt INC_APPEND_HISTORY_TIME
+# To satisfy 4, alias obscure `fc` command
+alias history_reload="fc -RI"
+
+# > If a new command line being added to the history list duplicates
+# > an older one, the older command is removed from the list
+# > (even if it is not the previous event).
+# Never write a duplicate command to history
+setopt HIST_IGNORE_ALL_DUPS
+
+# export HISTTIMEFORMAT="[%F %T] "
