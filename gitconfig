@@ -1,5 +1,5 @@
 [core]
-  editor = vim
+  editor = nvim
   excludesfile = ~/.gitignore_global
   quotepath = false
 [user]
@@ -23,7 +23,13 @@
 [push]
   default = upstream
 [diff]
-  tool = vimdiff
+  tool = vimdiff3
   compactionHeuristic = true
 [difftool]
   prompt = false
+[difftool "vimdiff3"]
+  path = nvim
+[merge]
+  tool = vimdiff3
+[mergetool "vimdiff3"]
+  path = nvim
