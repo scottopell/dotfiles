@@ -17,6 +17,7 @@
   fileblame = "log --name-only --diff-filter=A --date=short --pretty=format:\"%an <%ae> on %ad in %h\" --"
   co = "checkout"
   # first-commit = ! git log --decorate=short | tail -n 5 | head -n 1 | grep "\b[A-Fa-f0-9]+"
+  br = for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(refname:short)'
 [push]
   default = upstream
 [diff]
