@@ -68,7 +68,7 @@ set laststatus=2
 set statusline=[%n]\ %f%m\ \ col\ %c\ \|\ %b\ 0x%B
 
 " Colors
-set background=light
+set background=dark
 colorscheme gruvbox8
 
 " Automatically wrap at 80 characters for Markdown
