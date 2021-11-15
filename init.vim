@@ -136,3 +136,6 @@ autocmd BufWritePre * :call TrimWhitespace()
 autocmd BufRead,BufNewFile *.log set nowrap
 autocmd BufRead,BufNewFile *.log set hls
 
+" In terminal-mode, map ESC to exit terminal-mode
+tnoremap <Esc> <C-\><C-n>
+
