@@ -35,6 +35,8 @@ Plug 'nvim-telescope/telescope.nvim'
 " Dependency of above
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
+" Rust
+Plug 'rust-lang/rust.vim'
 
 call plug#end()
 
@@ -105,6 +107,9 @@ set nohls
 
 " Enable async paren matching -- MUST HAVE
 let g:matchup_matchparen_deferred = 1
+
+" Enable rust autofmt
+let g:rustfmt_autosave = 1
 
 " fzf.vim
 nnoremap <silent> <C-p> <cmd>Telescope find_files<cr>
