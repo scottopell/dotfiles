@@ -23,10 +23,6 @@ if [ -f ~/.mach_specific_paths_n_stuff ]; then
   source ~/.mach_specific_paths_n_stuff
 fi
 
-if [ -f ~/.profile ]; then
-  source ~/.profile
-fi
-
 export EDITOR="nvim"
 
 # Allows >> to create a new file (not dangerous so no reason not to)
@@ -37,6 +33,7 @@ setopt APPEND_CREATE
 # right away
 setopt interactivecomments
 
+## Begin History Section
 # > The file to save the history in when an interactive shell exits.
 export HISTFILE=~/.zsh_history
 
@@ -54,7 +51,7 @@ setopt HIST_REDUCE_BLANKS
 # 1 Write history sooner rather than later
 # 2 Not overwrite other instances history (aka, want shared history)
 # 3 commands from instance A should not be visible from instance B until B "reloads" history
-# 4 instance should be able to easily "reload" commands
+# 4 instances should be able to easily "reload" shell history (see (3))
 
 # This option appends history eagerly, satisfying (1), (2) and (3)
 setopt INC_APPEND_HISTORY_TIME
@@ -67,5 +64,11 @@ alias history_reload="fc -RI"
 # Never write a duplicate command to history
 setopt HIST_IGNORE_ALL_DUPS
 
+## End History Section
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Sets emacs shortcuts
+bindkey -e
+
