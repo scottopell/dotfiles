@@ -7,3 +7,5 @@ alias tmux='tmux -2'
 
 # Useful for piping into vim and then closing without needing to save
 alias v='nvim -R -'
+
+alias vim='nvim'
