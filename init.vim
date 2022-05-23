@@ -37,6 +37,8 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 " Rust
 Plug 'rust-lang/rust.vim'
+" Go
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
 
@@ -111,6 +113,10 @@ let g:matchup_matchparen_deferred = 1
 " Enable rust autofmt
 let g:rustfmt_autosave = 1
 
+" 'goimports' is a tool that both formats and fixes imports (removes unused
+" ref, adds refs as needed)
+let g:go_fmt_command = "goimports"
+
 " telescope
 nnoremap <silent> <C-p> <cmd>Telescope find_files<cr>
 " Need to over-write dirvish's built-in ctrl-p mapping
@@ -171,7 +177,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'rust_analyzer', 'tsserver' }
+local servers = { 'rust_analyzer', 'tsserver', 'gopls' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
