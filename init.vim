@@ -22,8 +22,6 @@ Plug 'mkitt/tabline.vim'
 Plug 'HerringtonDarkholme/yats.vim'
 " Provides :OpenGithub which opens the remote with current HEAD as SHA
 Plug 'k0kubun/vim-open-github'
-" Better defaults for browsing dir trees
-Plug 'tpope/vim-vinegar'
 " Directory Browser
 Plug 'justinmk/vim-dirvish'
 " Save last cursor position
@@ -35,6 +33,7 @@ Plug 'nvim-telescope/telescope.nvim'
 " Dependency of above
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Rust
 Plug 'rust-lang/rust.vim'
 " Go
