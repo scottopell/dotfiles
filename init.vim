@@ -20,8 +20,10 @@ Plug 'godlygeek/tabular'
 Plug 'mkitt/tabline.vim'
 " Syntax for typescript
 Plug 'HerringtonDarkholme/yats.vim'
-" Provides :OpenGithub which opens the remote with current HEAD as SHA
-Plug 'k0kubun/vim-open-github'
+" Provides :OpenGithubFile which opens the remote with current HEAD as SHA
+Plug 'tyru/open-browser-github.vim'
+"  Dependency of above
+Plug 'tyru/open-browser.vim'
 " Directory Browser
 Plug 'justinmk/vim-dirvish'
 " Save last cursor position
@@ -66,7 +68,7 @@ cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q')
 set laststatus=2
 
 " Custom statusline
-set statusline=[%n]\ %f%m\ \ col\ %c\ \|\ %b\ 0x%B
+set statusline=[%n]\ %f%m\ %=\ \ col\ %c\ \|\ %b\ 0x%B\ \|\ %2p%%
 
 " Colors
 set background=dark
@@ -74,6 +76,9 @@ colorscheme gruvbox8
 
 " Automatically wrap at 80 characters for Markdown
 autocmd BufRead,BufNewFile *.md,*.markdown setlocal textwidth=80
+" Detect lots of file extensions as markdown
+au BufNewFile,BufRead *.markdown,*.mdown,*.mkd,*.mkdn,*.mdwn,*.md  set ft=markdown
+
 
 " Details for all these options
 " https://web.archive.org/web/*/http://tedlogan.com/techblog3.html
@@ -94,6 +99,9 @@ endfunction
 
 "  My default tabs are 4 spaces.
 call SetTabWidth(4)
+
+" Except for yaml
+autocmd FileType yaml call SetTabWidth(2)
 
 " Set leader key to comma
 let mapleader=','
@@ -193,3 +201,9 @@ autocmd BufRead,BufNewFile *.log set hls
 " In terminal-mode, map ESC to exit terminal-mode
 tnoremap <Esc> <C-\><C-n>
 
+" Highlight current row in active pane
+augroup BgHighlight
+    autocmd!
+    autocmd WinEnter * set cul
+    autocmd WinLeave * set nocul
+augroup END
