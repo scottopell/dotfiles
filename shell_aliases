@@ -8,4 +8,8 @@ alias tmux='tmux -2'
 # Useful for piping into vim and then closing without needing to save
 alias v='nvim -R -'
 
+alias k='kubectl'
+# Example usage, kns datadog-agent sets kubectl namespace to 'datadog-agent'
+alias kns='kubectl config set-context --current --namespace '
+
 alias vim='nvim'

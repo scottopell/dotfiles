@@ -5,7 +5,9 @@ Nothing exciting or groundbreaking, just my dotfiles.
 
 I try to avoid using other's existing dotfiles, so these are pretty much written from scratch with only the things that I care about.
 
-## Link the configs
+## Install
+Symlink most configs directly, but `~/.zshrc` sources `~/dotfiles/zshrc`
+
 ```sh
 mkdir -p ~/.config/{tmux,nvim,git}
 ln -s $HOME/dotfiles/tmux.conf $HOME/.config/tmux/tmux.conf
@@ -24,5 +26,6 @@ echo <<<
 
 ## Install things
 [`vim-plug`](https://github.com/junegunn/vim-plug#installation)
+[`fzf.zsh`](https://github.com/junegunn/fzf/tree/master#using-git)
 [`p10k`](https://github.com/romkatv/powerlevel10k#manual)
 
