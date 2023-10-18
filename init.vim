@@ -124,10 +124,22 @@ let g:rustfmt_autosave = 1
 " ref, adds refs as needed)
 let g:go_fmt_command = "goimports"
 
-" telescope
-nnoremap <silent> <C-p> <cmd>Telescope find_files<cr>
-" Need to over-write dirvish's built-in ctrl-p mapping
-autocmd FileType dirvish nnoremap <buffer><silent> <C-p> <cmd>Telescope find_files<cr>
+if luaeval('jit and string.find(jit.version, "LuaJIT")')
+    " telescope
+    nnoremap <silent> <C-p> <cmd>Telescope find_files<cr>
+    " Need to over-write dirvish's built-in ctrl-p mapping
+    autocmd FileType dirvish nnoremap <buffer><silent> <C-p> <cmd>Telescope find_files<cr>
+else
+    " Remove me when either debian packages arm64 with luajit
+    " or when telescope stops relying on luajit specific features
+    " see https://github.com/nvim-telescope/telescope.nvim/issues/1174
+
+    " FZF
+    nnoremap <silent> <C-p> <cmd>FZF<cr>
+    " Need to over-write dirvish's built-in ctrl-p mapping
+    autocmd FileType dirvish nnoremap <buffer><silent> <C-p> <cmd>FZF<cr>
+endif
+
 
 " WIP - it currently searches for 'word' instead of word
 " Goal: search for word under cursor
