@@ -40,6 +40,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'rust-lang/rust.vim'
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'johmsalas/text-case.nvim' " Convert between snake case, camelcase, pascalcase, etc
 
 call plug#end()
 
