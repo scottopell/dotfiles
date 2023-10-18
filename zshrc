@@ -17,12 +17,6 @@ if [ -f ~/.shell_functions ]; then
   source ~/.shell_functions
 fi
 
-# All env vars and PATHs related to local software
-# gets put into this file
-if [ -f ~/.mach_specific_paths_n_stuff ]; then
-  source ~/.mach_specific_paths_n_stuff
-fi
-
 export EDITOR="nvim"
 
 # Allows >> to create a new file (not dangerous so no reason not to)

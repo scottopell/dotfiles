@@ -25,15 +25,15 @@
 [push]
   default = upstream
 [diff]
-  tool = vimdiff3
+  tool = vimdiff
   compactionHeuristic = true
 [difftool]
   prompt = false
-[difftool "vimdiff3"]
+[difftool "vimdiff"]
   path = nvim
 [merge]
-  tool = vimdiff3
-[mergetool "vimdiff3"]
+  tool = vimdiff
+[mergetool "vimdiff"]
   path = nvim
 [init]
   defaultBranch = main
