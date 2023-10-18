@@ -5,6 +5,7 @@
 [user]
   name = Scott Opell
   email = me@scottopell.com
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpuPes1yb55NQ8atpBih0na9S39RIqRLWu699ppclbs scott.opell+git-commit-signing@datadoghq.com
 [instaweb]
   local = true
   httpd = webrick
