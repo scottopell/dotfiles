@@ -66,3 +66,17 @@ setopt HIST_IGNORE_ALL_DUPS
 # Sets emacs shortcuts
 bindkey -e
 
+# This functionality is required to have SSH auth agent
+# work seamlessly in tmux.
+# See my notes in tmux.conf for more details
+if [ -n "$TMUX" ]; then
+  function refresh {
+    eval $(tmux show-environment -s SSH_AUTH_SOCK)
+  }
+else
+  function refresh { }
+fi
+
+function preexec {
+    refresh
+}
