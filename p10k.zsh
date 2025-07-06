@@ -31,6 +31,7 @@
 
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
+    myenv
     # =========================[ Line #1 ]=========================
     # os_icon               # os identifier
     dir                     # current directory
@@ -111,6 +112,11 @@
     # wifi                  # wifi speed
     # example               # example user-defined segment (see prompt_example function below)
   )
+  function prompt_my_env() {
+      if [[ $HOST == *"homelab"* ]]; then
+          p10k segment -f 15 -b 196 -i '🔴' -t 'HOMELAB'
+      fi
+  }
 
   # Defines character set used by powerlevel10k. It's best to let `p10k configure` set it for you.
   typeset -g POWERLEVEL9K_MODE=nerdfont-complete
