@@ -26,7 +26,6 @@
     editor = nvim
     excludesfile = ~/.config/git/gitignore_global
     quotepath = false
-    hooksPath = /usr/local/dd/global_hooks
 [diff]
     tool = nvimdiff
     compactionHeuristic = true
