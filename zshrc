@@ -80,3 +80,4 @@ fi
 function preexec {
     refresh
 }
+
