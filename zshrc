@@ -66,6 +66,10 @@ setopt HIST_IGNORE_ALL_DUPS
 # Sets emacs shortcuts
 bindkey -e
 
+# Option + Left/Right for word navigation
+bindkey '^[[1;3D' backward-word   # Option + Left
+bindkey '^[[1;3C' forward-word    # Option + Right
+
 # This functionality is required to have SSH auth agent
 # work seamlessly in tmux.
 # See my notes in tmux.conf for more details
