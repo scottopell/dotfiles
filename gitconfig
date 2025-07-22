@@ -1,3 +1,8 @@
+[user]
+  name = Scott Opell
+  email = me@scottopell.com
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEJrloIDNGMCodbpI7xLM58aqMAdbMObw4pPJIywzwvq
+
 [alias]
     lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
     d = difftool
@@ -21,7 +26,6 @@
     editor = nvim
     excludesfile = ~/.config/git/gitignore_global
     quotepath = false
-    hooksPath = /usr/local/dd/global_hooks
 [diff]
     tool = nvimdiff
     compactionHeuristic = true
@@ -32,7 +36,7 @@
 [difftool]
     prompt = false
 [difftool "nvimdiff"]
-    cmd = "nvim -Rd \"$LOCAL\" \"$REMOTE\""
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [init]
     defaultBranch = main
 [fetch]
@@ -53,9 +57,10 @@
 [tag]
     forceSignAnnotated = true
     sort = version:refname
-[url "ssh://git@github.com/"]
-    insteadOf = https://github.com/
+#[url "ssh://git@github.com/"] ## Disabled because it breaks xcode's swift package manager integration
+#  insteadOf = https://github.com/
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 [user]
     name = Scott Opell
     email = me@scottopell.com
-    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpuPes1yb55NQ8atpBih0na9S39RIqRLWu699ppclbs scott.opell+git-commit-signing@datadoghq.com
