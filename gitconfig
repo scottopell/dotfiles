@@ -18,6 +18,8 @@
     amend-to = "!f() { SHA=`git rev-parse \"$1\"`; git stash -k && git commit --fixup \"$SHA\" && GIT_SEQUENCE_EDITOR=true git rebase --interactive --autosquash \"$SHA^\" && git stash pop; }; f"
 [branch]
     sort = -committerdate
+	autoSetupMerge = always
+	autoSetupRebase = always
 [column]
     ui = auto
 [commit]
@@ -64,3 +66,19 @@
 [user]
     name = Scott Opell
     email = me@scottopell.com
+[rerere]
+	enabled = true
+[merge]
+	conflictStyle = diff3
+	tool = nvimdiff
+[pull]
+	rebase = true
+[rebase]
+	autoStash = true
+	autoSquash = true
+	updateRefs = true
+	abbreviateCommands = true
+[log]
+	abbrevCommit = false
+[help]
+	autocorrect = 20
