@@ -1,0 +1,34 @@
+# Dotfiles .gitignore for ~/.config
+# Only track personal configuration files, ignore app data/caches/sensitive info
+
+# === IGNORE: Sensitive Authentication Data ===
+configstore/                    # OAuth tokens, API keys, Firebase auth data
+
+# === IGNORE: App-Managed Data ===
+uv/                            # Python package manager installation receipts
+flutter/                       # Flutter tool state, analytics flags, license hashes
+
+# === IGNORE: User-Specified Non-Used Tools ===
+fish/                          # Fish shell config (user doesn't use fish)
+helix/                         # Helix editor config (user doesn't use helix)
+
+# === IGNORE: Standard App Data Patterns ===
+*/cache/
+*/Cache/
+*/logs/
+*/tmp/
+*/temp/
+*/.DS_Store
+*.log
+
+# === TRACK: Personal Configuration ===
+# The following are explicitly tracked (not ignored):
+# - alacritty/     (terminal settings)
+# - gh/            (GitHub CLI preferences, aliases)  
+# - git/           (git configuration)
+# - graphite/      (git workflow tools)
+# - htop/          (system monitor preferences)
+# - nvim/          (neovim configuration)
+# - wireshark/     (UI layout, analysis preferences)
+# - tmux/          (tmux configuration - when migrated)
+# - claude/        (Claude slash commands - when migrated)
