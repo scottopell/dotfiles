@@ -1,48 +1,77 @@
-call plug#begin()
+lua << EOF
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-" Theme
-Plug 'lifepillar/vim-gruvbox8'
-"  Visual Indent Guides
-Plug 'nathanaelkane/vim-indent-guides'
-"  Replacement for matchparen and matchit (extra % matching)
-Plug 'andymass/vim-matchup'
-" Select an indentation level
-Plug 'scottopell/vim-indent-object'
-" FZF
-Plug 'junegunn/fzf'
-" TODO - need both of these?
-Plug 'junegunn/fzf.vim'
-" Navigate vim and tmux splits interchangeably
-Plug 'christoomey/vim-tmux-navigator'
-"  Allows for easy alignment/formatting of code to line up vertically
-Plug 'godlygeek/tabular'
-"  Tab nav bar editor
-Plug 'mkitt/tabline.vim'
-" Syntax for typescript
-Plug 'HerringtonDarkholme/yats.vim'
-" Provides :OpenGithubFile which opens the remote with current HEAD as SHA
-Plug 'tyru/open-browser-github.vim'
-"  Dependency of above
-Plug 'tyru/open-browser.vim'
-" Directory Browser
-Plug 'justinmk/vim-dirvish'
-" Save last cursor position
-Plug 'farmergreg/vim-lastplace'
-" LSP configs
-Plug 'neovim/nvim-lspconfig'
-" File Finder
-Plug 'nvim-telescope/telescope.nvim'
-" Dependency of above
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-" Rust
-Plug 'rust-lang/rust.vim'
-" Go
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'johmsalas/text-case.nvim' " Convert between snake case, camelcase, pascalcase, etc
+require("lazy").setup({
+  -- Theme
+  { "lifepillar/vim-gruvbox8" },
 
-call plug#end()
+  -- Visual Indent Guides
+  { "nathanaelkane/vim-indent-guides" },
+
+  -- Replacement for matchparen and matchit (extra % matching)
+  { "andymass/vim-matchup", event = "VeryLazy" },
+
+  -- Select an indentation level
+  { "scottopell/vim-indent-object" },
+
+  -- FZF
+  { "junegunn/fzf", build = ":call fzf#install()" },
+  { "junegunn/fzf.vim", dependencies = { "junegunn/fzf" } },
+
+  -- Navigate vim and tmux splits interchangeably
+  { "christoomey/vim-tmux-navigator" },
+
+  -- Allows for easy alignment/formatting of code to line up vertically
+  { "godlygeek/tabular", cmd = "Tabularize" },
+
+  -- Tab nav bar editor
+  { "mkitt/tabline.vim" },
+
+  -- Syntax for typescript
+  { "HerringtonDarkholme/yats.vim", ft = { "typescript", "typescriptreact" } },
+
+  -- Provides :OpenGithubFile which opens the remote with current HEAD as SHA
+  { "tyru/open-browser-github.vim", cmd = "OpenGithubFile", dependencies = { "tyru/open-browser.vim" } },
+  { "tyru/open-browser.vim" },
+
+  -- Directory Browser
+  { "justinmk/vim-dirvish" },
+
+  -- Save last cursor position
+  { "farmergreg/vim-lastplace" },
+
+  -- LSP configs
+  { "neovim/nvim-lspconfig", event = { "BufReadPre", "BufNewFile" } },
+
+  -- File Finder
+  { "nvim-telescope/telescope.nvim", cmd = "Telescope", keys = "<C-p>", dependencies = { "nvim-lua/plenary.nvim" } },
+  { "nvim-lua/plenary.nvim" },
+
+  -- Treesitter
+  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", event = { "BufReadPost", "BufNewFile" } },
+
+  -- Rust
+  { "rust-lang/rust.vim", ft = "rust" },
+
+  -- Go
+  { "fatih/vim-go", ft = "go", build = ":GoUpdateBinaries" },
+
+  -- Convert between snake case, camelcase, pascalcase, etc
+  { "johmsalas/text-case.nvim", event = "VeryLazy" },
+})
+EOF
 
 " Mouse mode (scroll, visual select, etc)
 set mouse=a " a for all
@@ -200,7 +229,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'rust_analyzer', 'tsserver', 'gopls' }
+local servers = { 'rust_analyzer', 'ts_ls', 'gopls' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
