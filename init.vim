@@ -207,7 +207,9 @@ for _, lsp in ipairs(servers) do
 end
 
 -- Treesitter configuration
-require'nvim-treesitter.configs'.setup {
+local status, treesitter = pcall(require, 'nvim-treesitter.configs')
+if status then
+  treesitter.setup {
   -- A list of parser names, or "all" (the listed parsers MUST always be installed)
   ensure_installed = { "lua", "vim", "vimdoc", "query", "go", "rst", "rust", "typescript", "javascript", "yaml", "powershell" },
 
@@ -225,7 +227,10 @@ require'nvim-treesitter.configs'.setup {
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
   },
-}
+  }
+else
+  vim.notify("nvim-treesitter not installed. Run :PlugInstall to enable syntax highlighting.", vim.log.levels.WARN)
+end
 
 EOF
 

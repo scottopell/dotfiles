@@ -16,6 +16,7 @@ ln -s $HOME/dotfiles/gitignore_global $HOME/.config/git/gitignore_global
 ln -s $HOME/dotfiles/gitconfig $HOME/.config/git/config
 ln -s $HOME/dotfiles/shell_aliases $HOME/.shell_aliases
 ln -s $HOME/dotfiles/p10k.zsh $HOME/.p10k.zsh
+ln -s $HOME/dotfiles/claude-slash-commands $HOME/.claude/commands
 echo <<<
 [ -f ~/dotfiles/zshrc ] && source ~/dotfiles/zshrc
 [ -f ~/dotfiles/fzf-git.sh/fzf-git.sh ] && source ~/dotfiles/fzf-git.sh/fzf-git.sh
