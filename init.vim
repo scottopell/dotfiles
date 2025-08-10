@@ -104,6 +104,10 @@ call SetTabWidth(4)
 " Except for yaml
 autocmd FileType yaml call SetTabWidth(2)
 
+" Git config files should use tabs
+autocmd BufRead,BufNewFile gitconfig set filetype=gitconfig
+autocmd FileType gitconfig setlocal noexpandtab tabstop=8 softtabstop=8 shiftwidth=8
+
 " Set leader key to comma
 let mapleader=','
 

@@ -1,84 +1,77 @@
-[user]
-  name = Scott Opell
-  email = me@scottopell.com
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEJrloIDNGMCodbpI7xLM58aqMAdbMObw4pPJIywzwvq
-
 [alias]
-    lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
-    d = difftool
-    dw = diff --word-diff
-    tree = "forest --pretty=format:\"%C(red)%h %C(magenta)(%ar) %C(blue)%an %C(reset)%s\" --style=15" # --reverse
-    fileblame = "log --name-only --diff-filter=A --date=short --pretty=format:\"%an <%ae> on %ad in %h\" --"
-    co = "checkout"
-  # first-commit = ! git log --decorate=short | tail -n 5 | head -n 1 | grep "\b[A-Fa-f0-9]+"
-    br = for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(refname:short)'
-    br-remote = for-each-ref --color=always --count=30 --sort=-committerdate 'refs/remotes/**' --format='%(refname:short)  %(color:bold blue)%(authordate:human)%(color:reset) %(color:green) %(authorname) %(color:reset)'
-
-  # amend-to from: https://stackoverflow.com/a/48999882
-    amend-to = "!f() { SHA=`git rev-parse \"$1\"`; git stash -k && git commit --fixup \"$SHA\" && GIT_SEQUENCE_EDITOR=true git rebase --interactive --autosquash \"$SHA^\" && git stash pop; }; f"
+	lg = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+	d = difftool
+	dw = diff --word-diff
+	tree = "forest --pretty=format:\"%C(red)%h %C(magenta)(%ar) %C(blue)%an %C(reset)%s\" --style=15" # --reverse
+	fileblame = "log --name-only --diff-filter=A --date=short --pretty=format:\"%an <%ae> on %ad in %h\" --"
+	co = "checkout"
+	# first-commit = ! git log --decorate=short | tail -n 5 | head -n 1 | grep "\b[A-Fa-f0-9]+"
+	br = for-each-ref --count=30 --sort=-committerdate refs/heads/ --format='%(refname:short)'
+	br-remote = for-each-ref --color=always --count=30 --sort=-committerdate 'refs/remotes/**' --format='%(refname:short)  %(color:bold blue)%(authordate:human)%(color:reset) %(color:green) %(authorname) %(color:reset)'
+	# amend-to from: https://stackoverflow.com/a/48999882
+	amend-to = "!f() { SHA=`git rev-parse \"$1\"`; git stash -k && git commit --fixup \"$SHA\" && GIT_SEQUENCE_EDITOR=true git rebase --interactive --autosquash \"$SHA^\" && git stash pop; }; f"
 [branch]
-    sort = -committerdate
+	sort = -committerdate
 	autoSetupMerge = always
 	autoSetupRebase = always
 [column]
-    ui = auto
+	ui = auto
 [commit]
-    gpgsign = true
+	gpgsign = true
 [core]
-    editor = nvim
-    excludesfile = ~/.config/git/gitignore_global
-    quotepath = false
+	editor = nvim
+	excludesfile = ~/.config/git/gitignore_global
+	quotepath = false
 [diff]
-    tool = nvimdiff
-    compactionHeuristic = true
-    algorithm = histogram
-    colorMoved = plain
-    mnemonicPrefix = true
-    renames = true
+	tool = nvimdiff
+	compactionHeuristic = true
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
 [difftool]
-    prompt = false
+	prompt = false
 [difftool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+	cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [init]
-    defaultBranch = main
+	defaultBranch = main
 [fetch]
-    prune = true
-    pruneTags = true
-    all = true
+	prune = true
+	pruneTags = true
+	all = true
 [filter "lfs"]
-    required = true
-    clean = git-lfs clean -- %f
-    smudge = git-lfs smudge -- %f
-    process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[help]
+	autocorrect = 20
 [gpg]
-    format = ssh
-[push]
-    default = simple
-    autoSetupRemote = true
-    followTags = true
-[tag]
-    forceSignAnnotated = true
-    sort = version:refname
-#[url "ssh://git@github.com/"] ## Disabled because it breaks xcode's swift package manager integration
-#  insteadOf = https://github.com/
-[gpg "ssh"]
-  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-[user]
-    name = Scott Opell
-    email = me@scottopell.com
-[rerere]
-	enabled = true
+	format = ssh
 [merge]
 	conflictStyle = diff3
 	tool = nvimdiff
 [pull]
 	rebase = true
+[push]
+	default = simple
+	autoSetupRemote = true
+	followTags = true
 [rebase]
 	autoStash = true
 	autoSquash = true
 	updateRefs = true
 	abbreviateCommands = true
-[log]
-	abbrevCommit = false
-[help]
-	autocorrect = 20
+[rerere]
+	enabled = true
+[tag]
+	forceSignAnnotated = true
+	sort = version:refname
+#[url "ssh://git@github.com/"] ## Disabled because it breaks xcode's swift package manager integration
+#  insteadOf = https://github.com/
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+[user]
+	name = Scott Opell
+	email = me@scottopell.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEJrloIDNGMCodbpI7xLM58aqMAdbMObw4pPJIywzwvq
