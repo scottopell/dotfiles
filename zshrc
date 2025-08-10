@@ -9,13 +9,60 @@ fi
 # User configuration sourced by interactive shells
 #
 
-if [ -f ~/.shell_aliases ]; then
-  source ~/.shell_aliases
-fi
+# Shell aliases (consolidated from shell_aliases)
+# takes you to the last directory you were in
+alias cd-='cd "$OLDPWD"'
 
-if [ -f ~/.shell_functions ]; then
-  source ~/.shell_functions
-fi
+# tmux aliases
+#  forces 256 color mode
+alias tmux='tmux -2'
+
+# Useful for piping into vim and then closing without needing to save
+alias v='nvim -R -'
+
+alias k='kubectl'
+# Example usage, kns datadog-agent sets kubectl namespace to 'datadog-agent'
+alias kns='kubectl config set-context --current --namespace '
+
+alias vim='nvim'
+
+# Shell functions (consolidated from shell_functions)
+# goes up 4 levels instead of ../../../..
+up(){
+  local d=""
+  limit=$1
+  for ((i=1 ; i <= limit ; i++))
+    do
+      d=$d/..
+    done
+  d=$(echo $d | sed 's/^\///')
+  if [ -z "$d" ]; then
+    d=..
+  fi
+  cd $d
+}
+
+extract () {
+  if [ -f $1 ] ; then
+      case $1 in
+          *.tar.bz2)   tar xvjf $1    ;;
+          *.tar.xz)    tar xf   $1    ;;
+          *.tar.gz)    tar xvzf $1    ;;
+          *.bz2)       bunzip2 $1     ;;
+          *.rar)       unrar x $1     ;;
+          *.gz)        gunzip $1      ;;
+          *.tar)       tar xvf $1     ;;
+          *.tbz2)      tar xvjf $1    ;;
+          *.tgz)       tar xvzf $1    ;;
+          *.zip)       unzip $1       ;;
+          *.Z)         uncompress $1  ;;
+          *.7z)        7z x $1        ;;
+          *)           echo "don't know how to extract '$1'..." ;;
+      esac
+  else
+      echo "'$1' is not a valid file!"
+  fi
+}
 
 export EDITOR="nvim"
 

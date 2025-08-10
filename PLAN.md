@@ -1,92 +1,144 @@
-# Dotfiles XDG Migration Plan
+# XDG Dotfiles Migration - Current State
 
-## Overview
-Migrate from symlink-based dotfiles management to tracking `~/.config` directly as a git repository for XDG Base Directory compliance.
+## Migration Status: Ready for Final Directory Swap
 
-## Current State Analysis
-- Dotfiles repo at `~/dotfiles/` with symlinks to `~/.config/`
-- Single large `init.vim` with embedded lua
-- Manual symlink setup process
-- Shell configs remain in `~/dotfiles/` (not XDG compliant by nature)
+### What Has Been Completed ✅
 
-## Migration Steps
+1. **File Reorganization & Consolidation**
+   - ✅ Consolidated `shell_aliases` and `shell_functions` into `zshrc`
+   - ✅ Deleted unused `bashrc`
+   - ✅ Migrated `osx_config` content to README.md first-time setup section
+   - ✅ Created `home-dir-configs/` directory for non-XDG configs
+   - ✅ Moved `psqlrc` and `p10k.zsh` to `home-dir-configs/`
 
-### Phase 1: Analysis & Planning
-- [x] Document current dotfiles structure
-- [x] Research XDG compliance requirements  
-- [x] Create migration plan
-- [x] Analyze existing `~/.config/` contents for conflicts
-- [x] Identify what to keep vs migrate vs ignore
-- [x] Create `.gitignore` for selective tracking
+2. **XDG Structure Preparation**  
+   - ✅ Created comprehensive `.gitignore` for selective `~/.config` tracking
+   - ✅ Updated README.md with new XDG-compliant installation instructions
+   - ✅ All configs are properly organized and ready for XDG migration
 
-### Phase 2: Preparation
-- [ ] Backup current `~/.config/` state
-- [ ] Port current dotfiles to new structure
+3. **Git History Preservation**
+   - ✅ All changes committed to git in this directory
+   - ✅ Git history intact and ready to be preserved during directory move
 
-### Phase 3: Neovim Restructure  
-- [ ] Split `init.vim` into proper lua modules:
-  - `~/.config/nvim/init.lua` (main entry point)
-  - `~/.config/nvim/lua/config/plugins.lua` (plugin definitions)
-  - `~/.config/nvim/lua/config/keymaps.lua` (key bindings)
-  - `~/.config/nvim/lua/config/lsp.lua` (LSP configuration)
-  - `~/.config/nvim/lua/config/options.lua` (vim options)
+### Current Directory Structure
 
-### Phase 4: Migration
-- [ ] Initialize `~/.config/` as git repository
-- [ ] Move configs from `~/dotfiles/` to `~/.config/`
-- [ ] Update shell sourcing to reference new locations
-- [ ] Remove old symlinks
-- [ ] Rename/archive `~/dotfiles/` directory
-
-### Phase 5: Validation
-- [ ] Test all configurations work
-- [ ] Update install documentation
-- [ ] Verify git tracking is selective and appropriate
-
-## Target Structure
 ```
-~/.config/           (git repo)
-├── .gitignore       (selective tracking - ignore app data/caches)
-├── alacritty/       (terminal settings)
-├── gh/              (GitHub CLI preferences, aliases)
-├── git/             (git configuration)
-├── graphite/        (git workflow tools)
-├── htop/            (system monitor preferences)
-├── nvim/            (neovim configuration)
-│   ├── init.lua
-│   └── lua/config/
-│       ├── plugins.lua
-│       ├── keymaps.lua
-│       ├── lsp.lua
-│       └── options.lua
-├── tmux/tmux.conf   (migrated from ~/dotfiles)
-├── wireshark/       (UI layout, analysis preferences)
-└── claude/
-    └── commands/    (slash commands, migrated from ~/dotfiles)
+~/dotfiles/ (ready to become ~/.config/)
+├── .gitignore              # Selective tracking rules
+├── README.md               # Install instructions + macOS setup  
+├── PLAN.md                 # This file
+├── gitconfig               # → will be ~/.config/git/config
+├── gitignore_global        # → will be ~/.config/git/ignore (rename needed)
+├── init.vim                # → will be ~/.config/nvim/init.lua (conversion needed)
+├── tmux.conf              # → will be ~/.config/tmux/tmux.conf  
+├── zshrc                  # → will be ~/.config/zsh/.zshrc
+├── claude-slash-commands/  # → will be ~/.config/claude/commands/
+│   └── create-pr.md
+├── fzf-git.sh/            # Git submodule (sourced from zshrc)
+└── home-dir-configs/      # Non-XDG configs (require symlinks)
+    ├── README.md
+    ├── psqlrc             # → ~/.psqlrc (symlink)
+    └── p10k.zsh           # → ~/.p10k.zsh (symlink)
 ```
 
-### Ignored Directories (.gitignore)
+### What Gets Ignored by .gitignore
+
 - `configstore/` - OAuth tokens, API keys, sensitive auth data
-- `uv/` - App-managed installation receipts
+- `uv/` - App-managed installation receipts  
 - `flutter/` - Generated tool state, analytics flags
 - `fish/` - Not used by user
 - `helix/` - Not used by user
+- Standard app cache/log patterns
 
-## Shell Configs Strategy
-Shell configs (`zshrc`, `shell_aliases`, etc.) will remain in a separate location since shells don't follow XDG spec. Options:
-1. Keep in `~/dotfiles/` (rename to `~/shell-config/`)
-2. Move to `~/.local/share/shell/`
-3. Create `~/.config/shell/` (non-standard but organized)
+### What Gets Tracked in ~/.config
 
-## Risks & Considerations
-- Existing `~/.config/` may have many untracked application configs
-- Need careful `.gitignore` to avoid tracking sensitive data
-- Shell integration needs updating
-- Backup strategy important before migration
+- `alacritty/` - Terminal settings (already exists)
+- `gh/` - GitHub CLI preferences (already exists)
+- `git/` - Git configuration (from this repo)
+- `graphite/` - Git workflow tools (already exists)  
+- `htop/` - System monitor preferences (already exists)
+- `nvim/` - Neovim configuration (from this repo)
+- `tmux/` - Tmux configuration (from this repo)
+- `wireshark/` - UI preferences (already exists)
+- `zsh/` - Zsh configuration (from this repo)
+- `claude/` - Claude slash commands (from this repo)
 
-## Benefits
-- No symlink management complexity
-- XDG-compliant by default
-- Better neovim organization
-- Direct file editing without indirection
-- Cleaner development workflow
+## Next Steps (Post Directory Move)
+
+### Immediate Actions Required
+
+1. **Execute Directory Swap**
+   ```bash
+   # (User will do this manually due to CWD)
+   mv ~/.config ~/.config-existing
+   mv ~/dotfiles ~/.config
+   ```
+
+2. **File Conversions & Migrations**
+   - Convert `~/.config/init.vim` to proper lua module structure
+   - Rename `~/.config/gitignore_global` to `~/.config/git/ignore`
+   - Move `~/.config/gitconfig` to `~/.config/git/config`
+   - Move `~/.config/tmux.conf` to `~/.config/tmux/tmux.conf`
+   - Move `~/.config/zshrc` to `~/.config/zsh/.zshrc`
+   - Move `~/.config/claude-slash-commands/*` to `~/.config/claude/`
+
+3. **Cherry-pick from ~/.config-existing**
+   - Review `alacritty/`, `gh/`, `graphite/`, `htop/`, `wireshark/` configs
+   - Copy any useful configs that aren't already tracked
+
+4. **Create Required Symlinks**
+   ```bash
+   ln -s ~/.config/home-dir-configs/psqlrc ~/.psqlrc
+   ln -s ~/.config/home-dir-configs/p10k.zsh ~/.p10k.zsh
+   ```
+
+5. **Update Shell Bootstrap**
+   Update `~/.zshrc` to source from new location:
+   ```bash
+   [ -f ~/.config/zsh/.zshrc ] && source ~/.config/zsh/.zshrc
+   ```
+
+### Neovim Lua Conversion Plan
+
+Convert single `init.vim` to modular lua structure:
+```
+~/.config/nvim/
+├── init.lua              # Entry point, bootstrap lazy.nvim
+└── lua/config/
+    ├── plugins.lua       # Plugin definitions  
+    ├── options.lua       # Vim options & settings
+    ├── keymaps.lua       # Key mappings
+    ├── lsp.lua          # LSP configuration
+    └── treesitter.lua   # Treesitter setup
+```
+
+### Testing & Validation
+
+1. Test git config works (`git --version`, check aliases)
+2. Test tmux config loads (`tmux -V`, check custom bindings)
+3. Test neovim lua config loads (`:checkhealth`)
+4. Test zsh config loads (aliases, functions, p10k theme)
+5. Test claude slash commands accessible
+6. Verify symlinks work (psql, p10k)
+
+## Multi-Machine Deployment
+
+On other machines, follow README.md instructions:
+1. Backup existing `~/.config` → `~/.config-existing`
+2. Clone this repo as new `~/.config`
+3. Cherry-pick useful configs from backup
+4. Create symlinks for home-dir-configs
+5. Update shell sourcing
+
+## Key Benefits Achieved
+
+- ✅ XDG Base Directory compliance
+- ✅ No symlink complexity for XDG-compliant software
+- ✅ Preserved git history through directory move
+- ✅ Clean separation of XDG vs non-XDG configs
+- ✅ Modular, maintainable structure
+- ✅ Comprehensive installation documentation
+
+## Migration Philosophy
+
+This migration maintains the benefits of version-controlled dotfiles while adopting modern XDG standards. Non-XDG software is cleanly separated in `home-dir-configs/` rather than abandoned, and the approach scales across multiple machines through the documented installation process.

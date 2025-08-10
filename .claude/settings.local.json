@@ -3,7 +3,9 @@
     "allow": [
       "WebFetch(domain:docs.anthropic.com)",
       "Bash(ls:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }
