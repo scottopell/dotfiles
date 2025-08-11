@@ -1,6 +1,0 @@
-[gpg "ssh"]
-    program =
-[user]
-    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpuPes1yb55NQ8atpBih0na9S39RIqRLWu699ppclbs scott.opell+git-commit-signing@datadoghq.com
-[maintenance]
-    repo = /Users/scott.opell/go/src/github.com/DataDog/dd-source

@@ -33,8 +33,6 @@
 	prompt = false
 [difftool "nvimdiff"]
 	cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
-[include]
-	path = ~/.config/git/config.local
 [init]
 	defaultBranch = main
 [fetch]
@@ -72,8 +70,14 @@
 #[url "ssh://git@github.com/"] ## Disabled because it breaks xcode's swift package manager integration
 #  insteadOf = https://github.com/
 [gpg "ssh"]
-  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 [user]
 	name = Scott Opell
 	email = me@scottopell.com
 	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEJrloIDNGMCodbpI7xLM58aqMAdbMObw4pPJIywzwvq
+
+# Overrides for the local machine
+# MUST BE LAST to local overwrites everything else
+[include]
+	path = config.local
+

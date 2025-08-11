@@ -22,3 +22,4 @@ helix/
 */temp/
 */.DS_Store
 *.log
+git/config.local
