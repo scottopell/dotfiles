@@ -1,63 +1,97 @@
 dotfiles
 ========
 
-Nothing exciting or groundbreaking, just my dotfiles.
+Nothing exciting or groundbreaking, just my dotfiles following XDG Base Directory specification.
 
 I try to avoid using other's existing dotfiles, so these are pretty much written from scratch with only the things that I care about.
 
-## Install (New XDG-Compliant Method)
+## Installation
 
-**Migration Process:**
+### Fresh Install
 ```sh
-# Backup existing config
-mv ~/.config ~/.config-existing
+# Clone dotfiles directly as ~/.config
+git clone https://github.com/yourusername/dotfiles ~/.config
 
-# Clone dotfiles as new ~/.config
-git clone <your-repo-url> ~/.config
-
-# Manually migrate any useful configs from backup
-# (cherry-pick what you need from ~/.config-existing)
-
-# Setup shell configs and legacy symlinks
-echo <<<
-[ -f ~/.config/zsh/.zshrc ] && source ~/.config/zsh/.zshrc
-[ -f ~/dotfiles/fzf-git.sh/fzf-git.sh ] && source ~/dotfiles/fzf-git.sh/fzf-git.sh
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
->>> >> ~/.zshrc
+# Update git submodules 
+cd ~/.config && git submodule update --init --recursive
 
 # Create symlinks for home directory configs
-ln -s ~/dotfiles/home-dir-configs/psqlrc ~/.psqlrc
-ln -s ~/dotfiles/home-dir-configs/p10k.zsh ~/.p10k.zsh
+ln -s ~/.config/home-dir-configs/psqlrc ~/.psqlrc
+ln -s ~/.config/home-dir-configs/p10k.zsh ~/.p10k.zsh
+
+# Update ~/.zshrc to source config
+echo '[ -f ~/.config/zsh/.zshrc ] && source ~/.config/zsh/.zshrc' >> ~/.zshrc
 ```
 
-**What Gets Tracked:**
-- `alacritty/` - Terminal settings
-- `gh/` - GitHub CLI preferences
-- `git/` - Git configuration  
-- `graphite/` - Git workflow tools
-- `htop/` - System monitor preferences
-- `nvim/` - Neovim configuration
-- `tmux/` - Tmux configuration
-- `wireshark/` - UI preferences
+### Migration from Existing ~/.config
 
-**What Gets Ignored:**
-App data, caches, and sensitive authentication info are automatically ignored via `.gitignore`.
-
-## Legacy Install (Symlink-Based - Deprecated)
-<details>
-<summary>Click to expand old symlink method</summary>
+If you already have a `~/.config` directory with existing configurations:
 
 ```sh
-mkdir -p ~/.config/{tmux,nvim,git}
-ln -s $HOME/dotfiles/tmux.conf $HOME/.config/tmux/tmux.conf
-ln -s $HOME/dotfiles/init.vim $HOME/.config/nvim/init.vim
-ln -s $HOME/dotfiles/gitignore_global $HOME/.config/git/gitignore_global
-ln -s $HOME/dotfiles/gitconfig $HOME/.config/git/config
-ln -s $HOME/dotfiles/shell_aliases $HOME/.shell_aliases
-ln -s $HOME/dotfiles/p10k.zsh $HOME/.p10k.zsh
-ln -s $HOME/dotfiles/claude-slash-commands $HOME/.claude/commands
+# 1. Backup your existing config
+mv ~/.config ~/.config-existing
+
+# 2. Clone this repo as new ~/.config  
+git clone https://github.com/yourusername/dotfiles ~/.config
+cd ~/.config && git submodule update --init --recursive
+
+# 3. Create symlinks for home directory configs
+ln -s ~/.config/home-dir-configs/psqlrc ~/.psqlrc
+ln -s ~/.config/home-dir-configs/p10k.zsh ~/.p10k.zsh
+
+# 4. Update ~/.zshrc to source config
+echo '[ -f ~/.config/zsh/.zshrc ] && source ~/.config/zsh/.zshrc' >> ~/.zshrc
+
+# 5. Use Claude to help migrate your existing configs (see below)
 ```
-</details>
+
+### Config Migration Assistant
+
+Use this Claude prompt to help migrate configurations from your backup:
+
+```
+I have backed up my existing ~/.config to ~/.config-existing and cloned new XDG-compliant dotfiles to ~/.config. 
+
+Please help me:
+1. Review what's in ~/.config-existing and identify useful configurations to migrate
+2. For each useful config, determine if it should be:
+   - Copied to ~/.config and tracked in git
+   - Added to ~/.config/.gitignore (if it contains secrets/cache/binary data)
+   - Left in backup (if obsolete)
+3. Handle any conflicts with existing configs in my new dotfiles
+4. Update .gitignore as needed for app-specific configs that shouldn't be tracked
+
+My backup is at ~/.config-existing. Please start by listing what's there and we can go through each directory.
+```
+
+## What Gets Tracked
+
+This repository tracks these XDG-compliant configurations:
+
+- `git/` - Git configuration and global gitignore
+- `nvim/` - Neovim configuration (modular lua structure)  
+- `tmux/` - Tmux configuration
+- `zsh/` - Zsh configuration with aliases and functions
+- `claude/` - Claude AI slash commands
+- `home-dir-configs/` - Non-XDG configs (psqlrc, p10k) that require home directory symlinks
+
+Additional configs that may exist on your system and get tracked:
+- `alacritty/` - Terminal settings
+- `gh/` - GitHub CLI preferences  
+- `graphite/` - Git workflow tools
+- `htop/` - System monitor preferences
+- `wireshark/` - Network analyzer preferences
+
+## What Gets Ignored
+
+The `.gitignore` automatically excludes:
+
+- **Secrets & Auth**: `configstore/`, OAuth tokens, API keys
+- **App State**: Installation receipts, analytics flags, generated data  
+- **Caches**: Application caches, logs, temporary files
+- **Unused Tools**: Configs for tools not in use (fish, helix, etc.)
+
+This ensures only meaningful configuration is tracked while keeping sensitive data secure.
 
 ## First-Time macOS Setup
 
@@ -182,21 +216,28 @@ echo "macOS setup completed! Restart required for some changes to take effect."
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Install essential tools
-brew install git tmux nvim fzf
-
-# Install vim-plug for Neovim
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+brew install git tmux neovim fzf ripgrep
 
 # Install fzf shell integration
 $(brew --prefix)/opt/fzf/install
 
-# Install Powerlevel10k
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+# Install Powerlevel10k theme
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 ```
 
 ### Additional Setup
 - Configure 1Password for SSH signing (if using)
-- Set up development directories
+- Set up development directories  
 - Configure terminal app preferences
+- Run `p10k configure` for theme setup
 
+## Philosophy
+
+This setup maintains the benefits of version-controlled dotfiles while adopting modern XDG standards. Non-XDG software is cleanly separated in `home-dir-configs/` rather than abandoned, and the approach scales across multiple machines through git.
+
+Key principles:
+- **XDG Compliance**: Follow standards for config organization
+- **Security**: Never track secrets, tokens, or sensitive data
+- **Simplicity**: Minimize symlinks and complexity  
+- **Portability**: Easy deployment across multiple machines
+- **History**: Preserve git history through migrations
