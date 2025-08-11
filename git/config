@@ -33,6 +33,8 @@
 	prompt = false
 [difftool "nvimdiff"]
 	cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+[include]
+	path = ~/.config/git/config.local
 [init]
 	defaultBranch = main
 [fetch]
