@@ -4,6 +4,10 @@
 # === IGNORE: Sensitive Authentication Data ===
 configstore/                    # OAuth tokens, API keys, Firebase auth data
 graphite/                       # Git workflow tools with auth tokens
+ddtool/                         # Datadog CLI with API keys
+gcloud/                         # Google Cloud SDK with auth tokens
+op/                             # 1Password CLI with secrets
+ghtoken                         # GitHub token file
 
 # === IGNORE: App-Managed Data ===
 uv/                            # Python package manager installation receipts
