@@ -41,7 +41,11 @@ require("lazy").setup({
   { "neovim/nvim-lspconfig", event = { "BufReadPre", "BufNewFile" } },
 
   -- File Finder
-  { "nvim-telescope/telescope.nvim", cmd = "Telescope", keys = "<C-p>", dependencies = { "nvim-lua/plenary.nvim" } },
+  { "nvim-telescope/telescope.nvim", event = "VimEnter", dependencies = { 
+    "nvim-lua/plenary.nvim",
+    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    "nvim-telescope/telescope-ui-select.nvim"
+  } },
   { "nvim-lua/plenary.nvim" },
 
   -- Treesitter

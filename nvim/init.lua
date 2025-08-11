@@ -21,3 +21,4 @@ pcall(vim.cmd, "colorscheme gruvbox8")
 
 require("config.lsp")
 require("config.treesitter")
+require("config.telescope")
