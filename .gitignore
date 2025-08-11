@@ -3,6 +3,7 @@
 
 # === IGNORE: Sensitive Authentication Data ===
 configstore/                    # OAuth tokens, API keys, Firebase auth data
+graphite/                       # Git workflow tools with auth tokens
 
 # === IGNORE: App-Managed Data ===
 uv/                            # Python package manager installation receipts
@@ -26,7 +27,6 @@ helix/                         # Helix editor config (user doesn't use helix)
 # - alacritty/     (terminal settings)
 # - gh/            (GitHub CLI preferences, aliases)  
 # - git/           (git configuration)
-# - graphite/      (git workflow tools)
 # - htop/          (system monitor preferences)
 # - nvim/          (neovim configuration)
 # - wireshark/     (UI layout, analysis preferences)
