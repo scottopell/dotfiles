@@ -14,8 +14,8 @@ vim.opt.laststatus = 2
 -- Custom statusline
 vim.opt.statusline = "[%n] %f%m %= col %c | %b 0x%B | %2p%%"
 
--- Colors
-vim.opt.background = "light"
+-- Light vs Dark Mode
+vim.opt.background = "dark"
 
 -- Markdown settings
 vim.cmd("autocmd BufRead,BufNewFile *.md,*.markdown setlocal textwidth=80")
