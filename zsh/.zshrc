@@ -66,6 +66,9 @@ extract () {
 
 export EDITOR="nvim"
 
+# FZF dark theme (gruvbox-inspired)
+export FZF_DEFAULT_OPTS='--color=fg:#ebdbb2,bg:#282828,hl:#fabd2f,fg+:#ebdbb2,bg+:#3c3836,hl+:#fabd2f,info:#83a598,prompt:#bdae93,pointer:#84a0c6,marker:#fe8019,spinner:#8ec07c,header:#928374'
+
 # Allows >> to create a new file (not dangerous so no reason not to)
 setopt APPEND_CREATE
 
