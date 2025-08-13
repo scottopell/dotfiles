@@ -1,6 +1,14 @@
 require("lazy").setup({
   -- Theme
-  { "lifepillar/vim-gruvbox8" },
+  { "lifepillar/vim-gruvbox8" },      -- gruvbox8
+  { "embark-theme/vim", name = "embark", branch = "main" }, -- embark
+  { "folke/tokyonight.nvim", lazy = false, priority = 1000 }, -- tokyonight / -storm / -moon / -day
+  "EdenEast/nightfox.nvim", -- carbonfox, nightfox, etc.
+  "navarasu/onedark.nvim",      -- onedark
+  "rebelot/kanagawa.nvim",      -- kanagawa-wave / -dragon / -lotus
+  "nyoom-engineering/oxocarbon.nvim", -- oxocarbon
+  "ellisonleao/gruvbox.nvim",   -- gruvbox
+  "shaunsingh/nord.nvim",       -- nord
 
   -- Visual Indent Guides
   { "nathanaelkane/vim-indent-guides" },
@@ -41,7 +49,7 @@ require("lazy").setup({
   { "neovim/nvim-lspconfig", event = { "BufReadPre", "BufNewFile" } },
 
   -- File Finder
-  { "nvim-telescope/telescope.nvim", event = "VimEnter", dependencies = { 
+  { "nvim-telescope/telescope.nvim", event = "VimEnter", dependencies = {
     "nvim-lua/plenary.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     "nvim-telescope/telescope-ui-select.nvim"

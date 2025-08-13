@@ -17,7 +17,7 @@ require("config.keymaps")
 require("config.plugins")
 
 -- Set colorscheme after plugins are loaded (protected call)
-pcall(vim.cmd, "colorscheme gruvbox8")
+pcall(vim.cmd, "colorscheme kanagawa-wave")
 
 require("config.lsp")
 require("config.treesitter")

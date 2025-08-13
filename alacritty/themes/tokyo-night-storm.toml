@@ -1,0 +1,48 @@
+[colors.primary]
+background = "#24283b"
+foreground = "#a9b1d6"
+
+[colors.normal]
+black = "#32344a"
+red = "#f7768e"
+green = "#9ece6a"
+yellow = "#e0af68"
+blue = "#7aa2f7"
+magenta = "#ad8ee6"
+cyan = "#449dab"
+white = "#9699a8"
+
+[colors.bright]
+black = "#444b6a"
+red = "#db4b4b"
+green = "#73daca"
+yellow = "#ff9e64"
+blue = "#7da6ff"
+magenta = "#bb9af7"
+cyan = "#0db9d7"
+white = "#acb0d0"
+
+[colors.cursor]
+cursor = "CellForeground"
+text = "CellBackground"
+
+[colors.vi_mode_cursor]
+cursor = "CellForeground"
+text = "CellBackground"
+
+# Dim colors for better diff contrast
+[colors.dim]
+black = "#1a1b26"
+red = "#914c54"
+green = "#6f7bb6"
+yellow = "#96916e"
+blue = "#4f6074"
+magenta = "#7c6f7c"
+cyan = "#32525f"
+white = "#5c6370"
+
+# Selection colors for diff highlighting
+[colors.selection]
+text = "CellForeground"
+background = "#3d59a1"
+

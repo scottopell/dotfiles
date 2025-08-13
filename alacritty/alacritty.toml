@@ -1,5 +1,8 @@
+[env]
+TERM = "xterm-256color"
+
 [general]
-import = ["~/.config/alacritty/themes/gruvbox-dark.toml"]
+import = ["~/.config/alacritty/themes/mariana.toml"]
 
 [keyboard]
 bindings = [
@@ -9,5 +12,5 @@ bindings = [
 
 [font.normal]
 family = "SauceCodePro Nerd Font Mono"
-style = "Light"
+style = "Regular"
 

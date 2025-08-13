@@ -20,3 +20,5 @@
 
 # Related to https://aider.chat/docs/usage.html
 .aider*
+
+**/.claude/settings.local.json

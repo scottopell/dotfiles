@@ -16,6 +16,8 @@ vim.opt.statusline = "[%n] %f%m %= col %c | %b 0x%B | %2p%%"
 
 -- Light vs Dark Mode
 vim.opt.background = "dark"
+-- enable truecolor
+vim.opt.termguicolors = true
 
 -- Markdown settings
 vim.cmd("autocmd BufRead,BufNewFile *.md,*.markdown setlocal textwidth=80")
