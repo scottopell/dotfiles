@@ -1,17 +1,19 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:docs.anthropic.com)",
-      "Bash(ls:*)",
-      "Bash(find:*)",
-      "Bash(mkdir:*)",
       "Bash(cp:*)",
+      "Bash(find:*)",
+      "Bash(git add:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
       "Bash(mv:*)",
       "WebFetch(domain:alacritty.org)",
-      "WebSearch",
-      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.anthropic.com)",
       "WebFetch(domain:gist.github.com)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebSearch"
     ],
     "deny": []
   }
