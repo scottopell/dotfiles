@@ -68,6 +68,16 @@ require("lazy").setup({
   -- Convert between snake case, camelcase, pascalcase, etc
   { "johmsalas/text-case.nvim", event = "VeryLazy" },
 
+  -- Scroll above top of screen for better tall monitor viewing
+  {
+    "nullromo/go-up.nvim",
+    opts = {},
+    config = function(_, opts)
+        local goUp = require("go-up")
+        goUp.setup(opts)
+    end
+  },
+
   -- Start screen dashboard
   {
     'goolord/alpha-nvim',
