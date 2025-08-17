@@ -67,4 +67,23 @@ require("lazy").setup({
 
   -- Convert between snake case, camelcase, pascalcase, etc
   { "johmsalas/text-case.nvim", event = "VeryLazy" },
+
+  -- GitHub PR Review
+  {
+    "pwntester/octo.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim", 
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      require"octo".setup({
+        reviews = {
+          auto_show_threads = true,
+          focus = "right"
+        }
+      })
+    end,
+    cmd = "Octo",
+  },
 })

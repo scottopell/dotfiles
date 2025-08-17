@@ -20,7 +20,7 @@ vim.cmd("autocmd FileType dirvish nnoremap <buffer><silent> <C-p> <cmd>Telescope
 vim.keymap.set('n', '<leader>g', ':Rg <C-r>=expand("<cword>") <cr> <cr>', { noremap = true, silent = true })
 
 -- Additional Telescope keybindings (conservative additions)
--- Search by grep (similar to your existing Rg workflow)  
+-- Search by grep (similar to your existing Rg workflow)
 vim.keymap.set('n', '<leader>sg', '<cmd>Telescope live_grep<cr>', { noremap = true, silent = true })
 -- Search current word under cursor with telescope
 vim.keymap.set('n', '<leader>sw', '<cmd>Telescope grep_string<cr>', { noremap = true, silent = true })
@@ -38,3 +38,12 @@ vim.keymap.set('n', '<CR>', ':let @/ = "" <CR> <CR>', { noremap = true, silent =
 
 -- In terminal-mode, map ESC to exit terminal-mode
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
+
+-- Octo.nvim GitHub PR Review mappings
+-- Workflow: <leader>gpl → select PR → <leader>grs → select lines → <leader>gca/gsa → <leader>grf
+vim.keymap.set('n', '<leader>gpl', '<cmd>Octo pr list<cr>', { noremap = true, silent = true, desc = 'List GitHub PRs' })
+vim.keymap.set('n', '<leader>grs', '<cmd>Octo review start<cr>', { noremap = true, silent = true, desc = 'Start PR review' })
+vim.keymap.set('n', '<leader>grr', '<cmd>Octo review resume<cr>', { noremap = true, silent = true, desc = 'Resume PR review' })
+vim.keymap.set('n', '<leader>grf', '<cmd>Octo review submit<cr>', { noremap = true, silent = true, desc = 'Submit PR review' })
+vim.keymap.set({'n', 'v'}, '<leader>gca', '<cmd>Octo comment add<cr>', { noremap = true, silent = true, desc = 'Add comment on line/selection' })
+vim.keymap.set({'n', 'v'}, '<leader>gsa', '<cmd>Octo suggestion add<cr>', { noremap = true, silent = true, desc = 'Add suggestion on line/selection' })
