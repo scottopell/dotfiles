@@ -4,6 +4,7 @@
       "Bash(cp:*)",
       "Bash(find:*)",
       "Bash(git add:*)",
+      "Bash(grep:*)",
       "Bash(ls:*)",
       "Bash(mkdir:*)",
       "Bash(mv:*)",
