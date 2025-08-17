@@ -39,6 +39,9 @@ vim.keymap.set('n', '<CR>', ':let @/ = "" <CR> <CR>', { noremap = true, silent =
 -- In terminal-mode, map ESC to exit terminal-mode
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
 
+-- Show all keymaps cheat sheet
+vim.keymap.set('n', '<leader>?', '<cmd>Telescope keymaps<cr>', { noremap = true, silent = true, desc = 'Show all keymaps' })
+
 -- Octo.nvim GitHub PR Review mappings
 -- Workflow: <leader>gpl → select PR → <leader>grs → select lines → <leader>gca/gsa → <leader>grf
 vim.keymap.set('n', '<leader>gpl', '<cmd>Octo pr list<cr>', { noremap = true, silent = true, desc = 'List GitHub PRs' })

@@ -76,55 +76,78 @@ require("lazy").setup({
       local alpha = require('alpha')
       local dashboard = require('alpha.themes.dashboard')
 
-      -- Custom header with path, git info, and rotating tips
-      dashboard.section.header.val = function()
-        local cwd = vim.fn.getcwd()
-        local branch = vim.fn.system("git branch --show-current 2>/dev/null | tr -d '\n'")
-        if branch == "" then branch = "not a git repo" end
 
-        -- Tips that rotate randomly
-        local tips = {
-          "💡 Tip: <leader>gpl → <leader>grs → select lines → <leader>gca → :w → <leader>grf",
-          "💡 Tip: Use <leader>sw to search word under cursor with Telescope",
-          "💡 Tip: <leader>. shows recent files, <leader><leader> shows buffers",
-          "💡 Tip: In PR review, select lines in visual mode before <leader>gca",
-          "💡 Tip: <leader>gsa adds suggestions, <leader>gca adds regular comments",
-          "💡 Tip: <C-p> for file finder, <leader>sg for live grep",
-          "💡 Tip: After <leader>gca write your comment, then :w to submit",
-          "💡 Tip: <leader>g searches for word under cursor with Rg",
-          "💡 Tip: <leader>grr resumes a paused PR review session"
+      -- ASCII art header
+      dashboard.section.header.val = {
+        "█▄░█ ▄▀█ █░█ █ █▀▄▀█",
+        "█░▀█ █▀█ ▀▄▀ █ █░▀░█"
+      }
+
+      -- Info section with path, git, and tips
+      local info_section = {
+        type = "text",
+        val = function()
+          local cwd = vim.fn.getcwd()
+          local branch = vim.fn.system("git branch --show-current 2>/dev/null | tr -d '\n'")
+          if branch == "" then branch = "not a git repo" end
+
+          -- Tips that rotate randomly
+          local tips = {
+            "💡 Tip: <leader>gpl → <leader>grs → select lines → <leader>gca → :w → <leader>grf",
+            "💡 Tip: Use <leader>sw to search word under cursor with Telescope",
+            "💡 Tip: <leader>. shows recent files, <leader><leader> shows buffers",
+            "💡 Tip: In PR review, select lines in visual mode before <leader>gca",
+            "💡 Tip: <leader>gsa adds suggestions, <leader>gca adds regular comments",
+            "💡 Tip: <C-p> for file finder, <leader>sg for live grep",
+            "💡 Tip: After <leader>gca write your comment, then :w to submit",
+            "💡 Tip: <leader>g searches for word under cursor with Rg",
+            "💡 Tip: <leader>grr resumes a paused PR review session"
+          }
+
+          math.randomseed(os.time())
+          local shuffled = {}
+          for i, tip in ipairs(tips) do
+            shuffled[i] = tip
+          end
+          for i = #shuffled, 2, -1 do
+            local j = math.random(i)
+            shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
+          end
+          local selected_tips = {shuffled[1], shuffled[2], shuffled[3]}
+
+          return {
+            "",
+            "Path: " .. cwd,
+            "Git Branch: " .. branch,
+            "",
+            selected_tips[1],
+            selected_tips[2],
+            selected_tips[3],
+          }
+        end,
+        opts = {
+          position = "center",
+          hl = "Comment"
         }
-
-        math.randomseed(os.time())
-        local shuffled = {}
-        for i, tip in ipairs(tips) do
-          shuffled[i] = tip
-        end
-        for i = #shuffled, 2, -1 do
-          local j = math.random(i)
-          shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
-        end
-        local selected_tips = {shuffled[1], shuffled[2], shuffled[3]}
-
-        return {
-          "Path: " .. cwd,
-          "Git Branch: " .. branch,
-          "",
-          selected_tips[1],
-          selected_tips[2],
-          selected_tips[3],
-          "",
-          "█▄░█ ▄▀█ █░█ █ █▀▄▀█",
-          "█░▀█ █▀█ ▀▄▀ █ █░▀░█"
-        }
-      end
+      }
 
       dashboard.section.buttons.val = {
         dashboard.button("f", "  Find file", ":Telescope find_files <CR>"),
         dashboard.button("r", "  Recent files", ":Telescope oldfiles <CR>"),
         dashboard.button("p", "  GitHub PRs", ":Octo pr list <CR>"),
         dashboard.button("g", "  Live grep", ":Telescope live_grep <CR>"),
+        dashboard.button("?", "  Show keymaps", ":Telescope keymaps <CR>"),
         dashboard.button("q", "  Quit", ":qa<CR>"),
+      }
+
+      -- Custom layout with proper padding
+      dashboard.config.layout = {
+        { type = "padding", val = 10 },
+        dashboard.section.header,
+        { type = "padding", val = 2 },
+        info_section,
+        { type = "padding", val = 2 },
+        dashboard.section.buttons,
       }
 
       alpha.setup(dashboard.config)
