@@ -19,6 +19,19 @@ if status then
       -- Instead of true it can also be a list of languages
       additional_vim_regex_highlighting = false,
     },
+
+    -- Treesitter textobjects
+    textobjects = {
+      select = {
+        enable = true,
+        keymaps = {
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+          ["ac"] = "@class.outer",
+          ["ic"] = "@class.inner",
+        },
+      },
+    },
   }
 else
   vim.notify("nvim-treesitter not installed. Run :PlugInstall to enable syntax highlighting.", vim.log.levels.WARN)

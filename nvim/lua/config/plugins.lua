@@ -13,8 +13,8 @@ require("lazy").setup({
   -- Visual Indent Guides
   { "nathanaelkane/vim-indent-guides" },
 
-  -- Replacement for matchparen and matchit (extra % matching)
-  { "andymass/vim-matchup", event = "VeryLazy" },
+  -- Treesitter-based text objects and navigation
+  { "nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesitter/nvim-treesitter" } },
 
   -- Select an indentation level
   { "scottopell/vim-indent-object" },

@@ -14,6 +14,7 @@
       "WebFetch(domain:gist.github.com)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
       "WebSearch"
     ],
     "deny": []
