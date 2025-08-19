@@ -182,4 +182,19 @@ require("lazy").setup({
     end,
     cmd = "Octo",
   },
+
+  -- Git diff viewer
+  {
+    "sindrets/diffview.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    config = function()
+      require("diffview").setup({
+        default_args = {
+          DiffviewOpen = { "--imply-local" }
+        }
+      })
+    end,
+  },
 })
