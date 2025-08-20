@@ -145,6 +145,7 @@ require("lazy").setup({
         dashboard.button("f", "  Find file", ":Telescope find_files <CR>"),
         dashboard.button("r", "  Recent files", ":Telescope oldfiles <CR>"),
         dashboard.button("p", "  GitHub PRs", ":Octo pr list <CR>"),
+        dashboard.button("d", "  Diff view", ":lua diffview_picker()<CR>"),
         dashboard.button("g", "  Live grep", ":Telescope live_grep <CR>"),
         dashboard.button("?", "  Show keymaps", ":Telescope keymaps <CR>"),
         dashboard.button("q", "  Quit", ":qa<CR>"),
