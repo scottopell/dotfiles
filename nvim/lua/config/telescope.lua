@@ -27,44 +27,108 @@ local action_state = require("telescope.actions.state")
 local function diffview_picker()
   local function get_git_refs()
     local refs = {}
-    
-    -- Get recent branches
-    local recent_branches = vim.fn.systemlist("git for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'")
-    for _, branch in ipairs(recent_branches) do
-      if branch ~= "" and not branch:match("^fatal:") then
-        table.insert(refs, { branch, "branch" })
+    local current_branch = vim.fn.system("git branch --show-current 2>/dev/null | tr -d '\n'")
+
+    -- Get recent branches with metadata (excluding current branch)
+    local branch_info = vim.fn.systemlist("git for-each-ref --count=15 --sort=-committerdate refs/heads/ --format='%(refname:short)|%(committerdate:relative)|%(subject)'")
+    for _, line in ipairs(branch_info) do
+      if line ~= "" and not line:match("^fatal:") then
+        local parts = vim.split(line, "|", { plain = true })
+        local branch, date, subject = parts[1], parts[2] or "", parts[3] or ""
+        -- Skip current branch since it's equivalent to HEAD
+        if branch ~= current_branch then
+          table.insert(refs, { branch, "branch", date, subject, false })
+        end
       end
     end
-    
-    -- Get recent tags
-    local recent_tags = vim.fn.systemlist("git tag --sort=-version:refname | head -5")
-    for _, tag in ipairs(recent_tags) do
-      if tag ~= "" and not tag:match("^fatal:") then
-        table.insert(refs, { tag, "tag" })
+
+    -- Get recent tags with metadata
+    local tag_info = vim.fn.systemlist("git for-each-ref --count=8 --sort=-creatordate refs/tags/ --format='%(refname:short)|%(creatordate:relative)|%(subject)'")
+    for _, line in ipairs(tag_info) do
+      if line ~= "" and not line:match("^fatal:") then
+        local parts = vim.split(line, "|", { plain = true })
+        local tag, date, subject = parts[1], parts[2] or "", parts[3] or ""
+        table.insert(refs, { tag, "tag", date, subject, false })
       end
     end
-    
-    -- Add common targets
-    table.insert(refs, 1, { "HEAD", "commit" })
-    table.insert(refs, 2, { "main", "branch" })
-    table.insert(refs, 3, { "master", "branch" })
-    table.insert(refs, 4, { "origin/main", "remote" })
-    table.insert(refs, 5, { "origin/master", "remote" })
-    
+
+    -- Add special targets
+    local head_subject = vim.fn.system("git log -1 --format='%s' HEAD 2>/dev/null | tr -d '\n'")
+    table.insert(refs, 1, { "HEAD", "commit", "current", head_subject or "Current commit", false })
+
+    -- Add main/master if they exist and aren't the current branch
+    local main_exists = vim.fn.system("git rev-parse --verify main 2>/dev/null") ~= ""
+    local master_exists = vim.fn.system("git rev-parse --verify master 2>/dev/null") ~= ""
+
+    if main_exists and "main" ~= current_branch then
+      local main_subject = vim.fn.system("git log -1 --format='%s' main 2>/dev/null | tr -d '\n'")
+      table.insert(refs, { "main", "branch", "", main_subject or "", false })
+    end
+
+    if master_exists and "master" ~= current_branch then
+      local master_subject = vim.fn.system("git log -1 --format='%s' master 2>/dev/null | tr -d '\n'")
+      table.insert(refs, { "master", "branch", "", master_subject or "", false })
+    end
+
+    -- Add origin remotes
+    local origin_main_exists = vim.fn.system("git rev-parse --verify origin/main 2>/dev/null") ~= ""
+    local origin_master_exists = vim.fn.system("git rev-parse --verify origin/master 2>/dev/null") ~= ""
+
+    if origin_main_exists then
+      local origin_main_subject = vim.fn.system("git log -1 --format='%s' origin/main 2>/dev/null | tr -d '\n'")
+      table.insert(refs, { "origin/main", "remote", "", origin_main_subject or "", false })
+    end
+
+    if origin_master_exists then
+      local origin_master_subject = vim.fn.system("git log -1 --format='%s' origin/master 2>/dev/null | tr -d '\n'")
+      table.insert(refs, { "origin/master", "remote", "", origin_master_subject or "", false })
+    end
+
     return refs
   end
 
+  local function get_icon_and_color(ref_type)
+    local icons = {
+      branch = " ",
+      tag = " ",
+      commit = " ",
+      remote = " "
+    }
+
+    local colors = {
+      branch = "String",
+      tag = "Number",
+      commit = "Constant",
+      remote = "Function"
+    }
+
+    return icons[ref_type] or " ", colors[ref_type] or "Normal"
+  end
+
   pickers.new({}, {
-    prompt_title = "Select Diff Target",
+    prompt_title = " Select Diff Target",
     finder = finders.new_table({
       results = get_git_refs(),
       entry_maker = function(entry)
-        local ref, type = entry[1], entry[2]
-        local display = string.format("%-20s (%s)", ref, type)
+        local ref, ref_type, date, subject = entry[1], entry[2], entry[3], entry[4]
+        local icon, color = get_icon_and_color(ref_type)
+
+        -- Format the display string with better spacing
+        local date_display = date ~= "" and string.format(" • %s", date) or ""
+        local subject_display = subject ~= "" and string.format(" • %s", subject:sub(1, 60)) or ""
+
+        -- Truncate long subjects with ellipsis
+        if #subject > 60 and subject ~= "" then
+          subject_display = string.format(" • %s…", subject:sub(1, 57))
+        end
+
+        local display = string.format("%s %-30s%s%s", icon, ref, date_display, subject_display)
+
         return {
           value = ref,
           display = display,
-          ordinal = ref,
+          ordinal = ref .. " " .. subject,
+          ref_type = ref_type
         }
       end,
     }),
