@@ -37,7 +37,7 @@ local function diffview_picker()
         local branch, date, subject = parts[1], parts[2] or "", parts[3] or ""
         -- Skip current branch since it's equivalent to HEAD
         if branch ~= current_branch then
-          table.insert(refs, { branch, "branch", date, subject, false })
+          table.insert(refs, { branch, "branch", date, subject })
         end
       end
     end
@@ -48,13 +48,14 @@ local function diffview_picker()
       if line ~= "" and not line:match("^fatal:") then
         local parts = vim.split(line, "|", { plain = true })
         local tag, date, subject = parts[1], parts[2] or "", parts[3] or ""
-        table.insert(refs, { tag, "tag", date, subject, false })
+        table.insert(refs, { tag, "tag", date, subject })
       end
     end
 
     -- Add special targets
     local head_subject = vim.fn.system("git log -1 --format='%s' HEAD 2>/dev/null | tr -d '\n'")
-    table.insert(refs, 1, { "HEAD", "commit", "current", head_subject or "Current commit", false })
+    table.insert(refs, 1, { "HEAD", "commit", "current", head_subject or "Current commit" })
+    table.insert(refs, 2, { "-u", "commit", "current", "HEAD with untracked files" })
 
     -- Add main/master if they exist and aren't the current branch
     local main_exists = vim.fn.system("git rev-parse --verify main 2>/dev/null") ~= ""
@@ -62,12 +63,12 @@ local function diffview_picker()
 
     if main_exists and "main" ~= current_branch then
       local main_subject = vim.fn.system("git log -1 --format='%s' main 2>/dev/null | tr -d '\n'")
-      table.insert(refs, { "main", "branch", "", main_subject or "", false })
+      table.insert(refs, { "main", "branch", "", main_subject or "" })
     end
 
     if master_exists and "master" ~= current_branch then
       local master_subject = vim.fn.system("git log -1 --format='%s' master 2>/dev/null | tr -d '\n'")
-      table.insert(refs, { "master", "branch", "", master_subject or "", false })
+      table.insert(refs, { "master", "branch", "", master_subject or "" })
     end
 
     -- Add origin remotes
@@ -76,12 +77,12 @@ local function diffview_picker()
 
     if origin_main_exists then
       local origin_main_subject = vim.fn.system("git log -1 --format='%s' origin/main 2>/dev/null | tr -d '\n'")
-      table.insert(refs, { "origin/main", "remote", "", origin_main_subject or "", false })
+      table.insert(refs, { "origin/main", "remote", "", origin_main_subject or "" })
     end
 
     if origin_master_exists then
       local origin_master_subject = vim.fn.system("git log -1 --format='%s' origin/master 2>/dev/null | tr -d '\n'")
-      table.insert(refs, { "origin/master", "remote", "", origin_master_subject or "", false })
+      table.insert(refs, { "origin/master", "remote", "", origin_master_subject or "" })
     end
 
     return refs
