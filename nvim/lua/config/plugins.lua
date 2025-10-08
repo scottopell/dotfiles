@@ -218,6 +218,7 @@ require("lazy").setup({
         filesystem = {
           follow_current_file = { enabled = true },
           use_libuv_file_watcher = true,
+          hijack_netrw_behavior = "disabled",
           filtered_items = {
             visible = false,
             hide_dotfiles = false,
