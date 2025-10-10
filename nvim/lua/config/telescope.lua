@@ -27,62 +27,28 @@ local action_state = require("telescope.actions.state")
 local function diffview_picker()
   local function get_git_refs()
     local refs = {}
-    local current_branch = vim.fn.system("git branch --show-current 2>/dev/null | tr -d '\n'")
-
-    -- Get recent branches with metadata (excluding current branch)
-    local branch_info = vim.fn.systemlist("git for-each-ref --count=15 --sort=-committerdate refs/heads/ --format='%(refname:short)|%(committerdate:relative)|%(subject)'")
-    for _, line in ipairs(branch_info) do
-      if line ~= "" and not line:match("^fatal:") then
-        local parts = vim.split(line, "|", { plain = true })
-        local branch, date, subject = parts[1], parts[2] or "", parts[3] or ""
-        -- Skip current branch since it's equivalent to HEAD
-        if branch ~= current_branch then
-          table.insert(refs, { branch, "branch", date, subject })
-        end
-      end
-    end
-
-    -- Get recent tags with metadata
-    local tag_info = vim.fn.systemlist("git for-each-ref --count=8 --sort=-creatordate refs/tags/ --format='%(refname:short)|%(creatordate:relative)|%(subject)'")
-    for _, line in ipairs(tag_info) do
-      if line ~= "" and not line:match("^fatal:") then
-        local parts = vim.split(line, "|", { plain = true })
-        local tag, date, subject = parts[1], parts[2] or "", parts[3] or ""
-        table.insert(refs, { tag, "tag", date, subject })
-      end
-    end
-
-    -- Add special targets
     local head_subject = vim.fn.system("git log -1 --format='%s' HEAD 2>/dev/null | tr -d '\n'")
-    table.insert(refs, 1, { "HEAD", "commit", "current", head_subject or "Current commit" })
-    table.insert(refs, 2, { "-u", "commit", "current", "HEAD with untracked files" })
 
-    -- Add main/master if they exist and aren't the current branch
-    local main_exists = vim.fn.system("git rev-parse --verify main 2>/dev/null") ~= ""
-    local master_exists = vim.fn.system("git rev-parse --verify master 2>/dev/null") ~= ""
+    -- Core options: HEAD and HEAD with untracked
+    table.insert(refs, { "HEAD", "commit", "current", head_subject or "Current commit" })
+    table.insert(refs, { "-u", "commit", "current", "HEAD with untracked files" })
 
-    if main_exists and "main" ~= current_branch then
-      local main_subject = vim.fn.system("git log -1 --format='%s' main 2>/dev/null | tr -d '\n'")
-      table.insert(refs, { "main", "branch", "", main_subject or "" })
-    end
-
-    if master_exists and "master" ~= current_branch then
-      local master_subject = vim.fn.system("git log -1 --format='%s' master 2>/dev/null | tr -d '\n'")
-      table.insert(refs, { "master", "branch", "", master_subject or "" })
-    end
-
-    -- Add origin remotes
+    -- Check which remote branches exist
     local origin_main_exists = vim.fn.system("git rev-parse --verify origin/main 2>/dev/null") ~= ""
     local origin_master_exists = vim.fn.system("git rev-parse --verify origin/master 2>/dev/null") ~= ""
 
+    -- Add PR diff (merge-base diff against remote main branch - matches gh pr diff)
+    local remote_main_branch = nil
     if origin_main_exists then
-      local origin_main_subject = vim.fn.system("git log -1 --format='%s' origin/main 2>/dev/null | tr -d '\n'")
-      table.insert(refs, { "origin/main", "remote", "", origin_main_subject or "" })
+      remote_main_branch = "origin/main"
+    elseif origin_master_exists then
+      remote_main_branch = "origin/master"
     end
 
-    if origin_master_exists then
-      local origin_master_subject = vim.fn.system("git log -1 --format='%s' origin/master 2>/dev/null | tr -d '\n'")
-      table.insert(refs, { "origin/master", "remote", "", origin_master_subject or "" })
+    if remote_main_branch then
+      local commits_ahead = vim.fn.system(string.format("git rev-list --count %s..HEAD 2>/dev/null | tr -d '\n'", remote_main_branch))
+      local pr_desc = string.format("PR diff (%s commits)", commits_ahead)
+      table.insert(refs, { remote_main_branch .. "...HEAD", "pr", "merge-base", pr_desc })
     end
 
     return refs
@@ -93,21 +59,36 @@ local function diffview_picker()
       branch = " ",
       tag = " ",
       commit = " ",
-      remote = " "
+      remote = " ",
+      pr = " "
     }
 
     local colors = {
       branch = "String",
       tag = "Number",
       commit = "Constant",
-      remote = "Function"
+      remote = "Function",
+      pr = "Special"
     }
 
     return icons[ref_type] or " ", colors[ref_type] or "Normal"
   end
 
+  local previewers = require("telescope.previewers")
+
   pickers.new({}, {
     prompt_title = " Select Diff Target",
+    results_title = "Diff Options",
+    preview_title = "Preview",
+    layout_strategy = "vertical",
+    layout_config = {
+      vertical = {
+        width = 0.9,
+        height = 0.9,
+        preview_height = 0.6,
+        preview_cutoff = 0,
+      }
+    },
     finder = finders.new_table({
       results = get_git_refs(),
       entry_maker = function(entry)
@@ -134,6 +115,86 @@ local function diffview_picker()
       end,
     }),
     sorter = conf.generic_sorter({}),
+    previewer = previewers.new_buffer_previewer({
+      title = "Diff Preview",
+      define_preview = function(self, entry, status)
+        local ref = entry.value
+        local preview_lines = {}
+
+        if ref == "HEAD" then
+          -- Show recent commits for HEAD
+          local log_output = vim.fn.systemlist("git log --oneline --decorate --color=never -15 HEAD 2>/dev/null")
+          table.insert(preview_lines, "Recent Commits:")
+          table.insert(preview_lines, "")
+          for _, line in ipairs(log_output) do
+            table.insert(preview_lines, line)
+          end
+
+        elseif ref == "-u" then
+          -- Show untracked files
+          local untracked = vim.fn.systemlist("git ls-files --others --exclude-standard 2>/dev/null")
+          table.insert(preview_lines, "Untracked Files:")
+          table.insert(preview_lines, "")
+          if #untracked == 0 then
+            table.insert(preview_lines, "No untracked files")
+          else
+            for _, file in ipairs(untracked) do
+              table.insert(preview_lines, "  " .. file)
+            end
+          end
+
+          -- Also show unstaged changes
+          table.insert(preview_lines, "")
+          table.insert(preview_lines, "Unstaged Changes:")
+          table.insert(preview_lines, "")
+          local unstaged = vim.fn.systemlist("git diff --stat HEAD 2>/dev/null")
+          if #unstaged == 0 then
+            table.insert(preview_lines, "No unstaged changes")
+          else
+            for _, line in ipairs(unstaged) do
+              table.insert(preview_lines, line)
+            end
+          end
+
+        else
+          -- For PR diff or other refs, show shortstat + commits
+          local shortstat = vim.fn.systemlist("git diff --shortstat " .. ref .. " 2>/dev/null")
+          table.insert(preview_lines, "Diff Summary:")
+          table.insert(preview_lines, "")
+          if #shortstat > 0 then
+            for _, line in ipairs(shortstat) do
+              table.insert(preview_lines, "  " .. line)
+            end
+          else
+            table.insert(preview_lines, "  No changes")
+          end
+
+          table.insert(preview_lines, "")
+          table.insert(preview_lines, "Files Changed:")
+          table.insert(preview_lines, "")
+          local files_stat = vim.fn.systemlist("git diff --stat " .. ref .. " 2>/dev/null")
+          for _, line in ipairs(files_stat) do
+            table.insert(preview_lines, line)
+          end
+
+          -- Show commits in range
+          table.insert(preview_lines, "")
+          table.insert(preview_lines, "Commits in Range:")
+          table.insert(preview_lines, "")
+          local commit_range = ref:gsub("%.%.%.", "..")  -- Convert three-dot to two-dot for log
+          local commits = vim.fn.systemlist("git log --oneline --color=never " .. commit_range .. " 2>/dev/null")
+          if #commits == 0 then
+            table.insert(preview_lines, "  No commits")
+          else
+            for _, line in ipairs(commits) do
+              table.insert(preview_lines, "  " .. line)
+            end
+          end
+        end
+
+        vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, preview_lines)
+      end,
+    }),
     attach_mappings = function(prompt_bufnr, map)
       actions.select_default:replace(function()
         actions.close(prompt_bufnr)
