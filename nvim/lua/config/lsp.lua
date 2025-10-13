@@ -30,7 +30,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'rust_analyzer', 'ts_ls', 'gopls' }
+local servers = { 'ts_ls', 'gopls' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -39,3 +39,19 @@ for _, lsp in ipairs(servers) do
     }
   }
 end
+
+-- Configure rust-analyzer separately with custom settings
+nvim_lsp.rust_analyzer.setup {
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  },
+  settings = {
+    ['rust-analyzer'] = {
+      -- Load all cargo features for better symbol coverage
+      cargo = {
+        allFeatures = true,
+      },
+    }
+  }
+}

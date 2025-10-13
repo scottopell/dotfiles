@@ -32,6 +32,9 @@ vim.keymap.set('n', '<leader>sh', '<cmd>Telescope help_tags<cr>', { noremap = tr
 vim.keymap.set('n', '<leader>sd', '<cmd>Telescope diagnostics<cr>', { noremap = true, silent = true })
 -- Find existing buffers
 vim.keymap.set('n', '<leader><leader>', '<cmd>Telescope buffers<cr>', { noremap = true, silent = true })
+-- LSP Symbols
+vim.keymap.set('n', '<leader>ss', '<cmd>Telescope lsp_document_symbols<cr>', { noremap = true, silent = true, desc = 'Search document symbols' })
+vim.keymap.set('n', '<leader>sS', '<cmd>Telescope lsp_dynamic_workspace_symbols<cr>', { noremap = true, silent = true, desc = 'Search workspace symbols' })
 
 -- Clear last highlight pattern on Enter
 vim.keymap.set('n', '<CR>', ':let @/ = "" <CR> <CR>', { noremap = true, silent = true })
