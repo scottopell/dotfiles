@@ -21,6 +21,5 @@
 # Related to https://aider.chat/docs/usage.html
 .aider*
 
-
 # Ignore all local claude setting files
 **/.claude/settings.local.json
