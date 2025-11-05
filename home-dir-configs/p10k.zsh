@@ -29,6 +29,9 @@
   # Zsh >= 5.1 is required.
   autoload -Uz is-at-least && is-at-least 5.1 || return
 
+  # Per https://kiro.dev/docs/reference/troubleshooting/#powerlevel10k-theme-users
+  typeset -g POWERLEVEL9K_TERM_SHELL_INTEGRATION=true
+
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     my_env
