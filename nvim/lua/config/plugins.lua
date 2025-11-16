@@ -68,6 +68,21 @@ require("lazy").setup({
   -- Convert between snake case, camelcase, pascalcase, etc
   { "johmsalas/text-case.nvim", event = "VeryLazy" },
 
+  -- Markdown rendering with enhanced visual formatting
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons"
+    },
+    ft = { "markdown" },
+    opts = {
+      anti_conceal = {
+        enabled = false,
+      },
+    },
+  },
+
   -- Scroll above top of screen for better tall monitor viewing
   {
     "nullromo/go-up.nvim",
