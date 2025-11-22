@@ -1,12 +1,26 @@
 ---
-allowed-tools: Bash(gh pr diff:*), Bash(gh pr edit:*)
+allowed-tools: Bash(gh pr edit:*)
 description: Generate scannable PR title/description from code diff for busy reviewers
 ---
 ## Context
-- Current PR diff (net changes vs base branch): !`gh pr diff`
+- Current PR diff (net changes vs base branch): !`gh pr diff --patch`
+- Files changed summary: !`gh pr diff --name-only | wc -l` files
 
 ## Your task
-Analyze the above diff and generate a scannable, information-dense PR title and description for busy reviewers.
+**IMMEDIATELY** generate a PR title and description based on the diff above, then UPDATE THE PR.
+
+**DO NOT**:
+- Say "Let me analyze" or "I'll create"
+- Provide meta-commentary about what you're doing
+- Try to fetch more information
+- Just output the command as text
+
+**YOU MUST**:
+1. Generate the PR title
+2. Generate the PR description
+3. EXECUTE gh pr edit using the Bash tool
+
+**CRITICAL**: You MUST represent ALL significant changes in the diff. If sections seem missing, mention that the diff may be incomplete.
 
 ## Core Philosophy
 
@@ -31,11 +45,25 @@ Think: "What would I want to know before reviewing this code?"
 **Section 1: Summary (1-2 sentences)**
 High-level overview of what changed. This is what shows up in PR lists.
 
-**Section 2: Changed (3-7 bullets)**
+**Section 2: Changed (3-8 bullets, favor conciseness)**
 Each bullet describes a SEMANTIC/CONCEPTUAL change, NOT a file.
+- **Target 4-6 bullets for most PRs**
+- Group related changes into single bullets
+- Split only when changes are conceptually distinct
+- Maximum 8 bullets for very complex PRs
+- Combine minor/cosmetic changes into one bullet or omit if trivial
 
 **Section 3: Why (optional, 1-2 sentences)**
 Only include if the motivation is obvious from code structure. Omit if unclear.
+
+### Comprehensiveness Rules
+
+**IMPORTANT**:
+- Review the ENTIRE diff systematically
+- **Group aggressively**: Multiple related changes = one bullet
+- Aim for the right abstraction level: too granular is as bad as too vague
+- Focus on changes that affect behavior, architecture, or maintainability
+- Minor refactoring/formatting can be summarized or omitted
 
 ### Writing Rules
 
@@ -54,6 +82,24 @@ Only include if the motivation is obvious from code structure. Omit if unclear.
 - ✅ Architectural decisions: "Consolidated three pagination implementations into usePagination hook"
 - ✅ Data flow changes: "Quota now checked before API calls instead of after"
 - ✅ FROM→TO descriptions: "Enforcement moved from handlers to clients"
+
+## Grouping Examples
+
+### Good Grouping
+✅ "Standardized error handling across all API endpoints"
+   - Instead of listing each endpoint separately
+
+✅ "Migrated all database queries from raw SQL to parameterized statements"
+   - Instead of listing each query file
+
+✅ "Added comprehensive input validation to user-facing forms"
+   - Instead of detailing each validation rule
+
+### Bad Grouping (Too Granular)
+❌ Separate bullets for:
+   - "Added null check in login handler"
+   - "Added null check in signup handler"
+   - "Added null check in reset handler"
 
 ## Detailed Examples
 
@@ -145,16 +191,23 @@ Enforcement at the consumption point makes quota bypass impossible and simplifie
 ## Final Checklist
 - [ ] Title is 50-72 characters, imperative mood
 - [ ] Description is under 500 words
+- [ ] **4-6 bullets typical, 8 maximum**
+- [ ] Related changes grouped into single bullets
+- [ ] Right abstraction level (not too granular, not too vague)
 - [ ] NO file names mentioned (unless the file itself is the point)
 - [ ] NO line counts or diff stats
 - [ ] NO vague terms like "improved" or "enhanced"
 - [ ] Bullets describe CONCEPTS not locations
 - [ ] Specific technical terms used throughout
-- [ ] Each bullet answers "what changed" at the right abstraction level
+- [ ] If diff appears truncated, note at end: "Note: Diff may be incomplete"
 
 ## Execute
 
-After generating the title and description, update the PR:
+After generating the title and description, **USE THE BASH TOOL** to run:
 ```bash
 gh pr edit --title "YOUR_TITLE" --body "YOUR_DESCRIPTION"
 ```
+
+**DO NOT just output the command as text - EXECUTE IT using the Bash tool**
+
+**START NOW - NO PREAMBLE**
