@@ -70,7 +70,7 @@ require("lazy").setup({
 
   -- Markdown rendering with enhanced visual formatting
   {
-    "MeanderingProgrammer/render-markdown.nvim",
+    "scottopell/render-markdown.nvim",
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons"
@@ -268,5 +268,24 @@ require("lazy").setup({
         },
       })
     end,
+  },
+
+  -- Reader mode with centered content
+  {
+    "shortcuts/no-neck-pain.nvim",
+    opts = {
+      width = 100,  -- width of the centered buffer
+      minSideBufferWidth = 10,  -- minimum width for side buffers
+      buffers = {
+        right = { enabled = true },
+        left = { enabled = true },
+      },
+      autocmds = {
+        enableOnVimEnter = false,  -- don't auto-enable
+      },
+    },
+    keys = {
+      { "<leader>nn", "<cmd>NoNeckPain<CR>", desc = "Toggle reader mode (no-neck-pain)" },
+    },
   },
 })
