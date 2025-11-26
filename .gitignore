@@ -24,3 +24,7 @@ wireshark/
 */.DS_Store
 *.log
 git/config.local
+
+JetBrains/
+gitsign/
+password-store
