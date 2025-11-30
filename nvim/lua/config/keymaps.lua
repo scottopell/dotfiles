@@ -48,6 +48,27 @@ vim.keymap.set('n', '<leader>?', '<cmd>Telescope keymaps<cr>', { noremap = true,
 -- Neo-tree file explorer toggle
 vim.keymap.set('n', '<leader>e', '<cmd>Neotree toggle<cr>', { noremap = true, silent = true, desc = 'Toggle file explorer' })
 
+-- Markdown checkbox toggle
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.keymap.set('n', '<leader>c', function()
+      local line = vim.api.nvim_get_current_line()
+      local new_line
+      if line:match('%[x%]') then
+        new_line = line:gsub('%[x%]', '[ ]', 1)
+      elseif line:match('%[ %]') then
+        new_line = line:gsub('%[ %]', '[x]', 1)
+      elseif line:match('%[%]') then
+        new_line = line:gsub('%[%]', '[x]', 1)
+      end
+      if new_line then
+        vim.api.nvim_set_current_line(new_line)
+      end
+    end, { buffer = true, desc = 'Toggle markdown checkbox' })
+  end
+})
+
 -- Octo.nvim GitHub PR Review mappings
 -- Workflow: <leader>gpl → select PR → <leader>grs → select lines → <leader>gca/gsa → <leader>grf
 vim.keymap.set('n', '<leader>gpl', '<cmd>Octo pr list<cr>', { noremap = true, silent = true, desc = 'List GitHub PRs' })
