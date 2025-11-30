@@ -80,6 +80,7 @@ require("lazy").setup({
       anti_conceal = {
         enabled = false,
       },
+      render_in_diff = true,
     },
   },
 
