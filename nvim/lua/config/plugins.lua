@@ -70,7 +70,7 @@ require("lazy").setup({
 
   -- Markdown rendering with enhanced visual formatting
   {
-    "scottopell/render-markdown.nvim",
+    dir = "~/dev/render-markdown.nvim",
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons"
@@ -159,6 +159,7 @@ require("lazy").setup({
       }
 
       dashboard.section.buttons.val = {
+        dashboard.button("e", "  New buffer", ":enew <CR>"),
         dashboard.button("f", "  Find file", ":Telescope find_files <CR>"),
         dashboard.button("r", "  Recent files", ":Telescope oldfiles <CR>"),
         dashboard.button("p", "  GitHub PRs", ":Octo pr list <CR>"),
