@@ -10,11 +10,100 @@ require("lazy").setup({
   "ellisonleao/gruvbox.nvim",   -- gruvbox
   "shaunsingh/nord.nvim",       -- nord
 
-  -- Visual Indent Guides
-  { "nathanaelkane/vim-indent-guides" },
+  -- Visual Indent Guides with scope highlighting
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      indent = {
+        char = "│",
+      },
+      scope = {
+        enabled = true,
+        show_start = true,
+        show_end = false,
+        highlight = { "Function", "Label" },
+      },
+    },
+  },
 
   -- Treesitter-based text objects and navigation
   { "nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesitter/nvim-treesitter" } },
+
+  -- Sticky context: shows current function/class at top of screen
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      enable = true,
+      max_lines = 3,
+      min_window_height = 20,
+      line_numbers = true,
+      mode = "cursor", -- show context for cursor position
+      separator = "─",
+    },
+  },
+
+  -- Highlight other uses of word under cursor
+  {
+    "RRethy/vim-illuminate",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("illuminate").configure({
+        delay = 200,
+        large_file_cutoff = 2000,
+        providers = { "lsp", "treesitter", "regex" },
+        under_cursor = true,
+      })
+    end,
+  },
+
+  -- Code outline sidebar
+  {
+    "stevearc/aerial.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {
+      backends = { "treesitter", "lsp" },
+      layout = {
+        default_direction = "right",
+        min_width = 30,
+      },
+      show_guides = true,
+      filter_kind = false, -- show all symbols
+      highlight_on_hover = true,
+      autojump = true,
+    },
+    keys = {
+      { "<leader>o", "<cmd>AerialToggle!<CR>", desc = "Toggle code outline" },
+      { "{", "<cmd>AerialPrev<CR>", desc = "Jump to previous symbol" },
+      { "}", "<cmd>AerialNext<CR>", desc = "Jump to next symbol" },
+    },
+  },
+
+  -- Highlight TODO, FIXME, HACK, etc. comments
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      signs = true,
+      highlight = {
+        multiline = false,
+        before = "",
+        keyword = "wide",
+        after = "fg",
+      },
+    },
+    keys = {
+      { "]t", function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
+      { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
+      { "<leader>st", "<cmd>TodoTelescope<CR>", desc = "Search TODOs" },
+    },
+  },
 
   -- Select an indentation level
   { "scottopell/vim-indent-object" },
@@ -128,7 +217,10 @@ require("lazy").setup({
             "💡 Tip: After <leader>gca write your comment, then :w to submit",
             "💡 Tip: <leader>g searches for word under cursor with Rg",
             "💡 Tip: <leader>grr resumes a paused PR review session",
-            "💡 Tip: <leader>e toggles the file explorer sidebar"
+            "💡 Tip: <leader>e toggles the file explorer sidebar",
+            "💡 Tip: <leader>o toggles code outline, { and } jump between symbols",
+            "💡 Tip: <leader>st searches all TODO/FIXME comments in project",
+            "💡 Tip: ]t and [t jump to next/previous TODO comment",
           }
 
           math.randomseed(os.time())
