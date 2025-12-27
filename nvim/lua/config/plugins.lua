@@ -84,24 +84,32 @@ require("lazy").setup({
     },
   },
 
-  -- Highlight TODO, FIXME, HACK, etc. comments
+  -- Git signs in gutter + inline blame
   {
-    "folke/todo-comments.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    "lewis6991/gitsigns.nvim",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-      signs = true,
-      highlight = {
-        multiline = false,
-        before = "",
-        keyword = "wide",
-        after = "fg",
+      signs = {
+        add          = { text = "│" },
+        change       = { text = "│" },
+        delete       = { text = "_" },
+        topdelete    = { text = "‾" },
+        changedelete = { text = "~" },
       },
+      current_line_blame = true,
+      current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = "eol",
+        delay = 300,
+      },
+      current_line_blame_formatter = "<author>, <author_time:%R> - <summary>",
     },
     keys = {
-      { "]t", function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
-      { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
-      { "<leader>st", "<cmd>TodoTelescope<CR>", desc = "Search TODOs" },
+      { "]h", function() require("gitsigns").next_hunk() end, desc = "Next git hunk" },
+      { "[h", function() require("gitsigns").prev_hunk() end, desc = "Previous git hunk" },
+      { "<leader>hp", function() require("gitsigns").preview_hunk() end, desc = "Preview hunk" },
+      { "<leader>hb", function() require("gitsigns").blame_line({ full = true }) end, desc = "Blame line (full)" },
+      { "<leader>hd", function() require("gitsigns").diffthis() end, desc = "Diff this file" },
     },
   },
 
@@ -219,8 +227,8 @@ require("lazy").setup({
             "💡 Tip: <leader>grr resumes a paused PR review session",
             "💡 Tip: <leader>e toggles the file explorer sidebar",
             "💡 Tip: <leader>o toggles code outline, { and } jump between symbols",
-            "💡 Tip: <leader>st searches all TODO/FIXME comments in project",
-            "💡 Tip: ]t and [t jump to next/previous TODO comment",
+            "💡 Tip: ]h and [h jump between git hunks, <leader>hp previews the change",
+            "💡 Tip: <leader>hb shows full git blame, <leader>hd diffs the file",
           }
 
           math.randomseed(os.time())
