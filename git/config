@@ -67,8 +67,6 @@
 [tag]
 	forceSignAnnotated = true
 	sort = version:refname
-#[url "ssh://git@github.com/"] ## Disabled because it breaks xcode's swift package manager integration
-#  insteadOf = https://github.com/
 [gpg "ssh"]
 	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 [user]
