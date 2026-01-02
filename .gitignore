@@ -28,3 +28,13 @@ git/config.local
 JetBrains/
 gitsign/
 password-store
+
+# Claude Code (local/generated)
+.claude/
+home-dir-configs/claude/settings.json
+home-dir-configs/claude/settings.local.json
+home-dir-configs/claude/plugins/
+home-dir-configs/claude/stats-cache.json
+
+# Goose AI
+goose/

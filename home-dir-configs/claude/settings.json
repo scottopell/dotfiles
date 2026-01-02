@@ -1,7 +1,0 @@
-{
-  "statusLine": {
-    "type": "command",
-    "command": "input=$(cat); printf '\\033[2m%s in %s\\033[0m' \"$(echo \"$input\" | jq -r '.model.display_name')\" \"$(echo \"$input\" | jq -r '.workspace.current_dir' | sed 's|.*/||')\""
-  },
-  "alwaysThinkingEnabled": true
-}
