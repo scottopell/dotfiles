@@ -33,7 +33,7 @@ ln -s ~/.config/home-dir-configs/claude ~/.claude
 ```
 
 **What's tracked:**
-- `hooks/notify.sh` - macOS notification script for Claude Code hooks
+- `hooks/notify.sh` - macOS notification script for Claude Code hooks (install `terminal-notifier` via brew for click-to-activate)
 
 **What's ignored** (in `.gitignore`):
 - `settings.json` - Too volatile (model preferences, plugins change frequently)
