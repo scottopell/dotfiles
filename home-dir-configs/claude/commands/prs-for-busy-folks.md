@@ -1,10 +1,12 @@
 ---
-allowed-tools: Bash(gh pr edit:*)
+allowed-tools: Bash(gh pr edit:*), Read
 description: Generate scannable PR title/description from code diff for busy reviewers
 ---
 ## Context
-- Current PR diff (net changes vs base branch): !`gh pr diff --patch`
-- Files changed summary: !`gh pr diff --name-only | wc -l` files
+!`gh pr diff --patch > .dev/pr-diff.patch`
+
+**STEP 1**: Use the Read tool to read .dev/pr-diff.patch before generating the description.
+If truncated, use offset/limit to get the rest.
 
 ## Your task
 **IMMEDIATELY** generate a PR title and description based on the diff above, then UPDATE THE PR.

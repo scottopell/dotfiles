@@ -89,3 +89,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.hl.on_yank()
   end,
 })
+
+-- Neovide disable cursor jump animation
+vim.g.neovide_cursor_animation_length = 0
