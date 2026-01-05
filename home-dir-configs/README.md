@@ -16,13 +16,54 @@ PostgreSQL client configuration. PostgreSQL doesn't support XDG Base Directory s
 ln -s ~/dotfiles/home-dir-configs/psqlrc ~/.psqlrc
 ```
 
-### `p10k.zsh` → `~/.p10k.zsh`  
+### `p10k.zsh` → `~/.p10k.zsh`
 Powerlevel10k Zsh theme configuration. While P10K has some XDG support for cache files, the main configuration file typically remains in the home directory.
 
 **Symlink Command:**
 ```bash
 ln -s ~/dotfiles/home-dir-configs/p10k.zsh ~/.p10k.zsh
 ```
+
+### `claude/` → `~/.claude/`
+Claude Code CLI configuration directory. Claude Code expects its config at `~/.claude/`.
+
+**Symlink Command:**
+```bash
+ln -s ~/.config/home-dir-configs/claude ~/.claude
+```
+
+**What's tracked:**
+- `hooks/notify.sh` - macOS notification script for Claude Code hooks (install `terminal-notifier` via brew for click-to-activate)
+
+**What's ignored** (in `.gitignore`):
+- `settings.json` - Too volatile (model preferences, plugins change frequently)
+- `settings.local.json` - Machine-specific permissions
+- `plugins/` - Downloaded plugin cache
+- `stats-cache.json` - Usage statistics
+
+**Optional: Enable macOS notifications**
+
+To receive native macOS notifications when Claude Code needs attention, add this to your `~/.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/YOUR_USERNAME/.claude/hooks/notify.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Replace `YOUR_USERNAME` with your actual username, or use the full path from `echo ~/.claude/hooks/notify.sh`.
 
 ## Installation
 
