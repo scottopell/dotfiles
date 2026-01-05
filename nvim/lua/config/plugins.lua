@@ -82,6 +82,12 @@ require("lazy").setup({
         enabled = false,
       },
       render_in_diff = true,
+      win_options = {
+        wrap = {
+          default = vim.api.nvim_get_option_value('wrap', {}),
+          rendered = false,
+        },
+      },
     },
   },
 
