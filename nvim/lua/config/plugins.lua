@@ -13,9 +13,6 @@ require("lazy").setup({
   -- Visual Indent Guides
   { "nathanaelkane/vim-indent-guides" },
 
-  -- Treesitter-based text objects and navigation
-  { "nvim-treesitter/nvim-treesitter-textobjects", dependencies = { "nvim-treesitter/nvim-treesitter" } },
-
   -- Select an indentation level
   { "scottopell/vim-indent-object" },
 
@@ -57,7 +54,14 @@ require("lazy").setup({
   { "nvim-lua/plenary.nvim" },
 
   -- Treesitter
-  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate", event = { "BufReadPost", "BufNewFile" } },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = {
+      { "nvim-treesitter/nvim-treesitter-textobjects", branch = "main" },
+    },
+  },
 
   -- Rust
   { "rust-lang/rust.vim", ft = "rust" },

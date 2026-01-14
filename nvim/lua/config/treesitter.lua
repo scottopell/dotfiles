@@ -21,53 +21,23 @@ if status then
       enable = true,
       additional_vim_regex_highlighting = false,
     },
+  }
+else
+  vim.notify("nvim-treesitter not installed. Run :Lazy sync to install plugins.", vim.log.levels.WARN)
+end
 
-    -- Treesitter textobjects
-    textobjects = {
-      select = {
-        enable = true,
-        keymaps = {
-          ["af"] = "@function.outer",
-          ["if"] = "@function.inner",
-          ["ac"] = "@class.outer",
-          ["ic"] = "@class.inner",
-        },
+-- Treesitter textobjects (main branch uses separate setup)
+local status_textobjects, textobjects = pcall(require, 'nvim-treesitter-textobjects')
+if status_textobjects then
+  textobjects.setup {
+    select = {
+      enable = true,
+      keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
       },
     },
   }
-else
-  vim.notify("nvim-treesitter not installed. Run :PlugInstall to enable syntax highlighting.", vim.log.levels.WARN)
 end
-
--- Simple helper: notify when auto_install downloads a new parser
-local installed_parsers = {}
-vim.api.nvim_create_autocmd("FileType", {
-  callback = function()
-    local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
-    if not lang then return end
-
-    local parsers = require('nvim-treesitter.parsers')
-    if parsers.has_parser(lang) and not installed_parsers[lang] then
-      installed_parsers[lang] = true
-
-      -- Check if it's in ensure_installed
-      local is_ensured = false
-      for _, p in ipairs(ensure_installed) do
-        if p == lang then
-          is_ensured = true
-          break
-        end
-      end
-
-      if not is_ensured then
-        vim.notify(
-          string.format(
-            'Parser "%s" was auto-installed. Add to ensure_installed in nvim/lua/config/treesitter.lua:4',
-            lang
-          ),
-          vim.log.levels.INFO
-        )
-      end
-    end
-  end,
-})
