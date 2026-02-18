@@ -147,6 +147,10 @@ function preexec {
     refresh
 }
 
+# Claude Code: source env-setup.sh before each Bash tool command.
+# Keeps SSH_AUTH_SOCK fresh so commit signing works across agent reconnects.
+export CLAUDE_ENV_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/claude/env-setup.sh"
+
 # Tmux process tree utility
 #[[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux_ptree.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/tmux_ptree.sh"
 
