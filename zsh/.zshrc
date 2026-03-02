@@ -136,5 +136,5 @@ function preexec {
 }
 
 # Tmux process tree utility
-[[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux_ptree.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/tmux_ptree.sh"
+#[[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux_ptree.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/tmux_ptree.sh"
 
