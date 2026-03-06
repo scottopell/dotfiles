@@ -51,6 +51,29 @@ local function diffview_picker()
       table.insert(refs, { remote_main_branch .. "...HEAD", "pr", "merge-base", pr_desc })
     end
 
+    -- Custom diff bases from git config (comma-separated)
+    -- Set per-repo: git config --local custom.diffBases "q-branch-observer,other-branch"
+    -- For bare branch names, checks both local and origin/ variants
+    local custom_bases = vim.fn.system("git config --get custom.diffBases 2>/dev/null | tr -d '\n'")
+    if custom_bases ~= "" then
+      for base in custom_bases:gmatch("[^,]+") do
+        base = vim.trim(base)
+        -- Build list of refs to try: the exact name, plus origin/ prefix for bare names
+        local candidates = { base }
+        if not base:find("/") then
+          table.insert(candidates, "origin/" .. base)
+        end
+        for _, ref in ipairs(candidates) do
+          local exists = vim.fn.system(string.format("git rev-parse --verify %s 2>/dev/null", ref))
+          if exists ~= "" then
+            local commits = vim.fn.system(string.format("git rev-list --count %s..HEAD 2>/dev/null | tr -d '\n'", ref))
+            local desc = string.format("Custom base (%s commits ahead)", commits)
+            table.insert(refs, { ref .. "...HEAD", "pr", "merge-base", desc })
+          end
+        end
+      end
+    end
+
     return refs
   end
 

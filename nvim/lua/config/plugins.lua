@@ -139,7 +139,8 @@ require("lazy").setup({
             "💡 Tip: After <leader>gca write your comment, then :w to submit",
             "💡 Tip: <leader>g searches for word under cursor with Rg",
             "💡 Tip: <leader>grr resumes a paused PR review session",
-            "💡 Tip: <leader>e toggles the file explorer sidebar"
+            "💡 Tip: <leader>e toggles the file explorer sidebar",
+            "💡 Tip: git config --local custom.diffBases \"branch1,branch2\" to add diff targets"
           }
 
           math.randomseed(os.time())
