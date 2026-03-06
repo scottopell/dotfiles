@@ -26,7 +26,8 @@ else
   vim.notify("nvim-treesitter not installed. Run :Lazy sync to install plugins.", vim.log.levels.WARN)
 end
 
--- Treesitter textobjects (main branch uses separate setup)
+-- Treesitter textobjects (requires `main` branch, not `master` -- see plugins.lua)
+-- `master` is frozen and uses the old nested-in-configs API; `main` exposes setup() directly.
 local status_textobjects, textobjects = pcall(require, 'nvim-treesitter-textobjects')
 if status_textobjects then
   textobjects.setup {
