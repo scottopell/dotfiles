@@ -1,4 +1,5 @@
 # Sensitive authentication data
+acli/
 configstore/
 graphite/
 ddtool/
@@ -7,6 +8,7 @@ op/
 ghtoken
 
 # App-managed data
+iterm2/
 uv/
 flutter/
 
