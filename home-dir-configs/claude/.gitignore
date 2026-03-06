@@ -10,6 +10,7 @@ paste-cache/
 projects/
 plans/
 tasks/
+telemetry/
 usage-data/
 
 policy-limits.json
