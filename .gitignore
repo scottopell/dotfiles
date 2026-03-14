@@ -5,6 +5,7 @@ graphite/
 ddtool/
 gcloud/
 op/
+pup/
 ghtoken
 
 # App-managed data
