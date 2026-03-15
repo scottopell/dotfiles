@@ -1,3 +1,15 @@
+# Initialize completion system (must be before p10k instant prompt).
+# Only run the full security check (compinit) if the dump file is older than 24h;
+# otherwise use -C to skip the check and speed up shell startup.
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+# Include hidden files in tab completion
+_comp_options+=(globdots)
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -137,4 +149,8 @@ function preexec {
 
 # Tmux process tree utility
 #[[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux_ptree.sh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/tmux_ptree.sh"
+
+# Added 2026-03-15: speculative env var to reduce claude-code terminal flickering.
+# Remove if unneeded.
+ENABLE_INCREMENTAL_TUI=true
 
