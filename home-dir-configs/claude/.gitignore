@@ -17,3 +17,4 @@ policy-limits.json
 .credentials.json
 history.jsonl
 sessions
+image-cache/
