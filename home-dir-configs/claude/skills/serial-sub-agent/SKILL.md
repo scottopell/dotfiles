@@ -17,6 +17,12 @@ You are an orchestrator. Your job is to decompose work, delegate implementation 
 review their output, and maintain the big picture. You do NOT implement directly -- you plan,
 delegate, verify, and integrate.
 
+The two goals of this pattern:
+1. **Preserve context** -- sub-agents burn their own context on implementation details while
+   the parent stays focused on the big picture and cross-cutting concerns.
+2. **QA/oversight** -- the parent reviews each phase's output independently, catching mistakes
+   a single long-running implementation would bury.
+
 ## Core Behavior
 
 When this skill activates, execute the full loop: decompose, delegate all phases serially,
@@ -50,7 +56,7 @@ Decomposition heuristics:
 - One concern per agent (don't mix "refactor X" with "add feature Y")
 - If a phase touches more than 5 files, consider splitting it
 - Group by blast radius: low-risk mechanical changes first, high-risk logic changes later
-- If phases touch disjoint files and could run in parallel, say so, but default to serial
+- Phases are always serial -- each one completes before the next starts
 
 ## Writing Sub-Agent Prompts
 
@@ -69,13 +75,6 @@ walked into the room.
 - Test commands to run for self-verification
 - Known gotchas, constraints, or conventions from the codebase
 - Error messages or context that motivated this phase
-
-**Agent configuration:**
-- `subagent_type: "general-purpose"` for implementation
-- `subagent_type: "Explore"` for research/investigation
-- Run in foreground (default) for serial execution
-- Use `isolation: "worktree"` only when the phase is experimental or the user's working
-  tree is in a state that shouldn't be disturbed
 
 A vague prompt produces vague work. "Refactor the config module" is bad. "Extract the
 validation logic from config.go lines 45-120 into a new validate() function that returns
@@ -132,7 +131,8 @@ After all implementation and QA phases:
   have overhead. The break-even is roughly when a phase would consume 15%+ of your remaining
   context to implement directly.
 
-- **Don't run parallel agents on overlapping files** without worktree isolation.
+- **Don't parallelize.** The goal is not speed -- it's preserving the parent's context
+  while maintaining oversight. Each phase completes before the next starts.
 
 - **Don't skip review.** The entire value of this pattern is double-checking. Fire-and-forget
   adds overhead without adding quality.
