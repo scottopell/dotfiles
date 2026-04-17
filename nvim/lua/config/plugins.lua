@@ -53,11 +53,15 @@ require("lazy").setup({
   } },
   { "nvim-lua/plenary.nvim" },
 
-  -- Treesitter
+  -- Treesitter (main branch = rewrite for nvim 0.12+; does NOT support lazy-loading)
+  -- NOTE: `build = ":TSUpdate"` deliberately omitted. On `main`, `:TSUpdate` with no args
+  -- tries to update every parser in the registry (~hundreds), which causes modal spam on
+  -- failure. Parser installation is driven explicitly by `ts.install(ensure_installed)` in
+  -- config/treesitter.lua. Run `:TSUpdate <lang>` manually when you actually want updates.
   {
     "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
+    branch = "main",
+    lazy = false,
     dependencies = {
       { "nvim-treesitter/nvim-treesitter-textobjects", branch = "main" },
     },

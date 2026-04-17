@@ -1,44 +1,46 @@
--- Treesitter configuration
--- Parsers to ensure are always installed
+-- Treesitter configuration (nvim-treesitter `main` branch API).
+--
+-- The `main` branch is a full rewrite: no `configs.setup { ensure_installed, highlight.enable }`.
+-- Instead: call `install()` to fetch parsers, and start highlighting via a FileType autocmd.
+
 local ensure_installed = {
   "bash", "dockerfile", "gitcommit", "gitignore", "go", "javascript",
-  "json", "lua", "markdown", "powershell", "python", "query", "requirements",
-  "rst", "rust", "toml", "tsv", "tsx", "typescript", "vim", "vimdoc", "yaml"
+  "json", "lua", "markdown", "markdown_inline", "powershell", "python",
+  "query", "requirements", "rst", "rust", "toml", "tsv", "tsx", "typescript",
+  "vim", "vimdoc", "yaml",
 }
 
-local status, treesitter = pcall(require, 'nvim-treesitter.configs')
-if status then
-  treesitter.setup {
-    ensure_installed = ensure_installed,
+local ok_ts, ts = pcall(require, "nvim-treesitter")
+if ok_ts then
+  ts.install(ensure_installed)
 
-    -- Install parsers synchronously (only applied to `ensure_installed`)
-    sync_install = false,
-
-    -- Automatically install missing parsers when entering buffer
-    auto_install = true,
-
-    highlight = {
-      enable = true,
-      additional_vim_regex_highlighting = false,
-    },
-  }
+  -- Enable highlighting for any buffer whose filetype has an installed parser.
+  -- `vim.treesitter.start()` errors when no parser exists, so guard with pcall.
+  vim.api.nvim_create_autocmd("FileType", {
+    callback = function(args)
+      pcall(vim.treesitter.start, args.buf)
+    end,
+  })
 else
   vim.notify("nvim-treesitter not installed. Run :Lazy sync to install plugins.", vim.log.levels.WARN)
 end
 
--- Treesitter textobjects (requires `main` branch, not `master` -- see plugins.lua)
--- `master` is frozen and uses the old nested-in-configs API; `main` exposes setup() directly.
-local status_textobjects, textobjects = pcall(require, 'nvim-treesitter-textobjects')
-if status_textobjects then
+-- Textobjects on `main` drops the `select.keymaps` table -- map manually via select_textobject().
+local ok_to, textobjects = pcall(require, "nvim-treesitter-textobjects")
+if ok_to then
   textobjects.setup {
     select = {
-      enable = true,
-      keymaps = {
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-      },
+      lookahead = true,
     },
   }
+
+  local select_to = function(capture)
+    return function()
+      require("nvim-treesitter-textobjects.select").select_textobject(capture, "textobjects")
+    end
+  end
+  vim.keymap.set({ "x", "o" }, "af", select_to("@function.outer"))
+  vim.keymap.set({ "x", "o" }, "if", select_to("@function.inner"))
+  vim.keymap.set({ "x", "o" }, "ac", select_to("@class.outer"))
+  vim.keymap.set({ "x", "o" }, "ic", select_to("@class.inner"))
 end
