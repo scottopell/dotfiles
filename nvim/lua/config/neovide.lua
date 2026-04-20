@@ -47,3 +47,13 @@ vim.api.nvim_create_autocmd("UIEnter", {
   callback = vim.schedule_wrap(override_dropfile),
 })
 override_dropfile()
+
+-- Cmd-V pastes from the macOS system clipboard in every mode, matching every
+-- other Mac app. Needed because `<C-r>"` reads the unnamed register, not `+`.
+-- See https://github.com/neovide/neovide/issues/1602.
+local paste_opts = { desc = "Paste from system clipboard" }
+vim.keymap.set("n", "<D-v>", '"+p', paste_opts)
+vim.keymap.set("v", "<D-v>", '"+p', paste_opts)
+vim.keymap.set("i", "<D-v>", "<C-r>+", paste_opts)
+vim.keymap.set("c", "<D-v>", "<C-r>+", paste_opts)
+vim.keymap.set("t", "<D-v>", [[<C-\><C-n>"+pi]], paste_opts)
