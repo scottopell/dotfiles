@@ -22,6 +22,7 @@ pcall(vim.cmd, "colorscheme kanagawa-wave")
 require("config.lsp")
 require("config.treesitter")
 require("config.telescope")
+require("config.neovide")
 
 -- Auto-open DiffviewOpen -u when opening file named 'd' that doesn't exist
 vim.api.nvim_create_autocmd("VimEnter", {
