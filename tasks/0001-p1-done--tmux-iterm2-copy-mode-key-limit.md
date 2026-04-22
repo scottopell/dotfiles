@@ -2,7 +2,20 @@
 created: 2026-03-03
 priority: p1
 status: done
+resolved: 2026-04-21
 ---
+
+## 2026-04-21 follow-up: bug fixed upstream in iTerm2 3.6.10
+
+Retested on iTerm2 3.6.10 with an isolated tmux server (`tmux -L focustest
+-f /tmp/tmux-focustest.conf`) that re-enables `focus` in terminal-features.
+Copy-mode key delivery no longer stalls after 3 presses — sustained `k`
+scrolling through a 20-line scratch file worked without issue, confirming
+the underlying iTerm2 regression was fixed between 3.6.6 and 3.6.10.
+
+The `terminal-features` workaround has been removed from `tmux/tmux.conf`;
+the stock tmux default is used again, which means focus-event reporting
+is now active for the nvim render-markdown.nvim FocusGained re-render path.
 
 # tmux copy-mode: exactly 3 keypresses then stalls in iTerm2
 
