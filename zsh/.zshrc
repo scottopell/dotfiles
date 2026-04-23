@@ -1,14 +1,35 @@
-# Initialize completion system (must be before p10k instant prompt).
-# Only run the full security check (compinit) if the dump file is older than 24h;
-# otherwise use -C to skip the check and speed up shell startup.
+typeset -U path fpath
+
+# Shims in PATH so `python` works without invoking `pyenv init`; first `pyenv`
+# call replaces this stub with the real init.
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d "$PYENV_ROOT/bin" ]] && path=("$PYENV_ROOT/bin" $path)
+path=("$PYENV_ROOT/shims" $path)
+pyenv() {
+  unfunction pyenv
+  eval "$(command pyenv init - --no-rehash)"
+  pyenv "$@"
+}
+
 autoload -Uz compinit
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
-  compinit
-else
+_zcompdump_fresh=( ${ZDOTDIR:-$HOME}/.zcompdump(Nmh-24) )
+if (( ${#_zcompdump_fresh} )); then
   compinit -C
+else
+  compinit
 fi
-# Include hidden files in tab completion
+unset _zcompdump_fresh
 _comp_options+=(globdots)
+
+_dircolors_cache="${XDG_CACHE_HOME:-$HOME/.cache}/dircolors.zsh"
+_dircolors_fresh=( $_dircolors_cache(Nmh-168) )
+if (( ! ${#_dircolors_fresh} )); then
+  mkdir -p "${_dircolors_cache:h}"
+  dircolors > $_dircolors_cache
+fi
+source $_dircolors_cache
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+unset _dircolors_cache _dircolors_fresh
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
