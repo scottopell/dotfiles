@@ -79,7 +79,7 @@ require("lazy").setup({
   -- Markdown rendering with enhanced visual formatting
   {
     "scottopell/render-markdown.nvim",
-    branch = "feat/ignore-horizontal-scroll",
+    branch = "main",
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons"
