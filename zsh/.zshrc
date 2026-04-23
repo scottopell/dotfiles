@@ -122,6 +122,9 @@ setopt HIST_IGNORE_ALL_DUPS
 
 ## End History Section
 
+# Load the p10k theme (tracked as a submodule of ~/.config).
+source "${XDG_CONFIG_HOME:-$HOME/.config}/powerlevel10k/powerlevel10k.zsh-theme"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
