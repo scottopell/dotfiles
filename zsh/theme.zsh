@@ -41,6 +41,21 @@ _theme_emit_iterm() {
     fi
 }
 
+# Aligns Claude Code's theme with the current mode. Only affects new sessions
+# (settings are read at session startup). For running sessions, use /theme.
+_theme_update_claude() {
+    local mode="$1" settings="$HOME/.claude/settings.json"
+    [[ -f "$settings" ]] || return 0
+    command -v jq >/dev/null 2>&1 || return 0
+    local tmp
+    tmp=$(mktemp) || return 0
+    if jq --arg t "$mode" '.theme = $t' "$settings" > "$tmp" 2>/dev/null; then
+        mv "$tmp" "$settings"
+    else
+        rm -f "$tmp"
+    fi
+}
+
 theme() {
     _theme_ensure_state
     local current target
@@ -75,8 +90,9 @@ theme() {
     fi
 
     _theme_emit_iterm "$target"
+    _theme_update_claude "$target"
 
-    print "theme: $target (run 'exec zsh' in other shells to reload prompt/FZF)"
+    print "theme: $target (run 'exec zsh' in other shells; /theme in running claude-code)"
 }
 
 _theme_ensure_state
