@@ -38,6 +38,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Exports $THEME (light|dark) from state file; defines `theme` command.
+source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/theme.zsh"
+
 #
 # User configuration sourced by interactive shells
 #
@@ -99,8 +102,12 @@ extract () {
 
 export EDITOR="nvim"
 
-# FZF dark theme (gruvbox-inspired)
-export FZF_DEFAULT_OPTS='--color=fg:#ebdbb2,bg:#282828,hl:#fabd2f,fg+:#ebdbb2,bg+:#3c3836,hl+:#fabd2f,info:#83a598,prompt:#bdae93,pointer:#84a0c6,marker:#fe8019,spinner:#8ec07c,header:#928374'
+# FZF gruvbox palette
+if [[ "$THEME" == light ]]; then
+  export FZF_DEFAULT_OPTS='--color=fg:#3c3836,bg:#fbf1c7,hl:#b57614,fg+:#3c3836,bg+:#ebdbb2,hl+:#b57614,info:#076678,prompt:#7c6f64,pointer:#8f3f71,marker:#af3a03,spinner:#427b58,header:#928374'
+else
+  export FZF_DEFAULT_OPTS='--color=fg:#ebdbb2,bg:#282828,hl:#fabd2f,fg+:#ebdbb2,bg+:#3c3836,hl+:#fabd2f,info:#83a598,prompt:#bdae93,pointer:#84a0c6,marker:#fe8019,spinner:#8ec07c,header:#928374'
+fi
 
 # Allows >> to create a new file (not dangerous so no reason not to)
 setopt APPEND_CREATE

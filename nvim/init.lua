@@ -16,8 +16,7 @@ require("config.options")
 require("config.keymaps")
 require("config.plugins")
 
--- Set colorscheme after plugins are loaded (protected call)
-pcall(vim.cmd, "colorscheme kanagawa-wave")
+require("config.theme").setup()
 
 require("config.lsp")
 require("config.treesitter")

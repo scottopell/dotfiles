@@ -14,9 +14,7 @@ vim.opt.laststatus = 2
 -- Custom statusline
 vim.opt.statusline = "[%n] %f%m %= col %c | %b 0x%B | %2p%%"
 
--- Light vs Dark Mode
-vim.opt.background = "dark"
--- enable truecolor
+-- enable truecolor (background + colorscheme are set by config.theme)
 vim.opt.termguicolors = true
 
 -- Markdown settings
