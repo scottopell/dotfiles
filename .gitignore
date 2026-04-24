@@ -24,7 +24,7 @@ wireshark/
 */logs/
 */tmp/
 */temp/
-*/.DS_Store
+.DS_Store
 *.log
 git/config.local
 
@@ -38,7 +38,6 @@ home-dir-configs/claude/settings.json
 home-dir-configs/claude/settings.local.json
 home-dir-configs/claude/plugins/
 home-dir-configs/claude/stats-cache.json
-home-dir-configs/claude/.DS_Store
 home-dir-configs/claude/mcp-needs-auth-cache.json
 
 # Claude skills sourced externally via symlink (private scott-skills, etc.)
@@ -46,6 +45,7 @@ home-dir-configs/claude/skills/writing-style
 home-dir-configs/claude/skills/rust-dev
 home-dir-configs/claude/skills/agent-guidance-audit
 home-dir-configs/claude/skills/agent-browser
+home-dir-configs/claude/skills/christophe-reviewer
 home-dir-configs/claude/skills/*.zip
 
 # Goose AI
