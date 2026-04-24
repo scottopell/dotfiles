@@ -26,6 +26,21 @@ _theme_ensure_state() {
     [[ -f "$_theme_state_file" ]] || _theme_default >| "$_theme_state_file"
 }
 
+# Emits iTerm2 OSC 1337 SetProfile for the given mode. Wraps in DCS passthrough
+# when inside tmux. Called both on theme change and on shell startup so new
+# windows snap to the correct profile (iTerm's default-for-new-windows is fixed
+# in prefs and we don't want to fight it).
+_theme_emit_iterm() {
+    local mode="$1" profile
+    [[ -n "$ITERM_SESSION_ID" || "$LC_TERMINAL" == iTerm2 || "$TERM_PROGRAM" == iTerm.app ]] || return 0
+    [[ "$mode" == light ]] && profile=Light || profile=Dark
+    if [[ -n "$TMUX" ]]; then
+        printf '\ePtmux;\e\e]1337;SetProfile=%s\a\e\\' "$profile"
+    else
+        printf '\e]1337;SetProfile=%s\a' "$profile"
+    fi
+}
+
 theme() {
     _theme_ensure_state
     local current target
@@ -59,21 +74,11 @@ theme() {
         tmux source-file "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf" >/dev/null 2>&1
     fi
 
-    # Broadcast to iTerm2 via OSC profile switch. Works over SSH: the escape
-    # travels to the local iTerm. Requires profiles literally named "Light" / "Dark".
-    # Inside tmux, wrap in DCS passthrough so tmux forwards the OSC to iTerm.
-    if [[ -n "$ITERM_SESSION_ID" || "$LC_TERMINAL" == iTerm2 || "$TERM_PROGRAM" == iTerm.app ]]; then
-        local profile
-        [[ "$target" == light ]] && profile=Light || profile=Dark
-        if [[ -n "$TMUX" ]]; then
-            printf '\ePtmux;\e\e]1337;SetProfile=%s\a\e\\' "$profile"
-        else
-            printf '\e]1337;SetProfile=%s\a' "$profile"
-        fi
-    fi
+    _theme_emit_iterm "$target"
 
     print "theme: $target (run 'exec zsh' in other shells to reload prompt/FZF)"
 }
 
 _theme_ensure_state
 export THEME="$(<"$_theme_state_file")"
+_theme_emit_iterm "$THEME"
