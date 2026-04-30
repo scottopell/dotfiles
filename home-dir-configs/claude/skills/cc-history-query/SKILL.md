@@ -98,16 +98,28 @@ Use `-l` (list files) when you expect many hits. Drop `-l` and add `-n -C 2` for
 
 If `rg` returns nothing, try a looser keyword or word-stem before giving up. Don't fall back to slurping whole files.
 
-### Step 3 — open candidates, extract the relevant message
+### Step 3 — locate the relevant region within each candidate
 
-JSONL files are line-delimited JSON. To zero in on the relevant message:
+Do **not** read the candidate from the top and stop when you find something that partially fits. Long sessions (300+ lines) commonly have a setup phase followed by a resolution phase an hour later — reading only the beginning means you summarize the setup and miss the answer.
+
+**For each candidate file:**
+
+1. Run `rg -n 'KEYWORD' /path/to/session.jsonl` with the user's specific keywords to get line numbers. This immediately shows *where* in the session the relevant content is.
+2. Also search for resolution-signal words derived from the user's framing:
+   - If user said "we debugged X" → also grep for `bug`, `fix`, `fork`, `patch`, `root cause`
+   - If user said "we built Y" → also grep for `deploy`, `commit`, `done`, `works`
+   - If user said "we decided Z" → also grep for `decision`, `chose`, `going with`
+3. Read the region around the **highest-line-number match** — that's where the conversation resolved. Use `Read` with `offset`/`limit` to grab 20–30 lines of context there.
 
 ```bash
-# Print matching lines with line numbers, then Read those specific lines for context
+# Get all matching line numbers, look at both early and late matches
 rg -n 'KEYWORD' /path/to/session.jsonl
+
+# Then read the tail region — where the resolution happened
+# (adjust offset to the last cluster of matches)
 ```
 
-Then use `Read` with `offset`/`limit` to grab the surrounding 5–10 lines for context. Don't read entire JSONL files unless they're small (under a few hundred lines).
+**Validate before reporting:** Before summarizing, check that your answer covers the user's framing. If the user said "we found a bug in X" and your summary never mentions a bug, you read the wrong region — keep reading.
 
 ## Parsing JSONL events
 
@@ -156,6 +168,8 @@ Example:
 >   > "snowflake creds rotate every 90 days — triggered by compliance/rotate.py cron"
 
 If the search returns nothing, say so plainly. Do not invent a plausible answer from general knowledge.
+
+**Do not confirm a match too early.** If the session is large and your summary doesn't cover the user's framing (e.g. they said "we found a bug" but your summary only covers the setup), keep reading — the answer is probably in the tail of the same session.
 
 ## Privacy and safety
 
