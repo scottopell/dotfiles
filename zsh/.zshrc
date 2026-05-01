@@ -100,6 +100,34 @@ extract () {
   fi
 }
 
+paste-remote() {
+  local host="$1"
+  local dir="${2:-/home/bits/dumping-ground}"
+  local remote_file
+
+  if [[ -z "$host" ]]; then
+    echo "usage: paste-remote <ssh-host> [remote-dir]" >&2
+    return 2
+  fi
+
+  remote_file="$dir/clipboard-$(date +%Y%m%d-%H%M%S)-$$.png"
+
+  local result
+  result=$(pngpaste - | ssh "$host" "cat > '$remote_file' && printf '%s' '$remote_file'") || return $?
+  print -r -- "$result"
+  print -rn -- "$result" | pbcopy
+}
+
+_paste_remote() {
+  if (( CURRENT == 2 )); then
+    _ssh_hosts
+  else
+    _files -/
+  fi
+}
+
+compdef _paste_remote paste-remote
+
 export EDITOR="nvim"
 
 # FZF gruvbox palette
