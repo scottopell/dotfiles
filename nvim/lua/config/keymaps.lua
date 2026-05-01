@@ -48,7 +48,7 @@ vim.keymap.set('n', '<leader>?', '<cmd>Telescope keymaps<cr>', { noremap = true,
 -- Neo-tree file explorer toggle
 vim.keymap.set('n', '<leader>e', '<cmd>Neotree toggle<cr>', { noremap = true, silent = true, desc = 'Toggle file explorer' })
 
--- Markdown checkbox toggle
+-- Markdown checkbox toggle + flowmark formatter
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "markdown",
   callback = function()
@@ -66,6 +66,32 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.api.nvim_set_current_line(new_line)
       end
     end, { buffer = true, desc = 'Toggle markdown checkbox' })
+
+    vim.keymap.set('n', '<leader>mf', function()
+      -- --auto = --inplace --nobackup --semantic --cleanups --smartquotes --ellipses;
+      -- the inplace flags don't apply when streaming, so pass the rest explicitly.
+      local flags = { '--semantic', '--cleanups', '--smartquotes', '--ellipses', '-', '-o', '-' }
+      local cmd
+      if vim.fn.executable('flowmark') == 1 then
+        cmd = { 'flowmark', unpack(flags) }
+      elseif vim.fn.executable('uvx') == 1 then
+        cmd = { 'uvx', 'flowmark', unpack(flags) }
+      else
+        vim.notify('flowmark: neither flowmark nor uvx on PATH', vim.log.levels.ERROR)
+        return
+      end
+      local input = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), '\n')
+      local result = vim.system(cmd, { stdin = input, text = true }):wait()
+      if result.code ~= 0 then
+        vim.notify('flowmark failed: ' .. (result.stderr ~= '' and result.stderr or result.stdout), vim.log.levels.ERROR)
+        return
+      end
+      local lines = vim.split(result.stdout, '\n', { plain = true })
+      if lines[#lines] == '' then table.remove(lines) end
+      local view = vim.fn.winsaveview()
+      vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+      vim.fn.winrestview(view)
+    end, { buffer = true, desc = 'Format markdown buffer with flowmark' })
   end
 })
 
