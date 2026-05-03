@@ -1,0 +1,12 @@
+# Per-machine Neovide config. Copy to config.toml and edit.
+# config.toml is gitignored because nvim lives at different paths per machine
+# (Homebrew on Apple Silicon, MacPorts here, etc.) and macOS GUI apps don't
+# inherit shell PATH, so Neovide can't find it without an absolute path.
+#
+# Find your nvim with: which nvim
+# Common locations:
+#   /opt/homebrew/bin/nvim   (Homebrew, Apple Silicon)
+#   /usr/local/bin/nvim      (Homebrew, Intel)
+#   /opt/local/bin/nvim      (MacPorts)
+
+neovim-bin = "/opt/homebrew/bin/nvim"

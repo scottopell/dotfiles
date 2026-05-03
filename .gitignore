@@ -18,6 +18,9 @@ fish/
 helix/
 wireshark/
 
+# Per-machine overrides (see corresponding *.example)
+neovide/config.toml
+
 # Standard patterns
 */cache/
 */Cache/
