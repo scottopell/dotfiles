@@ -50,31 +50,68 @@ Subsequent questions should be **conditioned on earlier answers**, not asked in
 parallel. If question 2 would have been the same regardless of how question 1 was
 answered, you're hedging rather than narrowing.
 
+## One Round Is Rarely Enough
+
+Decomposition isn't a one-shot. After the first answer lands, the design space changes
+shape -- some sub-decisions collapse, others that weren't visible before come into
+focus. Re-decompose at the new scope and ask the next load-bearing question. The
+natural shape of this work is rounds, not a single question.
+
+Within a round, you can ask more than one question -- but only if they're genuinely
+orthogonal load-bearing axes at this scope. If question 2's framing would shift based
+on question 1's answer, it belongs in the next round.
+
+Stop when the next plausible question wouldn't reshape what you'd draft. Not when you
+have "enough information" -- that's always available -- but when the structure has
+stopped responding to further questions. If you can still name a question whose answer
+would change the design, ask it.
+
 ## Worked Example
 
 User: "I'm not sure what the right move is for conversation terminal state transitions
 -- help me think through this."
 
-Decomposition:
+**Decomposition:**
 
 - *Decision:* how the system behaves when a conversation moves into a terminal state
   (archived, closed, expired, abandoned).
 - *Sub-decisions:* (a) which states count as terminal? (b) what triggers entry --
   user action, timeout, external signal? (c) what's preserved -- history, attachments,
-  metadata? (d) is it reversible -- can a terminal conversation be revived? (e) what
-  does the user see -- hidden, greyed, in an archive view?
+  metadata? (d) is it reversible? (e) what does the user see -- hidden, greyed, in an
+  archive view?
 - *Load-bearing:* (d) reversibility. If terminal is truly terminal, preservation can
-  be cheap and the UI can hide aggressively. If terminal is reversible, preservation
-  must be richer, the UI has to afford rediscovery, and the trigger becomes
-  higher-stakes because mistakes are recoverable rather than catastrophic. Every
+  be cheap and the UI can hide aggressively. If reversible, preservation must be
+  richer, the UI has to afford rediscovery, and triggers become higher-stakes. Every
   other sub-decision reweights based on this one.
 
-First question is about reversibility. The rest are conditioned on the answer.
+**Round 1.** Ask about reversibility. Suppose the user answers "truly terminal."
 
-If the first question had been (a) "what states count as terminal?" -- plausible, but
-lower-leverage -- the user would have answered, and the remaining four questions
-would need to be asked with their trade-offs unchanged. No compression happened.
-That's the test.
+That answer collapses some sub-decisions and reshapes others. Preservation no longer
+needs to support revival. Rediscovery UX evaporates. What's now load-bearing is the
+*trigger* (because mistakes are unrecoverable, entry has to be intentional or very
+safe) and *visibility* (do users need to see archived conversations at all, or are
+they gone-gone?). These are orthogonal -- visibility doesn't shift based on the
+trigger answer, and vice versa.
+
+**Round 2.** Ask both, in the same round. Suppose: trigger = user action only;
+visibility = archive view available.
+
+Now preservation is back in scope -- the archive view needs *something* to show, so
+"what's preserved" is no longer cheap. And the question of *which states count as
+terminal* is finally tractable: with an archive view and user-initiated entry, the
+distinction between "archived" and "deleted" becomes a meaningful product question.
+
+**Round 3.** Ask about preservation depth and how many terminal states to expose.
+
+*Stopping check:* what's the next plausible question? Icon for the archive button.
+Sort order in the archive view. These don't reshape the design -- they're tuning.
+Stop, draft.
+
+If the first question had been (a) "what states count as terminal?" instead --
+plausible, but lower-leverage -- the user would have answered, and the remaining
+sub-decisions would still need to be asked with their trade-offs unchanged. No
+compression. That's the test for picking the right axis within a round, and it's the
+same test that tells you to keep going across rounds.
 
 ## Framing Individual Questions
 
@@ -108,10 +145,19 @@ you can show it.
 
 ## Anti-Patterns
 
-### Parallel independent questions
-The single strongest signal that decomposition didn't happen. If question 2 doesn't
-depend on the answer to question 1, you're asking a batch of hedges rather than
-narrowing a space. Stop, find the axis with leverage, ask *that* alone.
+### Parallel questions that should have been sequenced
+Within a round, parallel questions are fine *if* each is load-bearing on a different
+axis at the current scope. The failure mode is asking in parallel two questions where
+question 2's framing would have shifted based on question 1's answer. Test: would
+you have written question 2 the same way regardless of how question 1 was answered?
+If no, sequence them across rounds.
+
+### Stopping after the first good answer
+The most common failure mode of this skill. You pick the load-bearing question, get a
+clean answer, and the temptation is to jump to drafting. But one answer rarely
+stabilizes the design -- it usually reveals the *next* load-bearing axis. Apply the
+stopping rule honestly: only stop when the next plausible question wouldn't reshape
+what you'd draft.
 
 ### "What do you want to do?"
 The laziest question. It pushes all the cognitive load to the user without narrowing
