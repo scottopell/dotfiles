@@ -1,6 +1,6 @@
 ---
 name: prs-for-busy-folks
-description: Generate a scannable PR title and description from a code diff for busy reviewers, then apply it via `gh pr edit`. The core rule: describe CONCEPTS (what changed and why), not file lists — busy reviewers already have the file list, they need the semantic summary that answers "what would I want to know before reviewing this?" Use this skill whenever the user wants to write, update, rewrite, or summarize a pull request description, including phrases like "write a PR description", "update the PR body", "summarize this PR", "make a PR title", "draft PR writeup", or asks for a PR writeup on the current branch's open PR. Also trigger proactively when the user is wrapping up work on a branch and mentions they need to update a PR before requesting review.
+description: Generate a scannable PR title and description from `gh pr diff` for busy reviewers, creating a placeholder PR first when needed so the diff source is always the PR diff. The core rule: describe CONCEPTS (what changed and why), not file lists — busy reviewers already have the file list, they need the semantic summary that answers "what would I want to know before reviewing this?" Use this skill whenever the user wants to write, update, rewrite, or summarize a pull request description, including phrases like "write a PR description", "update the PR body", "summarize this PR", "make a PR title", "draft PR writeup", or asks for a PR writeup on the current branch's open PR. Also trigger proactively when the user is wrapping up work on a branch and mentions they need to update a PR before requesting review.
 ---
 
 # PRs for Busy Folks
@@ -15,9 +15,15 @@ Every rule in this skill exists to serve that reader. When in doubt, ask yoursel
 
 ## Workflow
 
-1. **Get the diff.** If it's not already in context, run `gh pr diff --patch` via Bash. For large PRs the terminal output can be truncated — if you suspect truncation, pipe to a tempfile and read that instead.
-2. **Draft title and body** following the rules below.
-3. **Apply the update** by running `gh pr edit --title "..." --body "..."` via Bash. Execute it — don't print the command as text and stop.
+1. **Ensure a PR exists.** Run `gh pr view --json number,url` via Bash.
+   - If a PR exists, use it.
+   - If no PR exists, create a placeholder PR first with `gh pr create --title "WIP" --body "TODO"` via Bash. Do not draft the real title/body yet.
+   - If `gh pr create` needs a base branch and GitHub cannot infer one, inspect the repo default branch (`gh repo view --json defaultBranchRef`) and use it unless the user specified otherwise.
+2. **Get the PR diff.** Run `gh pr diff --patch` via Bash. The title and body must be derived from this diff, not from guesses, branch summaries, commit messages, or generic fallback language. For large diffs the terminal output can be truncated — if you suspect truncation, pipe to a tempfile and read that instead.
+3. **Draft title and body** following the rules below.
+4. **Apply the real title/body** by writing the body to a temp file, then running `gh pr edit --title "..." --body-file /path/to/body.md` via Bash. Prefer `--body-file` over inline `--body` so Markdown, quotes, and newlines are preserved safely.
+
+Execute each required `gh` command — don't print commands as text and stop.
 
 ## Title
 
@@ -159,4 +165,6 @@ Quick self-check:
 - Every bullet describes a concept a reviewer couldn't trivially read off the diff?
 - If the diff looked truncated, did you note "Diff may be incomplete" at the end?
 
-Then run `gh pr edit --title "..." --body "..."` via Bash. Execute it — don't print the command and stop.
+Then write the body to a temp file and run `gh pr edit --title "..." --body-file /path/to/body.md` via Bash. Prefer `--body-file` over inline `--body` so Markdown, quotes, and newlines are preserved safely.
+
+Execute the command — don't print it as text and stop.
