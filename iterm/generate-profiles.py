@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import json, os
 
+FONT = "SauceCodeProNFM 12"
+
 def c(hex_str):
     h = hex_str.lstrip('#')
     return {
@@ -36,6 +38,8 @@ def build(name, guid, p):
         "Name": name,
         "Guid": guid,
         "Dynamic Profile Parent Name": "Default",
+        "Normal Font": FONT,
+        "Use Non-ASCII Font": False,
         "Background Color": c(p["bg"]),
         "Foreground Color": c(p["fg"]),
         "Cursor Color": c(p["cursor"]),
@@ -54,6 +58,7 @@ profiles = {
 }
 
 out = os.path.expanduser("~/Library/Application Support/iTerm2/DynamicProfiles/gruvbox.json")
+os.makedirs(os.path.dirname(out), exist_ok=True)
 with open(out, "w") as f:
     json.dump(profiles, f, indent=2)
 print(f"wrote {out}")
