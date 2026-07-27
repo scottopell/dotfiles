@@ -1,11 +1,15 @@
 # Sensitive authentication data
+1Password/
 acli/
 configstore/
 graphite/
+datadog/
 ddtool/
+dogbrew/
 gcloud/
 op/
 pup/
+tfenv/
 ghtoken
 
 # App-managed data
@@ -29,6 +33,8 @@ neovide/config.toml
 */temp/
 .DS_Store
 *.log
+__pycache__/
+*.py[cod]
 git/config.local
 
 JetBrains/
