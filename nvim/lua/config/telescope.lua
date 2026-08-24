@@ -24,18 +24,40 @@ local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 
+local function git_result(args)
+  local command = { "git" }
+  vim.list_extend(command, args)
+  return vim.system(command, { text = true }):wait()
+end
+
+local function git_output(args)
+  local result = git_result(args)
+  if result.code ~= 0 then
+    return ""
+  end
+  return vim.trim(result.stdout or "")
+end
+
+local function git_lines(args)
+  local output = git_output(args)
+  if output == "" then
+    return {}
+  end
+  return vim.split(output, "\n", { plain = true, trimempty = true })
+end
+
 local function diffview_picker()
   local function get_git_refs()
     local refs = {}
-    local head_subject = vim.fn.system("git log -1 --format='%s' HEAD 2>/dev/null | tr -d '\n'")
+    local head_subject = git_output({ "log", "-1", "--format=%s", "HEAD" })
 
     -- Core options: HEAD and HEAD with untracked
     table.insert(refs, { "HEAD", "commit", "current", head_subject or "Current commit" })
     table.insert(refs, { "-u", "commit", "current", "HEAD with untracked files" })
 
     -- Check which remote branches exist
-    local origin_main_exists = vim.fn.system("git rev-parse --verify origin/main 2>/dev/null") ~= ""
-    local origin_master_exists = vim.fn.system("git rev-parse --verify origin/master 2>/dev/null") ~= ""
+    local origin_main_exists = git_output({ "rev-parse", "--verify", "--quiet", "--end-of-options", "origin/main^{commit}" }) ~= ""
+    local origin_master_exists = git_output({ "rev-parse", "--verify", "--quiet", "--end-of-options", "origin/master^{commit}" }) ~= ""
 
     -- Add PR diff (merge-base diff against remote main branch - matches gh pr diff)
     local remote_main_branch = nil
@@ -46,7 +68,7 @@ local function diffview_picker()
     end
 
     if remote_main_branch then
-      local commits_ahead = vim.fn.system(string.format("git rev-list --count %s..HEAD 2>/dev/null | tr -d '\n'", remote_main_branch))
+      local commits_ahead = git_output({ "rev-list", "--count", remote_main_branch .. "..HEAD" })
       local pr_desc = string.format("PR diff (%s commits)", commits_ahead)
       table.insert(refs, { remote_main_branch .. "...HEAD", "pr", "merge-base", pr_desc })
     end
@@ -54,7 +76,7 @@ local function diffview_picker()
     -- Custom diff bases from git config (comma-separated)
     -- Set per-repo: git config --local custom.diffBases "q-branch-observer,other-branch"
     -- For bare branch names, checks both local and origin/ variants
-    local custom_bases = vim.fn.system("git config --get custom.diffBases 2>/dev/null | tr -d '\n'")
+    local custom_bases = git_output({ "config", "--get", "custom.diffBases" })
     if custom_bases ~= "" then
       for base in custom_bases:gmatch("[^,]+") do
         base = vim.trim(base)
@@ -64,9 +86,10 @@ local function diffview_picker()
           table.insert(candidates, "origin/" .. base)
         end
         for _, ref in ipairs(candidates) do
-          local exists = vim.fn.system(string.format("git rev-parse --verify %s 2>/dev/null", ref))
-          if exists ~= "" then
-            local commits = vim.fn.system(string.format("git rev-list --count %s..HEAD 2>/dev/null | tr -d '\n'", ref))
+          local valid_ref = git_result({ "check-ref-format", "--branch", ref }).code == 0
+          local exists = valid_ref and git_output({ "rev-parse", "--verify", "--quiet", "--end-of-options", ref .. "^{commit}" }) ~= ""
+          if exists then
+            local commits = git_output({ "rev-list", "--count", ref .. "..HEAD" })
             local desc = string.format("Custom base (%s commits ahead)", commits)
             table.insert(refs, { ref .. "...HEAD", "pr", "merge-base", desc })
           end
@@ -146,7 +169,7 @@ local function diffview_picker()
 
         if ref == "HEAD" then
           -- Show recent commits for HEAD
-          local log_output = vim.fn.systemlist("git log --oneline --decorate --color=never -15 HEAD 2>/dev/null")
+          local log_output = git_lines({ "log", "--oneline", "--decorate", "--color=never", "-15", "HEAD" })
           table.insert(preview_lines, "Recent Commits:")
           table.insert(preview_lines, "")
           for _, line in ipairs(log_output) do
@@ -155,7 +178,7 @@ local function diffview_picker()
 
         elseif ref == "-u" then
           -- Show untracked files
-          local untracked = vim.fn.systemlist("git ls-files --others --exclude-standard 2>/dev/null")
+          local untracked = git_lines({ "ls-files", "--others", "--exclude-standard" })
           table.insert(preview_lines, "Untracked Files:")
           table.insert(preview_lines, "")
           if #untracked == 0 then
@@ -170,7 +193,7 @@ local function diffview_picker()
           table.insert(preview_lines, "")
           table.insert(preview_lines, "Unstaged Changes:")
           table.insert(preview_lines, "")
-          local unstaged = vim.fn.systemlist("git diff --stat HEAD 2>/dev/null")
+          local unstaged = git_lines({ "diff", "--stat", "HEAD", "--" })
           if #unstaged == 0 then
             table.insert(preview_lines, "No unstaged changes")
           else
@@ -181,7 +204,7 @@ local function diffview_picker()
 
         else
           -- For PR diff or other refs, show shortstat + commits
-          local shortstat = vim.fn.systemlist("git diff --shortstat " .. ref .. " 2>/dev/null")
+          local shortstat = git_lines({ "diff", "--shortstat", ref, "--" })
           table.insert(preview_lines, "Diff Summary:")
           table.insert(preview_lines, "")
           if #shortstat > 0 then
@@ -195,7 +218,7 @@ local function diffview_picker()
           table.insert(preview_lines, "")
           table.insert(preview_lines, "Files Changed:")
           table.insert(preview_lines, "")
-          local files_stat = vim.fn.systemlist("git diff --stat " .. ref .. " 2>/dev/null")
+          local files_stat = git_lines({ "diff", "--stat", ref, "--" })
           for _, line in ipairs(files_stat) do
             table.insert(preview_lines, line)
           end
@@ -205,7 +228,7 @@ local function diffview_picker()
           table.insert(preview_lines, "Commits in Range:")
           table.insert(preview_lines, "")
           local commit_range = ref:gsub("%.%.%.", "..")  -- Convert three-dot to two-dot for log
-          local commits = vim.fn.systemlist("git log --oneline --color=never " .. commit_range .. " 2>/dev/null")
+          local commits = git_lines({ "log", "--oneline", "--color=never", commit_range, "--" })
           if #commits == 0 then
             table.insert(preview_lines, "  No commits")
           else
@@ -223,7 +246,7 @@ local function diffview_picker()
         actions.close(prompt_bufnr)
         local selection = action_state.get_selected_entry()
         if selection then
-          vim.cmd("DiffviewOpen " .. selection.value)
+          vim.api.nvim_cmd({ cmd = "DiffviewOpen", args = { selection.value } }, {})
         end
       end)
       return true

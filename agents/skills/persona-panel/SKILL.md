@@ -88,8 +88,10 @@ Example of bad tension (strawman):
 
 ### 5. Launch all personas in parallel
 
-Spawn all agents simultaneously using `run_in_background: true`. Every persona gets the
-full artifact. Do not wait between spawns.
+Use the host agent system's parallel sub-agent capability when available. Every persona
+gets the full artifact. Launch the panel as one parallel batch rather than waiting between
+personas. If parallel sub-agents are unavailable, run them independently and avoid sharing
+one persona's conclusions with the next.
 
 ### 6. Synthesize into consolidated report
 

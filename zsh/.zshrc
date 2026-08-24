@@ -1,16 +1,5 @@
 typeset -U path fpath
 
-# Shims in PATH so `python` works without invoking `pyenv init`; first `pyenv`
-# call replaces this stub with the real init.
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d "$PYENV_ROOT/bin" ]] && path=("$PYENV_ROOT/bin" $path)
-path=("$PYENV_ROOT/shims" $path)
-pyenv() {
-  unfunction pyenv
-  eval "$(command pyenv init - --no-rehash)"
-  pyenv "$@"
-}
-
 autoload -Uz compinit
 _zcompdump_fresh=( ${ZDOTDIR:-$HOME}/.zcompdump(Nmh-24) )
 if (( ${#_zcompdump_fresh} )); then
@@ -20,16 +9,6 @@ else
 fi
 unset _zcompdump_fresh
 _comp_options+=(globdots)
-
-_dircolors_cache="${XDG_CACHE_HOME:-$HOME/.cache}/dircolors.zsh"
-_dircolors_fresh=( $_dircolors_cache(Nmh-168) )
-if (( ! ${#_dircolors_fresh} )); then
-  mkdir -p "${_dircolors_cache:h}"
-  dircolors > $_dircolors_cache
-fi
-source $_dircolors_cache
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-unset _dircolors_cache _dircolors_fresh
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -56,9 +35,11 @@ alias tmux='tmux -2'
 # Useful for piping into vim and then closing without needing to save
 alias v='nvim -R -'
 
-alias k='kubectl'
-# Example usage, kns datadog-agent sets kubectl namespace to 'datadog-agent'
-alias kns='kubectl config set-context --current --namespace '
+if (( $+commands[kubectl] )); then
+  alias k='kubectl'
+  # Example: `kns datadog-agent` sets the current context namespace.
+  alias kns='kubectl config set-context --current --namespace '
+fi
 
 alias vim='nvim'
 
@@ -85,14 +66,14 @@ extract () {
           *.tar.xz)    tar xf   $1    ;;
           *.tar.gz)    tar xvzf $1    ;;
           *.bz2)       bunzip2 $1     ;;
-          *.rar)       unrar x $1     ;;
+          *.rar)       if (( $+commands[unrar] )); then unrar x "$1"; else print -u2 "extract: unrar is required for .rar files"; return 127; fi ;;
           *.gz)        gunzip $1      ;;
           *.tar)       tar xvf $1     ;;
           *.tbz2)      tar xvjf $1    ;;
           *.tgz)       tar xvzf $1    ;;
           *.zip)       unzip $1       ;;
           *.Z)         uncompress $1  ;;
-          *.7z)        7z x $1        ;;
+          *.7z)        if (( $+commands[7z] )); then 7z x "$1"; else print -u2 "extract: 7z is required for .7z files"; return 127; fi ;;
           *)           echo "don't know how to extract '$1'..." ;;
       esac
   else
@@ -100,33 +81,43 @@ extract () {
   fi
 }
 
-paste-remote() {
-  local host="$1"
-  local dir="${2:-/home/bits/dumping-ground}"
-  local remote_file
+if (( $+commands[pngpaste] && $+commands[ssh] && $+commands[pbcopy] )); then
+  paste-remote() {
+    local host="$1"
+    local dir="$2"
+    local remote_file
 
-  if [[ -z "$host" ]]; then
-    echo "usage: paste-remote <ssh-host> [remote-dir]" >&2
-    return 2
-  fi
+    if [[ -z "$host" || -z "$dir" ]]; then
+      echo "usage: paste-remote <ssh-host> <remote-dir>" >&2
+      return 2
+    fi
+    if [[ ! "$host" =~ '^[A-Za-z0-9._@-]+$' ]]; then
+      echo "paste-remote: ssh-host contains unsupported characters" >&2
+      return 2
+    fi
+    if [[ ! "$dir" =~ '^/[A-Za-z0-9._/-]+$' ]]; then
+      echo "paste-remote: remote-dir must be an absolute path without spaces or shell metacharacters" >&2
+      return 2
+    fi
 
-  remote_file="$dir/clipboard-$(date +%Y%m%d-%H%M%S)-$$.png"
+    remote_file="$dir/clipboard-$(date +%Y%m%d-%H%M%S)-$$.png"
 
-  local result
-  result=$(pngpaste - | ssh "$host" "cat > '$remote_file' && printf '%s' '$remote_file'") || return $?
-  print -r -- "$result"
-  print -rn -- "$result" | pbcopy
-}
+    local result
+    result=$(pngpaste - | ssh "$host" "cat > '$remote_file' && printf '%s' '$remote_file'") || return $?
+    print -r -- "$result"
+    print -rn -- "$result" | pbcopy
+  }
 
-_paste_remote() {
-  if (( CURRENT == 2 )); then
-    _ssh_hosts
-  else
-    _files -/
-  fi
-}
+  _paste_remote() {
+    if (( CURRENT == 2 )); then
+      _ssh_hosts
+    else
+      _files -/
+    fi
+  }
 
-compdef _paste_remote paste-remote
+  compdef _paste_remote paste-remote
+fi
 
 export EDITOR="nvim"
 
@@ -136,6 +127,14 @@ if [[ "$THEME" == light ]]; then
 else
   export FZF_DEFAULT_OPTS='--color=fg:#ebdbb2,bg:#282828,hl:#fabd2f,fg+:#ebdbb2,bg+:#3c3836,hl+:#fabd2f,info:#83a598,prompt:#bdae93,pointer:#84a0c6,marker:#fe8019,spinner:#8ec07c,header:#928374'
 fi
+
+# Standard fzf completion and keybindings.
+(( $+commands[fzf] )) && source <(fzf --zsh)
+
+# Git-specific fzf widgets (tracked as a submodule of ~/.config).
+_fzf_git_script="${XDG_CONFIG_HOME:-$HOME/.config}/fzf-git.sh/fzf-git.sh"
+[[ -f "$_fzf_git_script" ]] && source "$_fzf_git_script"
+unset _fzf_git_script
 
 # Allows >> to create a new file (not dangerous so no reason not to)
 setopt APPEND_CREATE

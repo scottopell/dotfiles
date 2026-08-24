@@ -55,5 +55,5 @@ After reflection, output the continuation prompt in a fenced code block:
 ```
 
 The continuation prompt should be immediately usable to resume work in a fresh
-Claude Code context.
+agent context.
 The user will copy it manually.

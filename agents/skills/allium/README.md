@@ -58,7 +58,7 @@ Skills use the fully qualified form `/allium:skill` across all editors. Some edi
 /allium:weed the order spec says cancelled orders can't be refunded but the code allows it. Fix the code.
 ```
 
-Tend and weed are also available as autonomous **agents** that run in their own context, keeping Allium syntax out of your main session. Claude Code picks up agents from `agents/`, Copilot from `.github/agents/`. How editors discover skills and agents is still settling; we make these available in the most portable formats we can and expect to consolidate as conventions stabilise. If your editor doesn't pick something up, [raise an issue](https://github.com/juxt/allium/issues).
+This portable installation provides tend and weed as skills. Host-specific autonomous-agent wrappers are intentionally omitted; use the host agent system's normal skill invocation and delegation features when separate context is useful.
 
 ## The problem with conversational context
 

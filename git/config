@@ -20,7 +20,7 @@
 	gpgsign = true
 [core]
 	editor = nvim
-	excludesfile = ~/.config/git/gitignore_global
+	excludesfile = ~/.config/git/ignore
 	quotepath = false
 [diff]
 	tool = nvimdiff
@@ -39,11 +39,6 @@
 	prune = true
 	pruneTags = true
 	all = true
-[filter "lfs"]
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
 [help]
 	autocorrect = 20
 [gpg]

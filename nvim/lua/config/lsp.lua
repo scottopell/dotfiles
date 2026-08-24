@@ -31,25 +31,32 @@ local common_config = {
   }
 }
 
--- Configure and enable language servers
-local servers = { 'ts_ls', 'gopls' }
-for _, lsp in ipairs(servers) do
-  vim.lsp.config(lsp, common_config)
-  vim.lsp.enable(lsp)
+-- Configure optional language servers only when their executable is available.
+local servers = {
+  ts_ls = 'typescript-language-server',
+  gopls = 'gopls',
+}
+for lsp, executable in pairs(servers) do
+  if vim.fn.executable(executable) == 1 then
+    vim.lsp.config(lsp, common_config)
+    vim.lsp.enable(lsp)
+  end
 end
 
--- Configure rust-analyzer separately with custom settings
-vim.lsp.config('rust_analyzer', {
-  flags = {
-    debounce_text_changes = 150,
-  },
-  settings = {
-    ['rust-analyzer'] = {
-      -- Load all cargo features for better symbol coverage
-      cargo = {
-        allFeatures = true,
-      },
+-- Configure rust-analyzer separately with custom settings when installed.
+if vim.fn.executable('rust-analyzer') == 1 then
+  vim.lsp.config('rust_analyzer', {
+    flags = {
+      debounce_text_changes = 150,
+    },
+    settings = {
+      ['rust-analyzer'] = {
+        -- Load all cargo features for better symbol coverage
+        cargo = {
+          allFeatures = true,
+        },
+      }
     }
-  }
-})
-vim.lsp.enable('rust_analyzer')
+  })
+  vim.lsp.enable('rust_analyzer')
+end

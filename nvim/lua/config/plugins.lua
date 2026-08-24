@@ -70,9 +70,6 @@ require("lazy").setup({
   -- Rust
   { "rust-lang/rust.vim", ft = "rust" },
 
-  -- Go
-  { "fatih/vim-go", ft = "go", build = ":GoUpdateBinaries" },
-
   -- Convert between snake case, camelcase, pascalcase, etc
   { "johmsalas/text-case.nvim", event = "VeryLazy" },
 

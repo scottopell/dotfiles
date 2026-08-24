@@ -33,7 +33,6 @@
   "text-case.nvim": { "branch": "main", "commit": "e898cfd46fa6cde0e83abb624a16e67d2ffc6457" },
   "tokyonight.nvim": { "branch": "main", "commit": "cdc07ac78467a233fd62c493de29a17e0cf2b2b6" },
   "vim-dirvish": { "branch": "master", "commit": "9525f46ccbf2dd585523fe3e3b72151554df3a42" },
-  "vim-go": { "branch": "master", "commit": "f4b4ba17035aebcd222df90375c1cbb1dc4d8c5b" },
   "vim-gruvbox8": { "branch": "master", "commit": "4fe376f2829bad27dea8b7e15eba044e1a2d95f6" },
   "vim-indent-guides": { "branch": "master", "commit": "a1e1390c0136e63e813d051de2003bf0ee18ae30" },
   "vim-indent-object": { "branch": "master", "commit": "4984d544292d4f0974129273753d3b352a948dfa" },

@@ -1,13 +1,12 @@
 ---
 name: asking-questions
 description: >
-  Methodology for using AskUserQuestion to help the user work through a fuzzy decision
+  Methodology for using structured user questions to work through a fuzzy decision
   -- one where they know they're stuck but haven't articulated the structure of the
   choice yet. The job is to decompose the decision into sub-decisions and ask about
   the one with the most downstream leverage. Use when the user says "ask me questions",
-  "help me think through this", "use AskUserQuestion", or hands you something like
-  "I'm not sure what the right move is for X -- help me figure it out." Also
-  referenced by CLAUDE.md for default AskUserQuestion behavior.
+  "help me think through this", "ask structured questions", or hands you something like
+  "I'm not sure what the right move is for X -- help me figure it out."
 ---
 
 # Asking Questions Well

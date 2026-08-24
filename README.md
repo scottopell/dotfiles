@@ -6,16 +6,28 @@ XDG Base Directory compliant dotfiles. Written from scratch, not forked.
 ## Setup
 
 ```sh
-# Clone as ~/.config (backup existing first if needed: mv ~/.config ~/.config.bak)
+# Back up an existing ~/.config first.
 git clone https://github.com/scottopell/dotfiles ~/.config
-cd ~/.config && git submodule update --init --recursive
+git -C ~/.config submodule update --init --recursive
 
-# Symlinks for non-XDG configs
-ln -s ~/.config/home-dir-configs/psqlrc ~/.psqlrc
-ln -s ~/.config/home-dir-configs/p10k.zsh ~/.p10k.zsh
+# Inspect and install non-XDG entry points.
+~/.config/scripts/bootstrap-home.sh --dry-run
+~/.config/scripts/bootstrap-home.sh
 
-# Source zsh config
-echo '[ -f ~/.config/zsh/.zshrc ] && source ~/.config/zsh/.zshrc' >> ~/.zshrc
+# Manually add this line to the machine-managed ~/.zshrc:
+[ -f "$HOME/.config/zsh/.zshrc" ] && source "$HOME/.config/zsh/.zshrc"
+```
+
+`~/.zshrc` is intentionally not managed by the repository or bootstrap. This keeps portable dotfiles separate from MDM, package-manager, and machine-specific shell initialization. Add the source line in the appropriate place without replacing existing content.
+
+The bootstrap refuses to overwrite existing paths. It installs `~/.p10k.zsh`, `~/.psqlrc`, and `~/.agents/skills`. `~/AGENTS.md` remains machine-specific and unmanaged.
+
+Update an existing checkout with:
+
+```sh
+git -C ~/.config pull --ff-only
+git -C ~/.config submodule update --init --recursive
+~/.config/scripts/bootstrap-home.sh
 ```
 
 ## Structure
@@ -24,16 +36,27 @@ echo '[ -f ~/.config/zsh/.zshrc ] && source ~/.config/zsh/.zshrc' >> ~/.zshrc
 - `tmux/` - Tmux
 - `zsh/` - Zsh aliases and functions
 - `git/` - Git config and global gitignore
-- `claude/` - Claude Code slash commands
-- `home-dir-configs/` - Non-XDG configs requiring ~/symlinks (psqlrc, p10k.zsh)
+- `agents/` - Portable agent skills installed at `~/.agents/skills`
+- `home-dir-configs/` - Non-XDG configs requiring home-directory symlinks
 
-## macOS Setup
+## Host tools
+
+Install tools manually before enabling the corresponding configuration. On macOS, the core baseline is:
 
 ```sh
-# System preferences
-./scripts/macos-setup.sh
+brew install git tmux neovim fzf ripgrep tree-sitter-cli uv
+```
 
-# Tools
-brew install git tmux neovim fzf ripgrep
-$(brew --prefix)/opt/fzf/install
+Uv may instead be installed with its official installer. The tracked `dev.py` requires `uv`; Neovim's configured Tree-sitter parsers require `tree-sitter-cli`. Keep tmux current because the tracked config intentionally uses modern tmux options.
+
+Language runtimes and language servers are project-driven. Install Node, Rust, Go, Python versions, `typescript-language-server`, `gopls`, and similar tools only when a project requires them. Neovim enables a configured language server only when its executable is available.
+
+Optional shell helpers are guarded and become available when their commands are installed, including `kubectl`, `pngpaste`, `7z`, and `unrar`.
+
+## macOS preferences
+
+Review the script before running it, then apply the selected user-level preferences:
+
+```sh
+~/.config/scripts/macos-setup.sh
 ```

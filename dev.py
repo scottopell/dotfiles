@@ -1,8 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.11"
 # dependencies = [
-#   "taskmd @ git+https://github.com/scottopell/taskmd.git",
+#   "taskmd==1.3.0",
 # ]
 # ///
 """Development tasks for the dotfiles repository."""
