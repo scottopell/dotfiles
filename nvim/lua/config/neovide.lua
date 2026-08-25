@@ -57,3 +57,19 @@ vim.keymap.set("v", "<D-v>", '"+p', paste_opts)
 vim.keymap.set("i", "<D-v>", "<C-r>+", paste_opts)
 vim.keymap.set("c", "<D-v>", "<C-r>+", paste_opts)
 vim.keymap.set("t", "<D-v>", [[<C-\><C-n>"+pi]], paste_opts)
+
+-- Cmd-+/− zooms like a native macOS app; Cmd-0 resets the scale.
+local function adjust_scale(delta)
+  vim.g.neovide_scale_factor = math.max(0.5, math.min(3.0, vim.g.neovide_scale_factor + delta))
+end
+
+local zoom_opts = { silent = true }
+vim.keymap.set({ "n", "i", "v", "c", "t" }, "<D-=>", function()
+  adjust_scale(0.1)
+end, vim.tbl_extend("force", zoom_opts, { desc = "Zoom in" }))
+vim.keymap.set({ "n", "i", "v", "c", "t" }, "<D-->", function()
+  adjust_scale(-0.1)
+end, vim.tbl_extend("force", zoom_opts, { desc = "Zoom out" }))
+vim.keymap.set({ "n", "i", "v", "c", "t" }, "<D-0>", function()
+  vim.g.neovide_scale_factor = 1.0
+end, vim.tbl_extend("force", zoom_opts, { desc = "Reset zoom" }))

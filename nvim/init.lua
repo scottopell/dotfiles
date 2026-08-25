@@ -1,3 +1,12 @@
+-- GUI apps launched by macOS don't inherit the login shell's PATH.
+local gui_paths = {
+  vim.fn.expand("~/.local/bin"),
+  "/opt/homebrew/bin",
+  "/opt/homebrew/sbin",
+  vim.fn.expand("~/go/bin"),
+}
+vim.env.PATH = table.concat(gui_paths, ":") .. ":" .. vim.env.PATH
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
